@@ -3,14 +3,95 @@
 \label{sec:intro}
 \pagenumbering{arabic} % para empezar la numeración de página con números
 
-En este capítulo se introduce el proyecto.
-Debería tener información general sobre el mismo, dando la información sobre el contexto en el que se ha desarrollado.
+%En este capítulo se introduce el proyecto.
+%Debería tener información general sobre el mismo, dando la información sobre el contexto en el que se ha desarrollado.
 
-No te olvides de echarle un ojo a la página con los cinco errores de escritura más frecuentes\footnote{\url{http://www.tallerdeescritores.com/errores-de-escritura-frecuentes}}.
+%No te olvides de echarle un ojo a la página con los cinco errores de escritura más frecuentes\footnote{\url{http://www.tallerdeescritores.com/errores-de-escritura-frecuentes}}.
 
-Aconsejo a todo el mundo que mire y se inspire en memorias pasadas.
-Las memorias de los proyectos que he llevado yo están (casi) todas almacenadas en mi web del GSyC\footnote{\url{https://gsyc.urjc.es/~grex/pfcs/}}.
+%Aconsejo a todo el mundo que mire y se inspire en memorias pasadas.
+%Las memorias de los proyectos que he llevado yo están (casi) todas almacenadas en mi web del GSyC\footnote{\url{https://gsyc.urjc.es/~grex/pfcs/}}.
 
+%%%%%%%%%%%%%%%%%%%
+
+El aprendizaje automático (\emph{Machine Learning} en inglés) es una rama de la inteligencia artificial y la ciencia computacional que se centra en el uso de datos y algoritmos para imitar la forma en la que los humanos aprenden con el objetivo de aumentar gradualmente su precisión.
+Es un componente fundamental del campo de la ciencia de datos, cuya importancia ha experimentado un gran crecimiento recientemente. 
+El aprendizaje automático hace uso de métodos estadísticos para entrenar algoritmos que hacen clasificaciones o predicciones y que permiten descubrir piezas clave de información dentro de proyectos de procesamiento de datos. 
+Esta información afecta posteriormente en la toma de decisiones dentro de distintas aplicaciones y negocios, con una gran capacidad de impactar en el crecimiento de los mismos.
+
+\section{Aprendizaje automático y consumo energético}
+
+Gracias al desarrollo de nuevas tecnologías computacionales, el aprendizaje automático que se utiliza hoy en día es muy diferente de como era en el pasado.
+Este surgió del reconocimiento de patrones y de la teoría de que los ordenadores pueden aprender sin necesidad de ser específicamente programados para resolver tareas específicas, cuando los investigadores interesados en la inteligencia artificial se empezaron a plantear si los ordenadores serían capaces de aprender a partir de datos.
+De aquí surge la importancia del aspecto iterativo de este aprendizaje, que permite que el sistema se adapte de forma independiente cada vez que nuevos datos son incorporados y sea capaz de aprender de cada computación previa para producir decisiones y resultados que sean confiables y repetibles.
+
+Es así que, aunque una gran parte de los algoritmos utilizados en el aprendizaje automático son conocidos desde hace relativamente bastante tiempo, la habilidad de automáticamente aplicar complejos cálculos matemáticos a grandes cantidades de datos una y otra vez, cada vez más rápidamente, es un desarrollo muy reciente conseguido gracias a los avances en componentes informáticos y la disminución de costes de grandes sistemas computacionales con enormes capacidades de memoria y procesamiento.
+Este es especialmente el caso para el campo del aprendizaje profundo (\emph{deep learning}), donde los modelos han crecido en cálculos para llegar a alcanzar típicamente el orden de los GigaFlops y en requisitos de memoria que se encuentran típicamente en el orden de los millones de parámetros.
+
+Sin embargo, este gran poder de procesamiento trae consigo un gran gasto energético.
+El consumo de energía en la arquitectura de computadores ha sido foco de atención de investigadores interesados en obtener procesadores eficientes energéticamente de última generación durante décadas. 
+Por otro lado, los investigadores interesados en el aprendizaje automático se han centrado principalmente en la producción de modelos cada vez más profundos y precisos, sin poner ningún límite en términos computacionales más allá de la disponibilidad de procesadores capaces.
+
+% Some awareness in energy consumption is starting to arise, originating from a few machine learning research groups [12], [14], [47], [61] and challenges such as The Low Power Image Recognition Challenge (LPIRC) [26]. Thus, we believe that efforts towards estimating energy consumption and developing tools for researchers to advance their research in energy consumption are necessary for a more scalable and sustainable future. %
+
+% MORE Por qué clasificación, menciones a otros proyectos de análisis energético
+
+%%-- Objetivos del  proyecto
+%%-- Si la sección anterior ha quedado muy extensa, se puede considerar convertir
+%%-- Las siguientes tres secciones en un capítulo independiente de la memoria
+
+\section{Objetivos del proyecto}
+\label{sec:objetivos}
+
+\subsection{Objetivo general} % título de subsección (se muestra)
+\label{sec:objetivo-general} % identificador de subsección (no se muestra, es para poder referenciarla)
+
+
+Este Trabajo de Fin de Grado tiene como objetivo crear una herramienta que permita la comparación sistemática del consumo energético y el impacto de la huella de carbono en los modelos más representativos de técnicas de clasificación de aprendizaje automático supervisado.
+
+
+\subsection{Objetivos específicos}
+\label{sec:objetivos-especificos}
+
+Para lograr esta meta se han tenido en cuenta los siguientes objetivos específicos:
+
+    \begin{itemize}
+        \item Estudiar los algoritmos de clasificación más importantes.
+        \item Analizar la relación entre la precisión de los modelos y su consumo energético en conjuntos de datos de distintos tamaños y características.
+        \item 
+    \end{itemize}
+
+\section{Planificación temporal}
+\label{sec:planificacion-temporal}
+
+Es conveniente que incluyas una descripción de lo que te ha llevado realizar el trabajo.
+Hay gente que añade un diagrama de GANTT.
+Lo importante es que quede claro cuánto tiempo has consumido en realizar el TFG/TFM 
+(tiempo natural, p.ej., 6 meses) y a qué nivel de esfuerzo (p.ej., principalmente los 
+fines de semana).
+
+\section{Estructura de la memoria}
+\label{sec:estructura}
+
+Por último, en esta sección se introduce a alto nivel la organización del resto del documento
+y qué contenidos se van a encontrar en cada capítulo.
+
+    \begin{itemize}
+      \item En el primer capítulo se hace una breve introducción al proyecto, se describen los objetivos del mismo y se refleja la planificación temporal.
+      \item En el siguiente capítulo se describen las tecnologías utilizadas en el desarrollo de este TFM/TFG (Capítulo~\ref{chap:tecnologias}).
+      \item En el capítulo~\ref{chap:diseño} Se describe el proceso de desarrollo
+      de la herramienta \ldots
+      \item En el capítulo~\ref{chap:experimentos} Se presentan las principales pruebas realizadas
+      para validación de la plataforma/herramienta\ldots (o resultados de los experimentos
+      efectuados).
+      \item Por último, se presentan las conclusiones del proyecto así como los trabajos futuros que podrían derivarse de éste (Capítulo~\ref{chap:conclusiones}).
+    \end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%          NOTES             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{comment}
 \section{Sección}
 \label{sec:seccion}
 
@@ -78,61 +159,6 @@ Se puede utilizar para ofrecer el contenido de correos electrónicos, código, e
 \end{verbatim}
 }
 
-%%-- Objetivos del  proyecto
-%%-- Si la sección anterior ha quedado muy extensa, se puede considerar convertir
-%%-- Las siguientes tres secciones en un capítulo independiente de la memoria
-
-\section{Objetivos del proyecto}
-\label{sec:objetivos}
-
-\subsection{Objetivo general} % título de subsección (se muestra)
-\label{sec:objetivo-general} % identificador de subsección (no se muestra, es para poder referenciarla)
-
-
-Aquí vendría el objetivo general en una frase:
-Mi Trabajo Fin de Grado/Master consiste en crear de una herramienta de análisis de los comentarios jocosos en repositorios de software libre alojados en la plataforma GitHub.
-
-Recuerda que los objetivos siempre vienen en infinitivo.
-
-
-\subsection{Objetivos específicos}
-\label{sec:objetivos-especificos}
-
-Los objetivos específicos se pueden entender como las tareas en las que se ha desglosado el objetivo general. Y, sí, también vienen en infinitivo.
-
-Lo mejor suele ser utilizar una lista no numerada, como sigue:
-
-    \begin{itemize}
-        \item Un objetivo específico.
-        \item Otro objetivo específico.
-        \item Tercer objetivo específico.
-        \item \ldots
-    \end{itemize}
-
-\section{Planificación temporal}
-\label{sec:planificacion-temporal}
-
-Es conveniente que incluyas una descripción de lo que te ha llevado realizar el trabajo.
-Hay gente que añade un diagrama de GANTT.
-Lo importante es que quede claro cuánto tiempo has consumido en realizar el TFG/TFM 
-(tiempo natural, p.ej., 6 meses) y a qué nivel de esfuerzo (p.ej., principalmente los 
-fines de semana).
-
-\section{Estructura de la memoria}
-\label{sec:estructura}
-
-Por último, en esta sección se introduce a alto nivel la organización del resto del documento
-y qué contenidos se van a encontrar en cada capítulo.
-
-    \begin{itemize}
-      \item En el primer capítulo se hace una breve introducción al proyecto, se describen los objetivos del mismo y se refleja la planificación temporal.
-      \item En el siguiente capítulo se describen las tecnologías utilizadas en el desarrollo de este TFM/TFG (Capítulo~\ref{chap:tecnologias}).
-      \item En el capítulo~\ref{chap:diseño} Se describe el proceso de desarrollo
-      de la herramienta \ldots
-      \item En el capítulo~\ref{chap:experimentos} Se presentan las principales pruebas realizadas
-      para validación de la plataforma/herramienta\ldots (o resultados de los experimentos
-      efectuados).
-      \item Por último, se presentan las conclusiones del proyecto así como los trabajos futuros que podrían derivarse de éste (Capítulo~\ref{chap:conclusiones}).
-    \end{itemize}
+\end{comment}
 
 %\cleardoublepage
