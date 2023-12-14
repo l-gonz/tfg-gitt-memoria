@@ -2,40 +2,41 @@
 \label{chap:diseño}
 
 
-Aquí viene todo lo que has hecho tú (tecnológicamente). 
-Puedes entrar hasta el detalle. 
-Es la parte más importante de la memoria, porque describe lo que has hecho tú.
-Eso sí, normalmente aconsejo no poner código, sino diagramas.
+\section{Arquitectura general}
+%% Esquema de funcionamiento y explicación vista de pájaro %%
 
-\section{Arquitectura general} 
-\label{sec:arquitectura}
+% > Read data
+% > Split train and test
+% > Clean data
+% > ( Train ) < Measure emissions
+% > Score
 
-Si tu proyecto es un software, siempre es bueno poner la arquitectura (que es cómo se estructura tu programa a ``vista de pájaro'').
+\section{Lectura y limpieza de los datos}
 
-Por ejemplo, puedes verlo en la Figura~\ref{fig:arquitectura}.
-\LaTeX \ pone las figuras donde mejor cuadran. 
-Y eso quiere decir que quizás no lo haga donde lo hemos puesto\ldots
-Eso no es malo.
-A veces queda un poco raro, pero es la filosofía de \LaTeX: tú al contenido, que yo me encargo de la maquetación.
+El componente más importante de todo proyecto de aprendizaje automático son sin duda los datos. 
+Por este motivo se han desarrollado con el tiempo una gran cantidad de librerías para facilitar la tarea de los desarrolladores que quieren trabajar con información de forma estructurada. 
+En Python una de las más importantes es la librería \emph{pandas}, que ofrece la clase \verb|DataFrame| con la que se pueden procesar grandes cantidades de datos de forma similar a como se trabajaría con una tabla o hoja de cálculo, con filas y columnas con distintos tipos de información.
+\todo{More about pandas, and cite}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=9cm, keepaspectratio]{img/arquitectura.png}
-  \caption{Estructura del parser básico.}\label{fig:arquitectura}
-\end{figure}
+Los conjuntos de datos que están disponibles de forma libre en repositorios de universidades y otras organizaciones de ciencia de datos no siempre siguen un mismo formato 
 
-\begin{figure}
-    \centering
-    \includegraphics[bb=0 0 800 600, width=12cm, keepaspectratio]{img/foro1}
-    \caption{Página con enlaces a hilos}\label{fig:_arquitectura}
-\end{figure}
 
- 
-Recuerda que toda figura que añadas a tu memoria debe ser explicada.
-Sí, aunque te parezca evidente lo que se ve en la Figura~\ref{fig:arquitectura}, la figura en sí solamente es un apoyo a tu texto.
-Así que explica lo que se ve en la Figura, haciendo referencia a la misma tal y como ves aquí.
-Por ejemplo: En la Figura~\ref{fig:arquitectura} se puede ver que la estructura del \emph{parser} básico, que consta de seis componentes diferentes: los datos se obtienen de la red, y según el tipo de dato, se pasará a un \emph{parser} específico y bla, bla, bla\ldots
+% Remove rows with missing labels
+% Drop columns that are not numerical or have more than 10 categories
+% Remove rows with missing categorical values
+% Replace missing numerical values with average value of column in train set
+% One-shot categorical columns
 
-Si utilizas una base de datos, no te olvides de incluir también un diagrama de entidad-relación.
 
+\section{Modelos utilizados}
+\input{files/notes/models}
+
+\section{Entrenamiento}
+
+\section{Registro de resultados}
+%% Explicación como toma medidas, csv contents y herramientas para gráficos %%
+
+\section{Opciones del programa: online, offline}
+
+\clearpage
 %\cleardoublepage
