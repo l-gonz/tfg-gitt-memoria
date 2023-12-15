@@ -1,48 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Plantilla de memoria en LaTeX para TFG/TFM - Universidad Rey Juan Carlos
-%%
-%% Por Gregorio Robles <grex arroba gsyc.urjc.es>
-%%     Felipe Ortega   <felipe.ortega@urjc.es>
-%%     Grupo de Sistemas y Comunicaciones (GSyC)
-%%     Escuela Técnica Superior de Ingenieros de Telecomunicación
-%%     Universidad Rey Juan Carlos
-%%
-%% (Muchas ideas tomadas de Internet, colegas del GSyC, antiguos alumnos...
-%%  etc. Muchas gracias a todos)
-%%
-%% La última versión de esta plantilla está siempre disponible en:
-%%     https://github.com/glimmerphoenix/plantilla-memoria
-%%
-%% - Ejecución en sistema local:
-%% Para obtener el documento en PDF, ejecuta en la shell:
-%%   make
-%%
-%% A diferencia de la anterior versión, que usaba la herramienta pdfLaTeX 
-%% para compilar el documento, esta nueva versión de la plantilla usa
-%% XeLaTeX. Es un compilador más moderno que, entre otras mejoras, incluye
-%% soporte nativo para caracteres con codificación UTF-8, traducción políglota
-%% de referencias (usando Biblatex) y soporte para fuentes OTF. Esta última
-%% característic permite, por ejemplo, insertar iconos de la colección 
-%% Fontawesome en el texto.
-%%
-%% XeLaTeX viene ya incluido en todas las distribuciones modernas de LaTeX.
-%%
-%% - Edición y ejecución en línea: 
-%% Puedes descargar y subir la plantilla a
-%% Overleaf, un editor de LaTeX colaborativo en línea. Overleaf ya tiene
-%% instalados todos los paquetes LaTeX y otras dependencias software para
-%% que esta plantilla compile correctamente.
-%%
-%% IMPORTANTE: Si compilas este documento en Overleaf, recuerda cambiar
-%% la configuración (botón "Menu" en la esquina superior izquierda de la interfaz)
-%% y elegir la opción Compiler --> XeLaTeX. En caso contrario no funcionará.
-%%
-%% - Nota: las imágenes deben ir en PNG, JPG, EPS o PDF. También se pueden usar
-%% imágenes en otros formatos con algunos cambios en el preámbulo del documento.
-
+%% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[a4paper, 12pt]{book}
+\documentclass[a4paper, 12pt, oneside]{book}
 
 %%-- Geometría principal (dejar activada la siguiente línea en la versión final)
 \usepackage[a4paper, left=2.5cm, right=2.5cm, top=3cm, bottom=3cm]{geometry}
@@ -105,9 +65,7 @@
 \usepackage{url}
 
 %%-- Gráficos y tablas
-\PassOptionsToPackage{
-    dvipdfmx,usenames,dvipsnames,
-    x11names,table}{xcolor}             % Definiciones de colores
+\PassOptionsToPackage{dvipdfmx,usenames,dvipsnames,x11names,table}{xcolor}             % Definiciones de colores
 \PassOptionsToPackage{xetex}{graphicx}
 
 \usepackage{subfig}                     % Subfiguras
@@ -123,18 +81,17 @@
 % https://www.overleaf.com/learn/latex/Biblatex_bibliography_styles
 % https://www.overleaf.com/learn/latex/biblatex_citation_styles
 \usepackage[
-    backend=biber,
     style=numeric,
-    sorting=nty
+    sorting=none
     ]{biblatex}
 \addbibresource{memoria.bib}
-\DeclareFieldFormat{url}{\mkbibacro{URL}\addcolon\nobreakspace\url{#1}}
+% \DeclareFieldFormat{url}{\mkbibacro{URL}\addcolon\nobreakspace\url{#1}}
 %\usepackage[nottoc, notlot, notlof, notindex]{tocbibind} %% Opciones de índice
 
 %%-- Matemáticas e ingeniería
 % El paquete units permite mostrar unidades correctamente
 % Permite escribir unidades con espaciado y estilo de fuente correctos
-\usepackage[ugly]{units}         
+\usepackage{units}         
 % Ejemplo de uso: $\unit[100]{m}$ or $\unitfrac[100]{m}{s}$
 % Entornos matemáticos
 \newtheorem{theorem}{Theorem}
@@ -182,8 +139,10 @@
 %%-- Configuración fragmentos de código
 %%-- Minted necesita Python Pygments instalado en el sistema para funcionar
 %%-- En Overleaf ya está instalada esta dependencia
-% \usepackage[center, labelfont=bf]{caption}
+\usepackage[labelfont=bf]{caption}
+\newcommand{\source}[1]{\vspace{-3pt} \caption*{Fuente: {#1}} }
 \usepackage{minted}
+\usemintedstyle{vs}
 
 %%-- Se debe cargar aquí para evitar warnings
 \usepackage{csquotes}                   % Para traducciones con biblatex
@@ -213,21 +172,33 @@
 % \renewcommand{\headrulewidth}{0pt}%
 % \renewcommand{\footrulewidth}{0pt}%
 % }
+\AtBeginDocument{\addtocontents{toc}{\protect\thispagestyle{empty}}} 
+
+%%%%%%%%%%%%%%%%%%%
+%% Own changes
+%%%%%%%%%%%%%%%%%%%
+\newenvironment{conditions}[1][where:]
+  {#1 \begin{tabular}[t]{>{$}l<{$} @{${}={}$} l}}
+  {\end{tabular}\\[\belowdisplayskip]}
+\raggedbottom
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%-- Metadatos del doc
-\title{Memoria del Proyecto}
-\author{Nombre del autor}
+\title{Comparativa del Consumo Energético de Algoritmos de Aprendizaje Automático}
+\author{Laura Gonzalez Fernandez}
 
 %%-- Hiperenlaces, siempre se carga al final del preámbulo
 \usepackage[colorlinks]{hyperref}
 \hypersetup{
     pdftoolbar=true,	% Muestra barra de herramientas en Adobe Acrobat
 	pdfmenubar=true,	% Muestra menú en Adobe Acrobat
-	pdftitle={Título doc en ventana del visor o navegador},
-	pdfauthor={Nombre del alumno/a},
-	pdfcreator={ETSII/ETSIT, URJC},
+	pdftitle={TFG - Comparativa del Consumo Energético de Algoritmos de Aprendizaje Automático},
+	pdfauthor={Laura Gonzalez Fernandez},
+	pdfcreator={EIF, URJC},
 	pdfproducer={XeLaTeX},
-	pdfsubject={Topic1, Topic2, Topic3},
+	pdfsubject={Machine-learning, eficiencia energética},
 	pdfnewwindow=true,              %links open in new window
     colorlinks=true,                % false: boxed links; true: coloured links
     linkcolor=Firebrick4,           % enlaces internos 
@@ -242,6 +213,23 @@
 
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{verbatim}
+
+% \hyphenpenalty 10
+% \exhyphenpenalty 10
+\pretolerance=5000
+\tolerance=9000
+\emergencystretch=2pt
+\righthyphenmin=4
+\lefthyphenmin=4
+
+\interfootnotelinepenalty=10000
+
+\usepackage[
+    type={CC},
+    modifier={by-sa},
+    version={4.0},
+]{doclicense}
+
 %%%---------------------------------------------------------------------------
 
 \begin{document}
@@ -275,15 +263,15 @@
 \\
 \end{tabular}
 
-\vspace{3cm}
+\vspace{1.5cm}
+
+\Large 
+ESCUELA DE INGENIERÍA DE FUENLABRADA
+
+\vspace{1.5cm}
 
 \Large 
 GRADO EN INGENIERÍA EN TECNOLOGÍAS DE LA TELECOMUNICACIÓN
-
-\vspace{0.4cm}
-
-\large
-Curso Académico 2023/2024
 
 \vspace{0.8cm}
 
@@ -295,21 +283,29 @@ Trabajo Fin de Grado
 \vspace{3cm}
 
 \large
-Autor/a : Laura González Fernández \\
-Tutor/a : Dr. Nombre del Profesor/a
+Autora : Laura González Fernández \\
+Tutor : José Felipe Ortega Soto
 \end{center}
+\pagenumbering{gobble}
 \end{titlepage}
+
+\vspace{0.4cm}
+
+\large
+Curso Académico 2023/2024
+
 
 \newpage
 \mbox{}
-\thispagestyle{empty} % para que no se numere esta pagina
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Para firmar
 \clearpage
-\pagenumbering{gobble}
+\frontmatter
+\pagestyle{empty}
 \chapter*{}
+\thispagestyle{empty}
 
 \vspace{-4cm}
 \begin{center}
@@ -323,13 +319,12 @@ Comparativa del Consumo Energético de Algoritmos de Aprendizaje Automático
 \vspace{1cm}
 \large
 \textbf{Autora :} Laura González Fernández  \\
-\textbf{Tutor/a :} Dr. Nombre del profesor/a
+\textbf{Tutor :} José Felipe Ortega Soto
 
 \end{center}
 
 \vspace{1cm}
-La defensa del presente Proyecto Fin de Grado se realizó el día _\qquad$\;\,$ de
-\qquad\qquad\qquad\qquad \newline de 2024, siendo calificada por el siguiente tribunal:
+La defensa del presente Proyecto Fin de Grado se realizó el día \qquad$\;\,$ de \qquad\qquad\qquad\qquad \newline de 2024, siendo calificada por el siguiente tribunal:
 
 
 \vspace{0.5cm}
@@ -351,38 +346,60 @@ y habiendo obtenido la siguiente calificación:
 
 \vspace{0.8cm}
 \begin{flushright}
-Móstoles/Fuenlabrada, a \qquad$\;\,$ de \qquad\qquad\qquad\qquad de 20XX
+Fuenlabrada, a \qquad$\;\,$ de \qquad\qquad\qquad\qquad de 2024
 \end{flushright}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Dedicatoria
 
 % \chapter*{}
+% \thispagestyle{empty}
 % %\pagenumbering{Roman} % para comenzar la numeración de paginas en numeros romanos
 % \begin{flushright}
-% \textit{Aquí normalmente \\
-% se inserta una dedicatoria corta \\}
+% \textit{To the future.\\}
 % \end{flushright}
+
+\chapter*{}
+\thispagestyle{empty}
+%\pagenumbering{Roman} % para comenzar la numeración de paginas en numeros romanos
+
+\begin{flushright}
+\begin{minipage}{8cm}
+\raggedleft
+©2023 Laura González Fernández  \\
+Some rights reserved. \\
+\doclicenseLongText \\
+\vspace{0.5cm}
+\doclicenseImage
+\end{minipage}
+
+\end{flushright}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Agradecimientos
 
 \chapter*{Agradecimientos}
+\thispagestyle{empty}
 %\addcontentsline{toc}{chapter}{Agradecimientos} % si queremos que aparezca en el índice
 \markboth{AGRADECIMIENTOS}{AGRADECIMIENTOS} % encabezado 
 
-Aquí vienen los agradecimientos\ldots
+% I would like to take this opportunity to express my deepest gratitude to the many individuals who have played a significant role in the completion of this bachelor thesis.
 
-Hay más espacio para explayarse y explicar a quién agradeces su apoyo o ayuda para
-haber acabado el proyecto: familia, pareja, amigos, compañeros de clase\ldots
+% First and foremost, I want to thank my family for their unwavering support and patience throughout my academic journey. They never doubted me, even when I did it myself. Thank you as well for your help during this project, for being there when I needed a camera person or an extra hand to fly the drone. To my sister, especially, thank you for putting up with me these two years while I inched along this project.
 
-También hay quien, en algunos casos, hasta agradecer a su tutor o tutores del proyecto
-la ayuda prestada\ldots
+% I also extend my thanks to my supervisors for their guidance, expertise, and invaluable feedback throughout the thesis project. Your dedication to my academic growth and your willingness to share your knowledge have been indispensable.
+
+% I would also like to express my gratitude to all my friends and colleagues who were by my side during this journey. Your camaraderie and the frequent inquiries about the status of my "never-ending drone project" pushed me towards the finish line.
+
+% This thesis represents the culmination of years of hard work and dedication, and I am grateful for the support of everyone who stood by my side.
+
+% Thank you all for being a part of this journey.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Resumen
 
 \chapter*{Resumen}
+\thispagestyle{empty}
 %\addcontentsline{toc}{chapter}{Resumen} % si queremos que aparezca en el índice
 \markboth{RESUMEN}{RESUMEN} % encabezado
 %(máximo una página, se recomienda la estructura: antecedentes,
@@ -423,6 +440,7 @@ As it is the translation of the ``Resumen'', which is supposed to be written at 
 % Se puede borrar este bloque al acabar el borrador
 
 \listoftodos
+\thispagestyle{empty}
 \markboth{TODO LIST}{TODO LIST} % encabezado
 %%%%--------------------------------------------------------------------
 
@@ -437,85 +455,51 @@ As it is the translation of the ``Resumen'', which is supposed to be written at 
 
 %%-- Índice de contenidos
 \tableofcontents 
+\thispagestyle{empty}
 \cleardoublepage
 %%-- Índice de figuras
-%\addcontentsline{toc}{chapter}{Lista de figuras} % para que aparezca en el indice de contenidos
+
+\addcontentsline{toc}{chapter}{Lista de figuras} % para que aparezca en el indice de contenidos
+\thispagestyle{empty}
 \listoffigures % indice de figuras
-%\cleardoublepage
+\thispagestyle{empty}
+
+\cleardoublepage
 %%-- Índice de tablas
 %\addcontentsline{toc}{chapter}{Lista de tablas} % para que aparezca en el indice de contenidos
 %\listoftables % indice de tablas
-\cleardoublepage
+% \cleardoublepage
 %%-- Índice de fragmentos de código
-\listoflistings
+% \addcontentsline{toc}{chapter}{List of listings} % para que aparezca en el indice de contenidos
+% \listoflistings
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% INTRODUCCIÓN %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   CONTENT   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter
+\pagestyle{headings}
 
 \include{files/1-introduccion.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ESTADO DEL ARTE %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \include{files/2-stateoftheart.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% DISEÑO E IMPLEMENTACIÓN %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \include{files/3-diseño.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% EXPERIMENTOS Y VALIDACIÓN %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \include{files/4-experimentos.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CONCLUSIONES %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \include{files/5-conclusiones.tex}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % GLOSARIO(S) %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \printglossary[type=\acronymtype]
-
 \printglossary
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % APÉNDICE(S) %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %\cleardoublepage
 %\appendix
-%\chapter{Manual de usuario}
-%\label{app:manual}
+%\include{}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BIBLIOGRAFIA %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \cleardoublepage
-
-%% OLD BIBTEX CODE, TO BE DELETED
-%\bibliographystyle{abbrv}
-%\bibliographystyle{plain} 
-%\bibliography{memoria}  % memoria.bib es el nombre del fichero que contiene las referencias bibliográficas.
-
 % https://www.overleaf.com/learn/latex/Bibliography_management_with_biblatex
 \raggedright\printbibliography[heading=bibintoc,title={Referencias}]
 
