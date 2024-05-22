@@ -1,0 +1,31 @@
+\chapter{Title}
+
+\section{Interfaz de comandos de la aplicación}
+\label{app:cli}
+
+\begin{minted}[breaklines, fontsize=\footnotesize, baselinestretch=1]{text}
+Usage: mlcost measure [OPTIONS]
+
+Options:
+  -d, --dataset TEXT          filepath to dataset, uses Iris dataset if none
+                              given
+  -l, --labels TEXT           labels column, defaults to last column
+  -t, --test TEXT             filepath to testset, if none will get split
+                              testset from dataset
+  -s, --separator TEXT        separator, defaults to a comma (no spaces)
+  -f, --codecarbon-file TEXT  filename for default output from codecarbon, can
+                              be used with codecarbon's own visualization tool
+  --online                    use Codecarbon Emission Tracker in online mode
+  --log                       output to additional csv file with whole
+                              experiment data
+  --no-header                 do not consider the first row in the data to be
+                              the header
+  -h, --help                  Show this message and exit.
+
+
+Usage: mlcost show [OPTIONS]
+
+Options:
+  -f, --file TEXT  filepath to csv file that contains the data  [required]
+  -h, --help       Show this message and exit.
+\end{minted}

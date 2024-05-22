@@ -1,9 +1,14 @@
 \chapter{Diseño e implementación}
 \label{chap:diseño}
 
+Este capítulo describe el diseño de la aplicación desarrollada durante este proyecto.  
+\todo[inline]{Resumen del capitulo}
 
-\section{Arquitectura general}
-%% Esquema de funcionamiento y explicación vista de pájaro %%
+
+\section{Arquitectura}
+\todo[inline]{Esquema de funcionamiento y explicación vista de pájaro}
+
+\missingfigure{Arquitectura de la aplicación}
 
 % > Read data
 % > Split train and test
@@ -11,32 +16,118 @@
 % > ( Train ) < Measure emissions
 % > Score
 
+
 \section{Lectura y limpieza de los datos}
+\label{sec:limpieza}
 
-El componente más importante de todo proyecto de aprendizaje automático son sin duda los datos. 
-Por este motivo se han desarrollado con el tiempo una gran cantidad de librerías para facilitar la tarea de los desarrolladores que quieren trabajar con información de forma estructurada. 
-En Python una de las más importantes es la librería \emph{pandas}, que ofrece la clase \verb|DataFrame| con la que se pueden procesar grandes cantidades de datos de forma similar a como se trabajaría con una tabla o hoja de cálculo, con filas y columnas con distintos tipos de información.
-\todo{More about pandas, and cite}
+El componente más importante de todo proyecto de aprendizaje automático son sin duda los datos. Por este motivo se han desarrollado con el tiempo una gran cantidad de librerías para facilitar la tarea de los desarrolladores que quieren trabajar con información de forma estructurada. En Python una de las más importantes es la librería \texttt{pandas} (\ref{sec:sota}), que ofrece la clase \texttt{DataFrame} con la que se pueden procesar grandes cantidades de datos de forma similar a como se trabajaría con una tabla o hoja de cálculo, con filas y columnas con distintos tipos de información.
 
-Los conjuntos de datos que están disponibles de forma libre en repositorios de universidades y otras organizaciones de ciencia de datos no siempre siguen un mismo formato 
+Los conjuntos de datos que están disponibles de forma libre en repositorios de universidades y otras organizaciones de ciencia de datos no siempre siguen un mismo formato. Por este motivo el primer paso para aplicar métodos de aprendizaje automático en datos específicos será siempre deshacerse del formato de presentación y guardarlos en estructuras de datos operables por un ordenador, como \texttt{DataFrames} de \texttt{pandas}. En este proyecto, la intención ha sido ser capaz de procesar datos presentados con varios formatos distintos. Para ello, se han creado distintas argumentos para la línea de comandos que pueden ser utilizados al lanzar la aplicación especificando las características concretas del conjunto de datos a tratar.
 
+En general, el proceso de lectura y limpieza de los datos va seguir siempre las siguientes fases:
+\begin{enumerate}
+    \item Lectura
+    \begin{enumerate}
+        \item Leer el archivo que contiene los datos.
+        \item Separar los datos de entrenamiento de los datos de testeo.
+        \item Identificar el tipo de datos de cada columna.
+    \end{enumerate}
+    \item Limpieza
+    \begin{enumerate}
+        \item Eliminar columnas que no pueden ser utilizadas.
+        \item Reemplazar valores numéricos que falten.
+        \item Reemplazar columnas categóricas por columnas booleanas.
+        \item Escalar las características numéricas.
+    \end{enumerate}
+\end{enumerate}
 
-% Remove rows with missing labels
-% Drop columns that are not numerical or have more than 10 categories
-% Remove rows with missing categorical values
-% Replace missing numerical values with average value of column in train set
-% One-shot categorical columns
+El primer paso es leer los datos de uno o varios archivos, que serán generalmente archivos de texto en formato \texttt{.txt} o \texttt{.csv}. Es en este paso en el que se dan mayores diferencias entre distintos conjuntos de datos y la razón de que se hayan añadido las distintas opciones de línea de comandos al programa para resolverlo. Los archivos de texto que contienen los datos pueden utilizar diferentes caracteres separadores entre columnas (como coma o espacio), representar valores que no han sido tomados con diferentes símbolos (como '?' o '-'), presentar o no una fila inicial con los nombres de las columnas, identificar la columna de las etiquetas de distintas maneras e incluso separar en distintos archivos los conjuntos de entrenamiento y de testeo de forma previa. Todas estas opciones son tenidas en cuenta durante la lectura para convertir los archivos de texto en \texttt{dataframes} sobre los que las librerías de aprendizaje pueden operar. En el Anexo~\ref{app:cli} se incluye un compendio de todas las opciones disponibles en la aplicación.
 
+Una vez que los datos están recogidos, el siguiente paso es separar los datos de entrenamiento de los de testeo. Para ello, primero se descartarán todas las filas de datos que no estén etiquetadas, si las hubiera. Por defecto, la separación se hace al 80-20 y de forma aleatoria, excepto si los conjuntos están previamente separados en dos archivos. Para terminar el proceso de lectura, las columnas que contienen características numéricas se separan de las que contienen características categóricas, para poder tratarlas de forma específica durante la limpieza.
 
-\section{Modelos utilizados}
-\input{files/notes/models}
+En la sección de limpieza, el objetivo es eliminar las características que puedan crear obstáculos en el entrenamiento de los modelos. Tres problemas básicos son tratados: falta de datos en columnas numéricas, datos presentados de forma categórica y diferentes escalas de los datos numéricos. Para lidiar con ello se utilizará un tipo de clases provistas por la librería \texttt{scikit-learn} denominadas transformadores. Estos transformadores encapsulan distintas herramientas de preprocesado y limpieza que son usadas a menudo. Para la falta de datos numéricos, se utilizara un introductor simple de medidas (\texttt{SimpleImputer}), que rellenará los datos que falten con la media de los datos disponibles. 
+
+Respecto a las columnas categóricas, muchos algoritmos de aprendizaje no están diseñados para trabajar directamente con variables no numéricas (generalmente, porque limitaría la eficiencia de los algoritmos). Para resolverlo, se utilizará un transformador denominado \texttt{OneHotEncoder}. Este transformador reemplaza una característica categórica con varias características booleanas, de forma que para cada posible valor de la categoría se crea una nueva columna con un valor de sí o no dependiendo de a cual pertenece cada dato. Para simplificar, características categóricas con más de diez valores distintos posibles serán descartadas completamente. Lo mismo ocurrirá con cualquier otra columna que no pueda ser identificada como numérica o categórica y con las filas en las que falten datos de tipo categórico.
+
+Un último transformador, \texttt{StandardScaler}, será aplicado a las características numéricas para alinear las escalas de todas ellas. El escalador estándar provoca que todas las características tengan media cero y varianza uno. Esta estandarización es especialmente importante para algunos modelos de aprendizaje, como las máquinas de vector soporte, que son sensibles a diferentes escalas en los datos.
+
+\todo[inline]{Add feature scaling explanation}
+% https://scikit-learn.org/stable/auto_examples/preprocessing/plot_scaling_importance.html#sphx-glr-auto-examples-preprocessing-plot-scaling-importance-py
+
 
 \section{Entrenamiento}
 
-\section{Registro de resultados}
-%% Explicación como toma medidas, csv contents y herramientas para gráficos %%
+Una vez que los datos están preparados para su uso comienza la fase de entrenamiento. En este proyecto, el objetivo es medir el gasto energético de distintos modelos y compararlo con la calidad de sus predicciones. Para ello, se han elegido una serie de modelos representativos de las familias de algoritmos más utilizadas. Estos modelos elegidos serán entrenados uno detrás de otro con el conjunto de datos preparado mientras se mide el consumo energético mediante las herramientas proporcionadas por CodeCarbon.
 
-\section{Opciones del programa: online, offline}
+El procedimiento es sencillo. En primer lugar se comienzan las mediciones mediante la creación se un objeto de tipo \texttt{EmissionsTracker} que cuenta con simples métodos \texttt{start()} y \texttt{stop()}. A continuación, se entrena el modelo en la parte del conjunto de datos reservada para entrenamiento, y seguidamente se aplica el modelo entrenado a la parte del conjunto de datos reservada para testeo para intentar predecir correctamente la etiqueta de cada entrada que contiene. Para finalizar, se detiene la medición de emisiones y se almacenan los resultados obtenidos.
+
+\todo[inline]{Grid search crossvalidation}
+
+\subsection{Modelos escogidos}
+\label{subsec:models-short}
+
+Dentro de los modelos de aprendizaje automático existen numerosas clasificaciones de acuerdo al tipo de tareas a realizar y la naturaleza de los datos. Este proyecto se centrará en tareas de clasificación por aprendizaje supervisado. En este subgrupo, destacan una serie de familias de algoritmos que suelen obtener buenos resultados para una gran variedad de tipos de datos.
+\begin{enumerate}
+    \item Modelos lineales. Se trata de modelos sencillos, fáciles de interpretar y eficientes computacionalmente, que funcionan bien cuando las relaciones entre las características de entrada y la salida son aproximadamente lineales. Uno de sus modelos más representativos es el de regresión logística.
+    \item Árboles decisores. Estos algoritmos pueden modelar relaciones complejas en los datos y lidiar con no linealidad. Dentro de esta familia destaca el modelo de Bosque Aleatorio, que agrega predicciones de varios árboles decisores para mejorar la robustez del modelo.
+    \item Máquinas de vector soporte. Estos modelos son efectivos tanto en tareas de clasificación lineales como no lineales y destacan por su gran versatilidad. Funcionan de forma óptima en conjuntos de datos relativamente pequeños pero de gran complejidad.
+    \item Vecinos más cercanos. Su máximo representante, k vecinos más cercanos (k-NN), es un algoritmo simple e intuitivo que se basa en buscar relaciones locales entre los datos y puede ser efectivo en tareas tanto de regresión como de clasificación.
+    \item Naive Bayes (bayesiano ingenuo). Se trata de una familia de modelos que destaca por su gran eficiencia, especialmente frente a conjunto de datos de gran complejidad, y especialmente útil en tareas de clasificación de texto. El clasificador más representativo es el Naive Bayes gaussiano.
+    \item Métodos de conjuntos (ensemble). Estos métodos combinan las características de múltiples modelos para intentar mejorar el desempeño total. Entre ellos destacan las máquinas de potenciación de gradiente, que construyen sólidos modelos predictivos de forma iterativa.
+    \item Redes neuronales. Las redes neuronales, especialmente los modelos de aprendizaje profundo como las redes neuronales profundas (Deep Neural Networks, DNN), pueden formar representaciones jerárquicas complejas a partir de los datos, y son especialmente efectivas en tareas que involucran grandes cantidades de datos con patrones complejos.
+\end{enumerate}
+
+En general, se espera que modelos de aprendizaje más complejos como los métodos de conjuntos, las redes neuronales y las máquinas de vector soporte produzcan mejores predicciones a cambio de un mayor gasto energético que otros modelos comparativamente más sencillos computacionalmente, como los modelos lineales, Naive Bayes y vecinos más cercanos. En el capitulo~\ref{chap:experimentos}, se analizará si los resultados obtenidos durante los experimentos se corresponden con esta aproximación teórica. 
+
+\todoin{
+> ref to main explanation in 2.2 \\
+}
+
+
+\section{Registro de resultados}
+
+\subsection{Evaluación de las predicciones}
+\label{sec:scoring}
+
+\todoin{Make sure multiclass is explained somewhere\\
+Explain how scoring is used in project\\
+Add good formulas\\
+Add graph to explain scoring}
+
+Para poder obtener una medida de utilidad de los distintos modelos, es necesario evaluar la calidad de las predicciones que realizan. Existen dos métodos principales realizar esta evaluación. El primero y más sencillo consiste en aplicar la función de predicción del modelo a un subconjunto de muestras que hayan sido aisladas previamente para no formar parte del proceso de entrenamiento. Estas predicciones se comparan con las etiquetas correctas de las muestras para determinar si cada predicción ha sido acertada.
+Cuatro resultados distintos son posibles por muestra y clase concreta: true positive (identificada correctamente como perteneciente a la clase), false positive (identificada incorrectamente como perteneciente a la clase), false negative (identificada incorrectamente como no perteneciente a la clase), y true negative (identificada correctamente como no perteneciente a la clase). Una forma común de visualizar estos resultados es mediante una matriz de confusión. \todo{Add example confusion matrix}
+A partir de las relaciones entre el número de muestras en cada uno de estos grupos se pueden extraer varias métricas del modelo, siendo las más comunes la exactitud, la precisión, la exhaustividad y el \emph{f-score}\cite{scikit-model-eval}. Estas métricas corresponden a un valor de 0 a 1, donde 0 es el peor resultado y 1 el mejor.
+
+
+La exactitud (\emph{accuracy}) se define como la cercanía de la predicciones a su valor real. En tareas de clasificación se calcula como el número de predicciones correctas entre el número de muestras totales (tp+tn/all). Una variante interesante de la exactitud que \texttt{scikit-learn} permite calcular es la exactitud balanceada, que evita medidas infladas de exactitud en conjuntos de datos no balanceados (con una o más clases sobrerrepresentadas en el conjunto) mediante la ponderación de cada muestra de acuerdo a la prevalencia inversa de su verdadera clase.
+
+La precisión (\emph{precision}) y la exhaustividad (\emph{recall}) son métricas que analizan la relevancia de las muestras asignadas a cada clase y se calculan individualmente por clase. La precisión analiza el número de muestras correctamente clasificadas dentro de todas las muestras asignadas a una clase concreta ( tp / (tp + fp) ), mientras que la exhaustividad analiza el número de muestras correctamente clasificadas en relación al número total de muestras reales existentes ( tp / (tp + fn) ). Estas dos métricas pueden ser promediadas en función del peso relativo de cada clase un el conjunto para obtener una medida global de la precisión y exhaustividad del modelo.
+
+En último lugar, es interesante mencionar el valor-F (\emph{F-score}), que se puede interpretar como una media harmónica de la precisión y la exhaustividad y tiene distintas variantes dependiendo de la importancia relativa de estas dos medidas. La denominada medida-$F_1$ da la misma importancia a la precisión y a la exhaustividad. Para cada clase, se calcula como F1 = ( 2tp / ( 2tp + fp + fn ) ) o ( 2pr / p+r ). \todo{Arreglar formulas}
+
+
+El segundo método para evaluar el rendimiento de un modelo que se puede utilizar en la aplicación desarrollada se denomina validación cruzada. Este método se basa en las mismas métricas ya mencionadas, pero con la peculiaridad de que éste se entrena varias veces de forma sucesiva con distintas distribuciones de los datos en un conjunto de entrenamiento y un conjunto de prueba. Posteriormente, se puede analizar la media y la desviación estándar de las métricas de la calidad de las predicciones obtenidas para cada distribución de las muestras y así obtener una idea más exacta del desempeño del modelo. En \texttt{scikit-learn}, la validación cruzada se puede implementar mediante el uso de la clase \texttt{KFold}, que divide el conjunto de datos en un número de pliegues especificados de forma aleatoria, y la función \texttt{cross\_validate}, que entrena el modelo y calcula las métricas deseadas para cada uno de los pliegues de forma sucesiva. Para determinar los plieges, la aplicación MLCost utiliza una clase derivada llamada \texttt{StratifiedKFold}, que ayuda a mantener el mismo ratio de muestras por clase en cada pliegue para conjuntos de datos no balanceados.
+
+
+\subsection{Medición de emisiones}
+
+Durante la ejecución de su rastreador de emisiones, la librería CodeCarbon calcula varias medidas distintas para identificar el consumo energético. En primer lugar, las emisiones están geolocalizadas de una de las siguientes formas: mediante una conexión a internet automática que permita identificar la localización mediante rastreo de IP, o mediante la especificación de un país determinado en el código al crear el objeto rastreador de emisiones. Esta localización es necesaria para convertir los kilovatios consumidos durante el proceso de entrenamiento en emisiones de carbono equivalentes, que dependerán de la mezcla especifica de producción de energía que haya establecido cada país. De esta forma, si la energía estuviera producida en gran medida por energías renovables, las emisiones de carbono serían mucho menores que si la energía fuera producida en su totalidad en una planta de quema de carbón. En la sección de resultados se compararán las diferencias de emisiones producidas entrenando modelos en un mismo conjunto de datos en diferentes localizaciones.
+
+Con estos datos, la librería CodeCarbon calcula las emisiones a partir de medidas de la capacidad del procesador y gráfica de la máquina, del porcentaje de su uso que corresponde al proceso de entrenamiento observado y de la duración total del proceso. En este proyecto, por cada modelo entrenado se guardan tres de estas medidas para su posterior análisis y comparativa: la energía consumida (en kilovatios hora, \unit{kWh}), las emisiones calculadas (en kilogramos equivalentes de carbono, $\unit{kg\;[CO_2eq]}$]) y la duración (en segundos). Durante el proceso de entrenamiento, estos valores son escritos en un archivo de texto de tipo \texttt{csv} (\emph{comma-separated values}) junto con las medidas de calificación de las predicciones mencionadas en el apartado anterior. Este archivo de texto será utilizado posteriormente para dibujar gráficas de las que extraer conclusiones con una herramienta de gráficos desarrollada para este proyecto.
+
+\subsection{Herramientas de visualización}
+
+\todoin{AFTER CH 4 \\
+proceso de herramienta para gráficos \\
+> stress test \\
+> codecarbon-viz}
+
+\section{Gestión de recursos}
+
+\todoin{AFTER CH 4 \\
+cómo tomar medidas en ordenadores con distintas potencias \\
+Azure?? }
+
 
 \clearpage
 %\cleardoublepage

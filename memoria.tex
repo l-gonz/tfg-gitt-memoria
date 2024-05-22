@@ -212,6 +212,8 @@
 % Este bloque se puede borrar cuando finalizamos el borrador
 
 \usepackage[colorinlistoftodos]{todonotes}
+\newcommand\todoin[2][]{\todo[inline, color=green!40, caption={2do}, #1]{
+\begin{minipage}{\textwidth-4pt}#2\end{minipage}}}
 \usepackage{verbatim}
 
 % \hyphenpenalty 10
@@ -268,31 +270,31 @@
 \Large 
 ESCUELA DE INGENIERÍA DE FUENLABRADA
 
-\vspace{1.5cm}
+\vspace{1.2cm}
 
 \Large 
 GRADO EN INGENIERÍA EN TECNOLOGÍAS DE LA TELECOMUNICACIÓN
 
 \vspace{0.8cm}
-
-Trabajo Fin de Grado
+\LARGE 
+\textbf{\uppercase{Trabajo Fin de Grado}}
 
 \vspace{2cm}
 
 \LARGE Comparativa de modelos de aprendizaje automático con respecto a su consumo energético
-\vspace{3cm}
+\vspace{2cm}
 
 \large
 Autora : Laura González Fernández \\
 Tutor : José Felipe Ortega Soto
+
+\vspace{0.8cm}
+\large
+Curso Académico 2023/2024
+
 \end{center}
 \pagenumbering{gobble}
 \end{titlepage}
-
-\vspace{0.4cm}
-
-\large
-Curso Académico 2023/2024
 
 
 \newpage
@@ -366,8 +368,8 @@ Fuenlabrada, a \qquad$\;\,$ de \qquad\qquad\qquad\qquad de 2024
 \begin{flushright}
 \begin{minipage}{8cm}
 \raggedleft
-©2023 Laura González Fernández  \\
-Some rights reserved. \\
+©2024 Laura González Fernández  \\
+Algunos derechos reservados. \\
 \doclicenseLongText \\
 \vspace{0.5cm}
 \doclicenseImage
@@ -483,8 +485,8 @@ As it is the translation of the ``Resumen'', which is supposed to be written at 
 \mainmatter
 \pagestyle{headings}
 
-\include{files/1-introduccion.tex}
-\include{files/2-stateoftheart.tex}
+\include{files/1-intro.tex}
+\include{files/2-sota.tex}
 \include{files/3-diseño.tex}
 \include{files/4-experimentos.tex}
 \include{files/5-conclusiones.tex}
@@ -494,9 +496,9 @@ As it is the translation of the ``Resumen'', which is supposed to be written at 
 \printglossary
 
 % APÉNDICE(S) %
-%\cleardoublepage
-%\appendix
-%\include{}
+\cleardoublepage
+\appendix
+\include{files/appendix.tex}
 
 % BIBLIOGRAFIA %
 \cleardoublepage

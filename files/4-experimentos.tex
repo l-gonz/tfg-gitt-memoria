@@ -1,8 +1,105 @@
 \chapter{Experimentos y validación}
 \label{chap:experimentos}
 
-%\input{files/notes/experimentos-guide}
+El objetivo de este capítulo es mostrar el funcionamiento de la aplicación en un caso de uso real en el que se tratará de extraer conclusiones generales acerca del consumo eléctrico de cada modelo y de si este consumo irá necesariamente acompañado de una mejora de los resultados de predicción.
+Para ello se emplearán las herramientas descritas anteriormente para evaluar el consumo y el rendimiento de una serie de modelos formada por representantes de las principales familias de modelos de aprendizaje automático y recogidos en la sección~\ref{sec:models}. Estos modelos serán aplicados a los conjuntos de datos de distintas características definidos en la sección~\ref{sec:datasets}.
 
-%\cleardoublepage
+Durante la validación de la aplicación se llevarán acabo tres experimentos distintos.
+El primero examinará el consumo energético en base al modelo seleccionado. En esta sección se tomarán varias medidas de consumo y rendimiento por modelo y conjunto de datos en una máquina con unos recursos de procesamiento concretos para analizar que modelos consumen más que otros y que características de los conjuntos de datos hacen incrementar este consumo.
+El segundo consistirá en aislar un par de conjuntos de datos y tomar medidas de consumo con distintos recursos de procesado dedicados a la tarea de aprendizaje automático para observar el efecto de los recursos disponibles en el consumo energético de cada modelo.
+Por último, se propondrán métodos de optimización de los modelos analizados y se examinará el efecto que pueda tener sobre su consumo. 
 
-\input{files/notes/datasets}
+A través de este análisis, se pretende obtener una comprensión profunda de cómo diferentes modelos de aprendizaje automático consumen energía bajo diversas condiciones de trabajo. Este experimento también busca identificar patrones de consumo y eficiencia que puedan informar el diseño y la implementación de modelos más sostenibles y eficientes en el futuro.
+
+\todo[inline]{Añadir esquema ???}
+% What's the purpose of experiments?
+% What are the expected results? More energy, more precision
+% Outline / procedure / steps to follow
+
+% 4.1 Análisis del consumo energético en base al modelo escogido
+    % 4.1.1 Comparación en conjuntos de pequeño tamaño (100s - 1000s)
+        % Tres conjuntos: iris, ionosphere, hepatitis
+    % 4.1.2 Comparación en conjuntos de mediano tamaño (10000s)
+        % Dos conjuntos: eeg-eye-state, electricity, letter, mnist_784
+% 4.2 Análisis del consumo energético en base a los recursos disponibles
+    % 4.2.1 Evolución del consumo con la carga del procesador
+        % 1 dataset pequeño, 1 mediano
+    % 4.2.2 Evolución del consumo con el aumento de recursos
+        % 1 dataset grande (100000s) ?covertype?, 2-3 resource configs
+% 4.3 Optimización
+
+\section{Consumo energético basado en el modelo seleccionado}
+ % - El consumo aumenta al aumentar el número de muestras
+ %    1. Gráfico introductorio: número de muestras (x) vs emisiones (y), muchos modelos
+ %        el consumo aumenta de forma exponencial con el número de muestras, unos modelos aumentan más que otros
+ %    2. Introduce f-score: plot same lines with average f1-score instead of emissions. Los resultados son distintos, mayor consumo no implica mejor predicción
+ %    3. Introduce scatter plot 4-way
+    
+ % - Algunos modelos son mejores que otros
+ %    - Aumento de score implica aumento de consumo?
+ %    - Compara average f1-score con consumo por modelo y dataset
+ %    3. Introduce f-score con scatter plot 4-way, all models, 3 datasets (no average)
+ %    4. Bar plot de dos datasets pequeños comparando score 
+
+En esta sección se examinará el consumo energético una serie de modelos representativos aplicados a varios conjuntos de datos. El objetivo de este análisis será abordar las siguientes cuestiones clave:
+
+\begin{itemize}
+    \item Identificación de los modelos con mayor consumo energético.
+    \item Determinación de los modelos cuyo consumo energético incrementa significativamente al aumentar el número de muestras.
+    \item Evaluación de modelos que ofrecen mejores predicciones con menor consumo energético.
+\end{itemize}
+
+Dónde sea posible, se tratará de analizar estas cuestiones de forma general y obtener conclusiones que sean extrapolables más allá de los conjuntos de datos concretos que se hayan medido. Sin embargo, debido a la gran cantidad de variables involucradas en las variaciones de consumo entre unos casos y otros, es posible en otros conjuntos de datos se observen comportamientos distintos del consumo.
+
+Para analizar estas cuestiones todas las medidas de consumo serán tomadas con la aplicación desarrollada ejecutando en una misma máquina. Para cada modelo y conjunto de datos, se tomarán medidas de consumo y rendimiento utilizando validación cruzada con cinco iteraciones con un tamaño definido para los datos de testeo del 20\% del conjunto de datos. Esta técnica proporcionará una evaluación robusta y precisa tanto del comportamiento energético de los modelos como de su precisión y exactitud, ya que evitará en gran medida la presencia de valores atípicos y el riesgo de sobreajuste de los modelos.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{rl}
+         Modelo & Dell XPS 15 9500\\
+         Sistema Operativo & Ubuntu 20.04.6 LTS x86\_64\\
+         Python & 3.12.2\\
+         Procesador & Intel(R) Core(TM) i9-10885H CPU @ 2.40GHz\\
+         Memoria & 7,63 GB\\
+    \end{tabular}
+    \caption{Características técnicas de la máquina utilizada para tomar las medidas}
+    \label{tab:caracteristicas-tecnicas}
+\end{table}
+
+La aplicación será ejecutada con el siguiente comando para cada conjunto de datos distinto, en el cual \texttt{[dataset]} será sustituido por el archivo que contenga cada conjunto de datos. Adicionalmente, cualquiera de las opciones de lectura de datos descritas en la sección~\ref{sec:limpieza} podrá ser utilizada si el formato en el que se encuentren los datos lo requiere. Las características de la máquina utilizada están recogidas en la tabla~\ref{tab:caracteristicas-tecnicas}.
+\begin{minted}{bash}
+mlcost measure --log -cv 5 -d [dataset] [dataset-options]
+\end{minted}
+
+La ejecución de este comando producirá un archivo tipo tabla de datos en formato \texttt{.csv} con filas de medidas por modelo para el conjunto de datos especificado. Cada una de estas filas corresponderá a las medidas tomadas durante una iteración de la validación cruzada. Estas medidas incluirán el consumo energético y tiempo empleado en entrenar el modelo en el conjunto de datos de entrenamiento separado para esa iteración concreta, además de la exactitud, la precisión, la exhaustividad y el valor-F calculados en el conjunto de datos de prueba restante de acuerdo a la definición mostrada en la sección~\ref{sec:scoring}.
+
+La tabla~\ref{tab:medidas-1} recoge muestra un extracto de las medidas tomadas. El archivo completo está disponible en el repositorio de la aplicación.
+
+\begin{table}[h]
+\centerline{
+\scalebox{0.78}{
+\begin{tabular}{|llllllllllll|}
+\hline
+Dataset     & Modelo & CPU & Accuracy & Precision & F-score & Recall & Fit  & Total (s) & Emisiones & Energía  & Muestras \\
+ &  & load (\%) &  & & & &  time (s) & &  (kg) &  (kWh) &  \\ \hline
+Banknote    & Linear & 2.7           & 0.98      & 0.98      & 0.98    & 0.98          & 0.007             & 0.071            & 2.13E-07  & 1.10E-06 & 1372     \\
+Banknote    & Linear & 2.7           & 0.97      & 0.97      & 0.97    & 0.97          & 0.006             & 0.071            & 2.13E-07  & 1.10E-06 & 1372     \\
+Banknote    & Linear & 2.7           & 0.97      & 0.97      & 0.97    & 0.97          & 0.006             & 0.071            & 2.13E-07  & 1.10E-06 & 1372     \\
+Banknote    & Linear & 2.7           & 0.99      & 0.99      & 0.99    & 0.99          & 0.005             & 0.071            & 2.13E-07  & 1.10E-06 & 1372     \\
+Banknote    & Linear & 2.7           & 0.99      & 0.99      & 0.99    & 0.99          & 0.005             & 0.071            & 2.13E-07  & 1.10E-06 & 1372     \\
+Banknote    & Forest & 2.7           & 0.99      & 0.99      & 0.99    & 0.99          & 0.184             & 1.429            & 3.27E-06  & 1.69E-05 & 1372     \\
+Banknote    & Forest & 2.7           & 1.00      & 1.00      & 1.00    & 1.00          & 0.171             & 1.429            & 3.27E-06  & 1.69E-05 & 1372     \\
+Banknote    & Forest & 2.7           & 0.99      & 0.99      & 0.99    & 0.99          & 0.154             & 1.429            & 3.27E-06  & 1.69E-05 & 1372     \\
+Banknote    & Forest & 2.7           & 1.00      & 1.00      & 1.00    & 1.00          & 0.172             & 1.429            & 3.27E-06  & 1.69E-05 & 1372     \\
+Banknote    & Forest & 2.7           & 1.00      & 1.00      & 1.00    & 1.00          & 0.158             & 1.429            & 3.27E-06  & 1.69E-05 & 1372     \\
+\multicolumn{12}{|c|}{...} \\
+Electricity & Neural & 102.4         & 0.82      & 0.83      & 0.83    & 0.83          & 132.768           & 518.905          & 1.19E-03  & 6.15E-03 & 45312 \\  \hline
+\end{tabular}}}
+\caption[Extracto de los resultados de entrenamiento]{Extracto de los resultados de entrenamiento\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/model-comp-many.csv}}
+\todo[inline]{Fix format}}
+\label{tab:medidas-1}
+\end{table}
+
+
+
+\clearpage
