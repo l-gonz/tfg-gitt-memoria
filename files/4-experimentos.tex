@@ -41,6 +41,8 @@ A través de este análisis, se pretende obtener una comprensión profunda de c�
  %    3. Introduce f-score con scatter plot 4-way, all models, 3 datasets (no average)
  %    4. Bar plot de dos datasets pequeños comparando score 
 
+\subsubsection{Objetivos}
+
 En esta sección se examinará el consumo energético una serie de modelos representativos aplicados a varios conjuntos de datos. El objetivo de este análisis será abordar las siguientes cuestiones clave:
 
 \begin{itemize}
@@ -50,6 +52,8 @@ En esta sección se examinará el consumo energético una serie de modelos repre
 \end{itemize}
 
 Dónde sea posible, se tratará de analizar estas cuestiones de forma general y obtener conclusiones que sean extrapolables más allá de los conjuntos de datos concretos que se hayan medido. Sin embargo, debido a la gran cantidad de variables involucradas en las variaciones de consumo entre unos casos y otros, es posible en otros conjuntos de datos se observen comportamientos distintos del consumo.
+
+\subsubsection{Metodología}
 
 Para analizar estas cuestiones todas las medidas de consumo serán tomadas con la aplicación desarrollada ejecutando en una misma máquina. Para cada modelo y conjunto de datos, se tomarán medidas de consumo y rendimiento utilizando validación cruzada con cinco iteraciones con un tamaño definido para los datos de testeo del 20\% del conjunto de datos. Esta técnica proporcionará una evaluación robusta y precisa tanto del comportamiento energético de los modelos como de su precisión y exactitud, ya que evitará en gran medida la presencia de valores atípicos y el riesgo de sobreajuste de los modelos.
 
@@ -71,11 +75,11 @@ La aplicación será ejecutada con el siguiente comando para cada conjunto de da
 mlcost measure --log -cv 5 -d [dataset] [dataset-options]
 \end{minted}
 
-La ejecución de este comando producirá un archivo tipo tabla de datos en formato \texttt{.csv} con filas de medidas por modelo para el conjunto de datos especificado. Cada una de estas filas corresponderá a las medidas tomadas durante una iteración de la validación cruzada. Estas medidas incluirán el consumo energético y tiempo empleado en entrenar el modelo en el conjunto de datos de entrenamiento separado para esa iteración concreta, además de la exactitud, la precisión, la exhaustividad y el valor-F calculados en el conjunto de datos de prueba restante de acuerdo a la definición mostrada en la sección~\ref{sec:scoring}.
+\subsubsection{Resultados}
 
-La tabla~\ref{tab:medidas-1} recoge muestra un extracto de las medidas tomadas. El archivo completo está disponible en el repositorio de la aplicación.
+La ejecución del comando anterior producirá un archivo tipo tabla de datos en formato \texttt{.csv}. La tabla~\ref{tab:medidas-1} recoge un extracto de los resultados obtenidos en el ordenador de referencia para siete conjuntos de datos distintos. El archivo completo está disponible en el repositorio de la aplicación.
 
-\begin{table}[h]
+\begin{table}[H]
 \centerline{
 \scalebox{0.78}{
 \begin{tabular}{|llllllllllll|}
@@ -96,10 +100,46 @@ Banknote    & Forest & 2.7           & 1.00      & 1.00      & 1.00    & 1.00   
 Electricity & Neural & 102.4         & 0.82      & 0.83      & 0.83    & 0.83          & 132.768           & 518.905          & 1.19E-03  & 6.15E-03 & 45312 \\  \hline
 \end{tabular}}}
 \caption[Extracto de los resultados de entrenamiento]{Extracto de los resultados de entrenamiento\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/model-comp-many.csv}}
-\todo[inline]{Fix format}}
+\todo[inline]{Fix header format}}
 \label{tab:medidas-1}
 \end{table}
 
+Cada fila en la tabla corresponde a las medidas tomadas durante una iteración de entrenamiento de cada modelo por validación cruzada. Al haber escogido utilizar validación cruzada de cinco iteraciones, la tabla de resultados cuenta con cinco filas por modelo y conjunto de datos. Sin embargo, algunas de las medidas, como la carga del procesador, el número de muestras del conjunto de datos, el tiempo total de entrenamiento, las emisiones del proceso y la energía consumida, son tomadas de forma global al finalizar todas las iteraciones de entrenamiento de cada modelo y conjunto.
+Para cada iteración individual se recogen las medidas estadísticas de exactitud, precisión, exhaustividad y valor-F calculadas. Además, la implementación de validación cruzada de \texttt{scikit-learn} proporciona una medida del tiempo de entrenamiento empleado en cada iteración (fit time). Este valor puede ser utilizado junto con las emisiones y el tiempo totales de todas las iteraciones para calcular las emisiones de cada iteración de entrenamiento como muestra la ecuación~\ref{eq:fit-emissions}.
+
+\begin{equation}
+    E_1 = \frac{E_T}{t_T} \cdot t_1
+    \label{eq:fit-emissions}
+\end{equation}
+\begin{conditions}
+E_1   &   emisiones de la iteración \\
+E_T   &   emisiones totales \\
+t_T   &   tiempo total \\
+t_1   &   tiempo de entrenamiento de la iteración
+\end{conditions}
+
+A partir de los resultados obtenidos se puede dibujar un diagrama de dispersión para visualizar cómo varían las emisiones. En la figura~\ref{fig:scatter-1} se ha utilizado el valor-F como medida de la calidad de las predicciones (eje Y), ya que es habitualmente más informativa en casos de distribuciones de clases no balanceadas. En el eje X, se han dibujado las emisiones con una escala logarítmica.
+
+\begin{figure}[H]
+  \centerline{
+     \includegraphics[width=1.2\textwidth, keepaspectratio]{img/graph/4scatter-dataset-model.png}
+  }
+  \caption{Valor-F alcanzado por el modelo frente a las emisiones de carbono necesarias para entrenarlo, por modelo empleado y conjunto de datos utilizado}
+  \label{fig:scatter-1}
+\end{figure}
+\todo[inline]{Fix plot titles}
+
+% Scatter plot bla bla bla
+
+
+\begin{figure}[H]
+  \centerline{
+     \includegraphics[width=1\textwidth, keepaspectratio]{img/graph/line-nsamples-emission-log.png}
+  }
+  \caption{Evolución de las emisiones de carbono con el aumento de número de muestras del conjunto de datos}
+  \label{fig:line-samples}
+\end{figure}
+\todo[inline]{Fix plot titles}
 
 
 \clearpage
