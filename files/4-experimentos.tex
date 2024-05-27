@@ -130,7 +130,7 @@ A partir de los resultados obtenidos se puede dibujar un diagrama de dispersión
 \todo[inline]{Fix plot titles}
 
 % Scatter plot bla bla bla
-- Outlier eeg-eye-state lower score
+- Outlier eeg-eye-state lower score, high variance
 
 - Neural, higher emissions, average score, high variance, better score more complex dataset
 - Support vector, starts well, but low score for eye and very high emissions for electricity
@@ -144,14 +144,45 @@ A partir de los resultados obtenidos se puede dibujar un diagrama de dispersión
 - Naive bayes, very low score, low emissions
 
 
+
 \begin{figure}[H]
   \centerline{
      \includegraphics[width=1\textwidth, keepaspectratio]{img/graph/line-nsamples-emission-log.png}
   }
   \caption{Evolución de las emisiones de carbono con el aumento de número de muestras del conjunto de datos}
-  \label{fig:line-samples}
+  \label{fig:line-emissions-samples}
 \end{figure}
-\todo[inline]{Fix plot titles}
+\begin{figure}[H]
+  \centerline{
+     \includegraphics[width=1\textwidth, keepaspectratio]{img/graph/line-nsamples-fscore-loglin.png}
+  }
+  \caption{Evolución de las emisiones de carbono con el aumento de número de muestras del conjunto de datos}
+  \label{fig:line-fscore-samples}
+\end{figure}
 
+- Best scores Forest, Neural, Neighbors
+- Their emission: medium, high, low, in that order
+
+
+\section{Consumo energético basado en los recursos disponibles}
+
+% Datasets: 
+%  - [electricity (45k) / mnist_784 (70k)] (only if poker too much),
+%  - creditcard (285k), 
+%  - covertype (581k), 
+%  - poker-hand 1567 (1.03M)
+% Models:
+%  - Forest, Neural, Neighbors
+
+% Ejecutar: (1 run instead of CV??)
+ % - 1. Portatil
+ % - 2. Azure (2 - 3 configs)
+ % Metodología:
+ % - Deploy in azure (how-to)
+ % - Templates / config info
+ % - Cost analysis?
+ % Discusión:
+ % - Compare to emission data from Azure?
+ % - Bar graph/scatter plot per model/dataset
 
 \clearpage
