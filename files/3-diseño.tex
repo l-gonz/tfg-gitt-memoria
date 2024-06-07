@@ -61,7 +61,7 @@ Una vez que los datos están preparados para su uso comienza la fase de entrenam
 
 El procedimiento es sencillo. En primer lugar se comienzan las mediciones mediante la creación se un objeto de tipo \texttt{EmissionsTracker} que cuenta con simples métodos \texttt{start()} y \texttt{stop()}. A continuación, se entrena el modelo en la parte del conjunto de datos reservada para entrenamiento, y seguidamente se aplica el modelo entrenado a la parte del conjunto de datos reservada para testeo para intentar predecir correctamente la etiqueta de cada entrada que contiene. Para finalizar, se detiene la medición de emisiones y se almacenan los resultados obtenidos.
 
-\todo[inline]{Grid search crossvalidation}
+\todo[inline]{Grid search crossvalidation for optimization ???}
 
 \subsection{Modelos escogidos}
 \label{subsec:models-short}
@@ -95,7 +95,7 @@ Add good formulas\\
 Add graph to explain scoring}
 
 Para poder obtener una medida de utilidad de los distintos modelos, es necesario evaluar la calidad de las predicciones que realizan. Existen dos métodos principales realizar esta evaluación. El primero y más sencillo consiste en aplicar la función de predicción del modelo a un subconjunto de muestras que hayan sido aisladas previamente para no formar parte del proceso de entrenamiento. Estas predicciones se comparan con las etiquetas correctas de las muestras para determinar si cada predicción ha sido acertada.
-Cuatro resultados distintos son posibles por muestra y clase concreta: true positive (identificada correctamente como perteneciente a la clase), false positive (identificada incorrectamente como perteneciente a la clase), false negative (identificada incorrectamente como no perteneciente a la clase), y true negative (identificada correctamente como no perteneciente a la clase). Una forma común de visualizar estos resultados es mediante una matriz de confusión. \todo{Add example confusion matrix}
+Cuatro resultados distintos son posibles por muestra y clase concreta: true positive (identificada correctamente como perteneciente a la clase), false positive (identificada incorrectamente como perteneciente a la clase), false negative (identificada incorrectamente como no perteneciente a la clase), y true negative (identificada correctamente como no perteneciente a la clase). Una forma común de visualizar estos resultados es mediante una matriz de confusión. \todo[inline]{Add example confusion matrix}
 A partir de las relaciones entre el número de muestras en cada uno de estos grupos se pueden extraer varias métricas del modelo, siendo las más comunes la exactitud, la precisión, la exhaustividad y el \emph{f-score}\cite{scikit-model-eval}. Estas métricas corresponden a un valor de 0 a 1, donde 0 es el peor resultado y 1 el mejor.
 
 
@@ -103,7 +103,7 @@ La exactitud (\emph{accuracy}) se define como la cercanía de la predicciones a 
 
 La precisión (\emph{precision}) y la exhaustividad (\emph{recall}) son métricas que analizan la relevancia de las muestras asignadas a cada clase y se calculan individualmente por clase. La precisión analiza el número de muestras correctamente clasificadas dentro de todas las muestras asignadas a una clase concreta ( tp / (tp + fp) ), mientras que la exhaustividad analiza el número de muestras correctamente clasificadas en relación al número total de muestras reales existentes ( tp / (tp + fn) ). Estas dos métricas pueden ser promediadas en función del peso relativo de cada clase un el conjunto para obtener una medida global de la precisión y exhaustividad del modelo.
 
-En último lugar, es interesante mencionar el valor-F (\emph{F-score}), que se puede interpretar como una media harmónica de la precisión y la exhaustividad y tiene distintas variantes dependiendo de la importancia relativa de estas dos medidas. La denominada medida-$F_1$ da la misma importancia a la precisión y a la exhaustividad. Para cada clase, se calcula como F1 = ( 2tp / ( 2tp + fp + fn ) ) o ( 2pr / p+r ). \todo{Arreglar formulas}
+En último lugar, es interesante mencionar el valor-F (\emph{F-score}), que se puede interpretar como una media harmónica de la precisión y la exhaustividad y tiene distintas variantes dependiendo de la importancia relativa de estas dos medidas. La denominada medida-$F_1$ da la misma importancia a la precisión y a la exhaustividad. Para cada clase, se calcula como F1 = ( 2tp / ( 2tp + fp + fn ) ) o ( 2pr / p+r ). \todo[inline]{Arreglar formulas}
 
 
 El segundo método para evaluar el rendimiento de un modelo que se puede utilizar en la aplicación desarrollada se denomina validación cruzada. Este método se basa en las mismas métricas ya mencionadas, pero con la peculiaridad de que éste se entrena varias veces de forma sucesiva con distintas distribuciones de los datos en un conjunto de entrenamiento y un conjunto de prueba. Posteriormente, se puede analizar la media y la desviación estándar de las métricas de la calidad de las predicciones obtenidas para cada distribución de las muestras y así obtener una idea más exacta del desempeño del modelo. En \texttt{scikit-learn}, la validación cruzada se puede implementar mediante el uso de la clase \texttt{KFold}, que divide el conjunto de datos en un número de pliegues especificados de forma aleatoria, y la función \texttt{cross\_validate}, que entrena el modelo y calcula las métricas deseadas para cada uno de los pliegues de forma sucesiva. Para determinar los plieges, la aplicación MLCost utiliza una clase derivada llamada \texttt{StratifiedKFold}, que ayuda a mantener el mismo ratio de muestras por clase en cada pliegue para conjuntos de datos no balanceados.
@@ -115,19 +115,25 @@ Durante la ejecución de su rastreador de emisiones, la librería CodeCarbon cal
 
 Con estos datos, la librería CodeCarbon calcula las emisiones a partir de medidas de la capacidad del procesador y gráfica de la máquina, del porcentaje de su uso que corresponde al proceso de entrenamiento observado y de la duración total del proceso. En este proyecto, por cada modelo entrenado se guardan tres de estas medidas para su posterior análisis y comparativa: la energía consumida (en kilovatios hora, \unit{kWh}), las emisiones calculadas (en kilogramos equivalentes de carbono, $\unit{kg\;[CO_2eq]}$]) y la duración (en segundos). Durante el proceso de entrenamiento, estos valores son escritos en un archivo de texto de tipo \texttt{csv} (\emph{comma-separated values}) junto con las medidas de calificación de las predicciones mencionadas en el apartado anterior. Este archivo de texto será utilizado posteriormente para dibujar gráficas de las que extraer conclusiones con una herramienta de gráficos desarrollada para este proyecto.
 
+
 \subsection{Herramientas de visualización}
 
 \todoin{AFTER CH 4 \\
-proceso de herramienta para gráficos \\
-> stress test \\
+> describir proceso de herramienta para gráficos (graph.py) \\
 > codecarbon-viz}
 
 \section{Gestión de recursos}
 
 \todoin{AFTER CH 4 \\
-cómo tomar medidas en ordenadores con distintas potencias \\
-Azure?? }
+> cómo tomar medidas en ordenadores con distintas potencias \\
+> Azure deployment }
+
+\subsection{Procesamiento multi-núcleo}
+
+\todoin{AFTER CH 4 \\
+es comparable el consumo con n\_jobs > 1 ? \\
+aumenta la energía / min procesamiento ? \\
+que modelos permiten multiproceso, aplicar solo a cv ?}
 
 
 \clearpage
-%\cleardoublepage

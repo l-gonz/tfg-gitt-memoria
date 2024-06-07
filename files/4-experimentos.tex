@@ -28,7 +28,9 @@ A través de este análisis, se pretende obtener una comprensión profunda de c�
         % 1 dataset grande (100000s) ?covertype?, 2-3 resource configs
 % 4.3 Optimización
 
-\section{Consumo energético basado en el modelo seleccionado}
+\section{Consumo energético en función del modelo seleccionado}
+\label{sec:test-1-models}
+
  % - El consumo aumenta al aumentar el número de muestras
  %    1. Gráfico introductorio: número de muestras (x) vs emisiones (y), muchos modelos
  %        el consumo aumenta de forma exponencial con el número de muestras, unos modelos aumentan más que otros
@@ -129,20 +131,20 @@ A partir de los resultados obtenidos se puede dibujar un diagrama de dispersión
 \end{figure}
 \todo[inline]{Fix plot titles}
 
-% Scatter plot bla bla bla
-- Outlier eeg-eye-state lower score, high variance
+\todoin{Desarrollo explicación scatter plot:\\
+> Outlier eeg-eye-state lower score, high variance \\
+> Neural, higher emissions, average score, high variance, better score more complex dataset  \\
+> Support vector, starts well, but low score for eye and very high emissions for electricity \\
 
-- Neural, higher emissions, average score, high variance, better score more complex dataset
-- Support vector, starts well, but low score for eye and very high emissions for electricity
+> Forest, high score, medium emissions, even for eye dataset  \\
+> Gradient, same but a little worse on both \\
 
-- Forest, high score, medium emissions, even eye
-- Gradient, same but a little worse on both
+> Neighbors, very low emissions \\
 
-- Neighbors, very low emissions
-
-- Linear, low emissions, low score
-- Naive bayes, very low score, low emissions
-
+> Linear, low emissions, low score \\
+> Naive bayes, very low score, low emissions \\ \\ \\
+Marcar areas en la gráfica siguiendo la discusión para mejor visualización ? \\
+}
 
 
 \begin{figure}[H]
@@ -160,29 +162,132 @@ A partir de los resultados obtenidos se puede dibujar un diagrama de dispersión
   \label{fig:line-fscore-samples}
 \end{figure}
 
-- Best scores Forest, Neural, Neighbors
-- Their emission: medium, high, low, in that order
+\todoin{Line plots: \\
+> Best scores Forest, Neural, Neighbors \\
+> Their emission: medium, high, low, in that order \\
+}
 
 
-\section{Consumo energético basado en los recursos disponibles}
+\section{Consumo energético en función de los recursos disponibles}
+\label{sec:test-2-resources}
 
-% Datasets: 
-%  - [electricity (45k) / mnist_784 (70k)] (only if poker too much),
-%  - creditcard (285k), 
-%  - covertype (581k), 
-%  - poker-hand 1567 (1.03M)
-% Models:
-%  - Forest, Neural, Neighbors
+\subsubsection{Objetivos}
 
-% Ejecutar: (1 run instead of CV??)
- % - 1. Portatil
- % - 2. Azure (2 - 3 configs)
- % Metodología:
- % - Deploy in azure (how-to)
- % - Templates / config info
- % - Cost analysis?
- % Discusión:
- % - Compare to emission data from Azure?
- % - Bar graph/scatter plot per model/dataset
+ En el experimento anterior se observó que el modelo utilizado en el entrenamiento determina en gran medida el consumo energético. Sin embargo, hay una dimensión más que se puede estudiar para intentar reducir este consumo: los recursos computacionales dedicados a la tarea. Al utilizar un ordenador con menores recursos, el proceso de entrenamiento sin duda llevará más tiempo que en una máquina con mayores recursos. Sin embargo, su consumo energético por unidad de tiempo será comparativamente menor.
+ 
+ En esta sección pretende analizar que configuración de recursos actuará de forma más eficiente durante el entrenamiento de un conjunto de datos de gran tamaño, atendiendo a las siguientes cuestiones:
+
+ \begin{itemize}
+    \item Si es posible compensar más tiempo con menos consumo.
+    \item Si se puede encontrar alguna combinación de recursos especialmente eficiente.
+    \item Como afectan los recursos empleados a la calidad de las predicciones.
+\end{itemize}
+
+\subsubsection{Metodología}
+
+La característica principal a analizar de las máquinas utilizadas será el número de procesadores dedicados a las tareas de entrenamiento. En un ordenador de un solo núcleo, cada iteración de la validación cruzada debe realizarse secuencialmente. Sin embargo, al aumentar el número de núcleos del procesador, es posible realizar las tareas de forma paralela. Para utilizar este mecanismo, es necesario activarla indicando a \texttt{scikit-learn} la opción \texttt{n\_jobs=1} para indicar el número de procesos a ejecutar en paralelo, donde -1 indica utilizar todos los disponibles.
+
+Para analizar como afecta el número de procesadores disponibles al consumo energético, se tomarán medidas en máquinas con tres configuraciones diferentes. Estas máquinas serán desplegadas como máquinas virtuales en la nube, lo que facilitará controlar los recursos disponibles para cada configuración y ofrecerá un entorno similar de trabajo para todos los casos. La plataforma elegida para el despliegue es Microsoft Azure (sección~\ref{subsec:azure}), que ofrece una gran capacidad de personalización en los recursos desplegados y cuenta con una oferta de créditos gratuitos para el sector educativo que pueden ser empleados en minutos de ejecución de maquinas virtuales.
+
+El proceso seguido será similar para cada combinación de recursos elegida. En primer lugar es necesario desplegar la máquina virtual con una red virtual configurada que permita conexiones mediante \texttt{ssh}, para poder ser controlada por línea de comandos. A continuación, se ejecutará el script \texttt{azure/install.sh} ubicado en el repositorio del proyecto\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/azure/install.sh}}. Este script instalará la aplicación MLCost y todas sus dependencias, tomará una serie de medidas de entrenamiento en un conjunto de datos concreto, y exportará los resultados para su posterior análisis.
+
+El conjunto de datos elegido para analizar este proceso será \emph{electricity} (ver \ref{subsec:dataset-electricity}), que contiene alrededor de 45K muestras. Este tamaño moderado permite ejecutar los experimentos en un tiempo razonable del orden de pocos minutos por modelo. Al mismo tiempo, tiene un tamaño suficiente para que las diferencias de consumo generadas por las distintas configuraciones de recursos sean visibles.
+Las configuraciones de recursos elegidas para las máquinas virtuales están recogidas en la Tabla~\ref{tab:caracteristicas-tecnicas-multi}. El Anexo \ref{ax:az-templates} contiene unas plantillas que se pueden utilizar dentro de Microsoft Azure para desplegar máquinas virtuales con una configuración idéntica a las utilizadas para tomar las medidas de este experimento.
+\todo[inline]{Guardar plantillas}
+
+El proceso completo seguido para cada configuración de recursos puede resumirse en los siguientes pasos:
+\begin{enumerate}
+    \item Desplegar una máquina virtual en la nube con la configuración deseada.
+    \item Conectarse a la máquina virtual mediante SSH.
+    \item Descargar el repositorio del proyecto.
+    \item Ejecutar el script \texttt{azure/install.sh}.
+\end{enumerate}
+
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{r|ccc}
+\multicolumn{1}{l|}{} 
+    & Test 1                             
+    & Test 2                             
+    & Test 3 \rule[-1.5ex]{0pt}{0pt} \\ \hline
+Sistema operativo     
+    & \multicolumn{3}{c}{Ubuntu 20.04.6 LTS x86\_64} 
+    \rule{0pt}{3.5ex} \rule[-1.5ex]{0pt}{0pt} \\
+Procesador            
+    & \multicolumn{3}{c}{\begin{tabular}[c]{@{}c@{}}Intel(R) Xeon(R) Platinum\\ 8272CL CPU @ 2.60GHz\end{tabular}} 
+    \rule{0pt}{3.5ex} \\
+Python                
+    & \multicolumn{3}{c}{3.12.3} \rule{0pt}{3.5ex}  \\
+Configuración Azure               
+    & B1s   & B2ms   & B4ms \rule{0pt}{3.5ex} \\
+Memoria               
+    & 0,7? GB   & 7,75 GB   & 15,57 GB \rule{0pt}{3.5ex} \\
+vCPUs 
+    & 1   & 2   & 4  \rule{0pt}{3.5ex}                       
+\end{tabular}
+    \caption{Características técnicas de las máquina virtuales comparadas}
+    \label{tab:caracteristicas-tecnicas-multi}
+\end{table}
+
+% Low - B1s: 1vcpu, 1GB ram
+
+% Mid - B2ms: 2vcpus, 8GB ram
+
+% Xtra - B4ms: 4vcpus, 16GB memory
+% Running on paralleltest3
+% Intel(R) Xeon(R) CPU E5-2673 v4 @ 2.30GHz
+% Memory: 15.57 GB
+% Start load: 4.00% for 4 CPUs
+
+
+\subsubsection{Resultados}
+
+\begin{figure}[H]
+  \centerline{
+     \includegraphics[width=\textwidth, keepaspectratio]{img/graph/2-scat-energy-p-s.png}
+  }
+  \caption{Distribución de la energía por segundo}
+  \label{fig:4-2-energy-per-second}
+\end{figure}
+\begin{figure}[H]
+  \centerline{
+     \includegraphics[width=\textwidth, keepaspectratio]{img/graph/2-scat-fit-emissions.png}
+  }
+  \caption{Distribución de las emisiones por hilo de ejecución}
+  \label{fig:4-2-energy-per-second}
+\end{figure}
+\begin{figure}[H]
+  \centerline{
+     \includegraphics[width=\textwidth, keepaspectratio]{img/graph/2-scat-emissions.png}
+  }
+  \caption{Distribución de las emisiones totales del entrenamiento}
+  \label{fig:4-2-energy-per-second}
+\end{figure}
+
+\todoin{Análisis: \\
+> Dice algo f\_score en el eje y? Cambiar? \\
+> Energía por segundo es la misma prácticamente para todos los casos \\
+> En emisiones totales sí consume menos las opciones -P (excepto T1, por tener solo 1 procesador es lo mismo) (excepto Linear model, no paraleliza ??)
+> En emisiones por iteración no hay apenas diferencia (T2 consume menos en general por poco) \\ \\ 
+
+> ¿Cambiar y tomar medidas con -cv 8 para ser divisible entre número cpus de todas las configuraciones?
+}
+
+\section{?? Optimización del consumo energético}
+
+\todoin{Proceso: \\
+> Elegir 2-3 modelos interesantes \\
+> Optimizar hiperparámetros para reducir consumo \\
+> Cambia que modelos son más eficientes con la optimización ???
+}
+
+\section{?? Consumo energético en función de la localización}
+
+\todoin{
+> codecarbon permite indicar el país al medir el consumo \\
+> el calculo de energía a kg CO2 equivalentes cambia mucho \\
+> codecarbon-viz tool tiene gráficas de como varía el consumo por país, como se compara el consumo a usos domésticos
+}
 
 \clearpage

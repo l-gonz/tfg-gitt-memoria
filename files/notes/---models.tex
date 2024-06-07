@@ -11,7 +11,10 @@
   > Expected emission results \\
   > Optimization possibilities}
 
-\subsection{Modelo lineal: clasificador ridge}
+\color{Purple}
+\subsection{Modelos lineales: regresión logística}
+\subsubsection{OLD Modelo lineal}
+\todo[inline]{Reemplazar: regresión logistica}
 
 Los métodos lineales son un conjunto de métodos diseñados para problemas de regresión en los que se espera que el objetivo sea una combinación lineal de las características.
 En notación matemática, si $\hat{y}$ es el valor predicho:
@@ -25,34 +28,57 @@ La regresión lineal trata, por tanto, de modelar la relación entre una variabl
 La regresión lineal ordinaria suele presentar la limitación de no realizar una selección de predictores, es decir, todos los predictores se incorporan en el modelo aunque no aporten información relevante. Esto suele complicar la interpretación del modelo y reducir su capacidad predictiva.
 Una forma de atenuar el impacto de estos problemas es utilizar estrategias de regularización como ridge, que fuerzan a que los coeficientes del modelo tiendan a cero, minimizando así el riesgo de overfitting, reduciendo varianza, atenuado el efecto de la correlación entre predictores y reduciendo la influencia en el modelo de los predictores menos relevantes.
 
-Dado que estos métodos de regularización actúan sobre la magnitud de los coeficientes del modelo, todos deben de estar en la misma escala, por esta razón es necesario estandarizar o normalizar los predictores antes de entrenar el modelo.
-% PROBLEMA ??????
+% Dado que estos métodos de regularización actúan sobre la magnitud de los coeficientes del modelo, todos deben de estar en la misma escala, por esta razón es necesario estandarizar o normalizar los predictores antes de entrenar el modelo.
+% % PROBLEMA ??????
 
-La regularización Ridge penaliza la suma de los coeficientes elevados al cuadrado  ($||\beta||_{2}^{2}=\sum^{p}_{j=1}\beta^{2}_{j}$) . 
-A esta penalización se le conoce como $l2$ y tiene el efecto de reducir de forma proporcional el valor de todos los coeficientes del modelo pero sin que estos lleguen a cero. El grado de penalización está controlado por el hiperparámetro  $\lambda$ . Cuando  $\lambda=0$ , la penalización es nula y el resultado es equivalente al de un modelo lineal por mínimos cuadrados ordinarios (OLS). A medida que  $\lambda$  aumenta, mayor es la penalización y menor el valor de los predictores.
+% La regularización Ridge penaliza la suma de los coeficientes elevados al cuadrado  ($||\beta||_{2}^{2}=\sum^{p}_{j=1}\beta^{2}_{j}$) . 
+% A esta penalización se le conoce como $l2$ y tiene el efecto de reducir de forma proporcional el valor de todos los coeficientes del modelo pero sin que estos lleguen a cero. El grado de penalización está controlado por el hiperparámetro  $\lambda$ . Cuando  $\lambda=0$ , la penalización es nula y el resultado es equivalente al de un modelo lineal por mínimos cuadrados ordinarios (OLS). A medida que  $\lambda$  aumenta, mayor es la penalización y menor el valor de los predictores.
 
 % CITE https://scikit-learn.org/stable/modules/linear_model.html#ridge-regression-and-classification
 
-En Scikit-learn, el regresor ridge tiene una variante para clasificación, que primero convierte las etiquetas a {-1, 1} y después trata el problema como una tarea de regresión, optimizando para los mismos objetivos mencionados anteriormente. La clase predicha corresponde al signo de la predicción del regresor.
+% En Scikit-learn, el regresor ridge tiene una variante para clasificación, que primero convierte las etiquetas a {-1, 1} y después trata el problema como una tarea de regresión, optimizando para los mismos objetivos mencionados anteriormente. La clase predicha corresponde al signo de la predicción del regresor.
 
-\subsection{Descenso de gradiente estocástico - SGD}
 
-% CITE https://scikit-learn.org/stable/modules/sgd.html
 
-El descenso de gradiente estocástico (Stochastic Gradient Descent o SGD) es una estrategia simple pero muy eficiente para ajustar clasificadores y regresores lineales bajo funciones de pérdida convexas como las Máquinas de Soporte Vector (lineales) y la Regresión Logistica.
-A pesar de que el SDG han tenido presencia en la comunidad de aprendizaje automático durante mucho tiempo,
-no ha sido hasta muy recientemente que ha empezado a ser el punto de mira del aprendizaje a gran escala,
-tras haber sido aplicado con éxito en problemas de aprendizaje disperso como los encontrados habitualmente en aplicaciones de clasificación de texto y procesamiento de lenguaje natural.
-Así, para conjuntos de datos dispersos,
-los clasificadores de este módulo son capaces de escalar fácilmente a problemas con más de $10^{5}$ muestras para el entrenamiento y más de $10^{5}$ características.
+\subsection{Árboles decisores: bosque aleatorio}
+\subsubsection{Árboles decisores}
 
-De forma estricta, SDG es simplemente una técnica de optimización y no corresponde a una familia específica de modelos de aprendizaje automático. 
-Consiste solamente en una manera de entrenar un modelo.
-Las principales ventajas del gradiente estocástico son su eficiencia y su facilidad de implementación, que aporta grandes oportunidades para afinar el código.
-Sin embargo, también tiene algunas desventajas sobre otros modelos, como su necesidad de ajustar varios hiperparámetros como el parámetro de regularización y el número de iteraciones a realizar para obtener buenos resultados.
-Además, el modelo es sensible a la presencia de distintas escalas entre las diferentes características de los datos.
+% CITE https://scikit-learn.org/stable/modules/tree.html
 
-\subsection{Máquina de soporte vector}
+Los árboles decisores son un método de aprendizaje supervisado no paramétrico utilizado para clasificación y predicción.
+Su propósito es crear un modelo que prediga el valor de una variable objetivo mediante el aprendizaje de reglas decisoras simples inferidas a partir de las características de los datos.
+Un árbol puede verse como una continua aproximación constante donde el modelo aprende a aproximar los datos mediante un conjunto de reglas condicionales (if-then-else).
+Cuanto más profundo es el árbol, más complejas son las reglas decisoras y más se ajusta el modelo.
+
+Algunas de las ventajas de los árboles decisores son su facilidad de entender e interpretar el modelo, ya que se pueden visualizar, y la poca preparación que necesitan los datos (otras técnicas suelen requerir normalización o limpieza de valores en blanco).
+Además, el coste de usar el árbol (es decir, de predecir los datos) es logarítmico a el número de puntos utilizados para entrenar el árbol y es capaz de trabajar con datos de tipo numérico y categórico al mismo tiempo o con problemas de salida múltiple.
+Se trata de un modelo que se puede validar utilizando tests estadísticos,
+lo que hace posible dar cuenta de su fiabilidad.
+
+Por otra parte, también cuenta con varias desventajas.
+Estos modelos pueden crear árboles demasiado complejos que no generalicen bien los datos (sobre-ajuste, o \emph{overfitting}), por lo que se deben utilizar mecanismos de poda los árboles para evitarlo, es decir, establecer un número mínimo de muestras requeridas en un nodo hoja o una profundida máxima del árbol.
+Además, los árboles decisores pueden ser inestables, ya que pequeñas variaciones de los datos pueden resultar en la generación de árboles completamente distintos (este problema se puede mitigar utilizando los árboles decisores como parte de un conjunto de modelos).
+Otro problema que presentan es el sesgo que se puede crear si alguna de las clases en un clasificador domina sobre el resto, por lo que es recomendable el conjunto de datos este equilibrado antes de intentar modelarlo con un árbol decisor.
+
+\subsubsection{Bosque aleatorio}
+
+% CITE https://scikit-learn.org/stable/modules/ensemble.html#forests-of-randomized-trees
+
+El bosque aleatorio es un método que combina árboles predictores de forma que cada árbol depende de los valores de un vector aleatorio probado independientemente y con la misma distribución para cada uno de estos.
+En los bosques aleatorios, cada árbol del grupo está construido a partir de una muestra aleatoria tomada del conjunto de entrenamiento.
+Además, en el momento de separar cada nódulo durante la construcción de un árbol, la mejor separación se encuentra o a partir de todas las características de entrada o a partir de un subconjunto aleatorio de el tamaño del máximo de características.
+
+El motivo de esta doble fuente de aleatoriedad es reducir la varianza del estimador de bosque.
+De hecho, los árboles decisores individuales tipicamente exhiben una alta varianza y tienden a sobre-ajustarse a los datos.
+La aleatoriedad inyectada en los bosques da lugar a árboles decisores con errores de predicción en parte desconectados, 
+que se pueden cancelar entre sí mediante la utilización de la media de las predicciones.
+
+Los bosques aleatorios reducen la varianza mediante la combinación de árboles diversos, pero a veces lo consiguen a costa de un ligero aumento del sesgo (bias).
+En la práctica la reducción de varianza es a menudo más significativa, por lo que en general da lugar a un modelo mejor.
+En contraste a la publicación original %% CITE %%,
+la implementación de Scikit-learn combina los clasificadores promediando sus predicciones probabilisticas, en vez de dejar que cada clasificador decida en una clase individual.
+
+\subsection{Máquinas de vector soporte}
 
 % CITE https://scikit-learn.org/stable/modules/svm.html
 
@@ -62,7 +88,8 @@ Además, utilizan un subconjunto de los puntos de entrenamiento en la función d
 Sin embargo, las máquinas de vector soporte presentan algunas desventajas como el hecho de que si que el número de características es mucho mayor que el número de muestras, es facil que el modelo se sobre-ajuste a las muestras si no se elige la función kernel correcta. 
 Además, las SVM no proporcionan estimaciones de probabilidad directamente, sino que deben ser calculadas utilizando una costosa validación cruzada en cinco partes.
 
-\subsection{Naive Bayes}
+\subsection{Vecinos más cercanos: k vecinos más cercanos (k-NN)}
+\subsection{Naive Bayes (Naive Bayes gaussiano)}
 
 % CITE https://scikit-learn.org/stable/modules/naive_bayes.html
 
@@ -103,51 +130,7 @@ Esto a su vez ayuda a aliviar problemas provocados por la dimensionalidad de las
 
 Por el lado contrario, y aunque Naive-Bayes es conocido como un clasificador decente, su uso como estimador es bastante deficiente, por lo que no se pueden tomar muy en serio los resultados de predicción de probabilidad del modelo.
 
-\subsection{Árboles decisores}
+\subsection{Métodos de conjuntos (ensemble): máquinas de potenciación de gradiente}
+\subsection{Redes neuronales (Deep Neural Networks, DNN) Multi-layer Perceptron}
 
-% CITE https://scikit-learn.org/stable/modules/tree.html
-
-Los árboles decisores son un método de aprendizaje supervisado no paramétrico utilizado para clasificación y predicción.
-Su propósito es crear un modelo que prediga el valor de una variable objetivo mediante el aprendizaje de reglas decisoras simples inferidas a partir de las características de los datos.
-Un árbol puede verse como una continua aproximación constante donde el modelo aprende a aproximar los datos mediante un conjunto de reglas condicionales (if-then-else).
-Cuanto más profundo es el árbol, más complejas son las reglas decisoras y más se ajusta el modelo.
-
-Algunas de las ventajas de los árboles decisores son su facilidad de entender e interpretar el modelo, ya que se pueden visualizar, y la poca preparación que necesitan los datos (otras técnicas suelen requerir normalización o limpieza de valores en blanco).
-Además, el coste de usar el árbol (es decir, de predecir los datos) es logarítmico a el número de puntos utilizados para entrenar el árbol y es capaz de trabajar con datos de tipo numérico y categórico al mismo tiempo o con problemas de salida múltiple.
-Se trata de un modelo que se puede validar utilizando tests estadísticos,
-lo que hace posible dar cuenta de su fiabilidad.
-
-Por otra parte, también cuenta con varias desventajas.
-Estos modelos pueden crear árboles demasiado complejos que no generalicen bien los datos (sobre-ajuste, o \emph{overfitting}), por lo que se deben utilizar mecanismos de poda los árboles para evitarlo, es decir, establecer un número mínimo de muestras requeridas en un nodo hoja o una profundida máxima del árbol.
-Además, los árboles decisores pueden ser inestables, ya que pequeñas variaciones de los datos pueden resultar en la generación de árboles completamente distintos (este problema se puede mitigar utilizando los árboles decisores como parte de un conjunto de modelos).
-Otro problema que presentan es el sesgo que se puede crear si alguna de las clases en un clasificador domina sobre el resto, por lo que es recomendable el conjunto de datos este equilibrado antes de intentar modelarlo con un árbol decisor.
-
-\subsection{Bosque aleatorio}
-
-% CITE https://scikit-learn.org/stable/modules/ensemble.html#forests-of-randomized-trees
-
-El bosque aleatorio es un método que combina árboles predictores de forma que cada árbol depende de los valores de un vector aleatorio probado independientemente y con la misma distribución para cada uno de estos.
-En los bosques aleatorios, cada árbol del grupo está construido a partir de una muestra aleatoria tomada del conjunto de entrenamiento.
-Además, en el momento de separar cada nódulo durante la construcción de un árbol, la mejor separación se encuentra o a partir de todas las características de entrada o a partir de un subconjunto aleatorio de el tamaño del máximo de características.
-
-El motivo de esta doble fuente de aleatoriedad es reducir la varianza del estimador de bosque.
-De hecho, los árboles decisores individuales tipicamente exhiben una alta varianza y tienden a sobre-ajustarse a los datos.
-La aleatoriedad inyectada en los bosques da lugar a árboles decisores con errores de predicción en parte desconectados, 
-que se pueden cancelar entre sí mediante la utilización de la media de las predicciones.
-
-Los bosques aleatorios reducen la varianza mediante la combinación de árboles diversos, pero a veces lo consiguen a costa de un ligero aumento del sesgo (bias).
-En la práctica la reducción de varianza es a menudo más significativa, por lo que en general da lugar a un modelo mejor.
-En contraste a la publicación original %% CITE %%,
-la implementación de Scikit-learn combina los clasificadores promediando sus predicciones probabilisticas, en vez de dejar que cada clasificador decida en una clase individual.
-
-\subsection{AdaBoost}
-
-% CITE https://scikit-learn.org/stable/modules/ensemble.html#adaboost
-
-AdaBoost es un popular algoritmo de potenciación introducido en 1995 por Freund and Schapire %% CITE %%
-, cuyo principio central es ajustar una secuencia de modelos débiles (es decir, modelos que son solo ligeramente mejores que realizar suposiciones aleatorias, como arboles decisores pequeños) en versiones de los datos modificadas repetidamente . Las predicciones de todas ellas son entonces combinadas mediante la ponderación de votación mayoritaria para producir la predicción final.
-Las modificaciones de los datos en cada iteración (denominada iteración potenciadora o  \emph{boosting iteration}) consisten en aplicar distintos pesos ($$$$) a cada una de las muestras de entrenamiento.
-Inicialmente, estos pesos están todos a ($$$$) de forma que el primer paso simplemente entrena el modelo débil en los datos originales.
-Por cada iteración sucesiva, los pesos son modificados individualmente y el algoritmo de entrnamiento se vuelve a aplicar a los datos ponderados. En un paso dado, los ejemplos de entramiento que fueron predecidos incorrectamente epor el modelo potenciado en el paso previo tienen sus pesos incrementados, mientras que los pesos son reducidos para aquellos que fueron predichos correctamente.
-Según se van procediendo las iteraciones, los ejemplos que son difíciles de predecir reciven una influencia cada vez mayor.
-Cada modelo débil subsecuente es entonces forzado a concentrarse en los ejemplos fallados por los modelos previos en la secuencia. %% CITE %%
+\color{Black}
