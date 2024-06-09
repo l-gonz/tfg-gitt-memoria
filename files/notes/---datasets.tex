@@ -13,14 +13,36 @@
 
 Todos los conjuntos de datos utilizados en los análisis realizados están disponibles de forma libre en la web y proceden de dos fuentes: el repositorio de aprendizaje automático de la Universidad de California Irvine y la plataforma OpenML.
 
-El repositorio de aprendizaje automático de la UCI es una colección de bases de datos, teorías de dominios y generadores de datos que son utilizados por la comunidad de aprendizaje automático para el análisis empírico de algoritmos de aprendizaje automático. El archivo fue creado en 1987 como un servidor FTP por David Aha y otros compañeros estudiantes en la UCI. Desde entonces ha sido ampliamente utilizado por estudiantes, educadores e investigadores de todo el mundo como una fuente primaria de conjuntos de datos para aprendizaje automático \cite{ml-uci}.
+El repositorio de aprendizaje automático de la UCI \cite{ml-uci} es una colección de bases de datos, teorías de dominios y generadores de datos que son utilizados por la comunidad de aprendizaje automático para el análisis empírico de algoritmos de aprendizaje automático. El archivo fue creado en 1987 como un servidor FTP por David Aha y otros compañeros estudiantes en la UCI. Desde entonces ha sido ampliamente utilizado por estudiantes, educadores e investigadores de todo el mundo como una fuente primaria de conjuntos de datos para aprendizaje automático.
 
-La plataforma OpenML ... \todo[inline]{Completar}
+OpenML \cite{openml} es una plataforma abierta para compartir conjuntos de datos, algoritmos y experimentos, que tiene como objetivo lograr que las investigaciones sobre aprendizaje automático sean más fácilmente accesibles y reutilizables. Esta plataforma contiene un repositorio con más de cinco mil conjuntos de datos y resultados de experimentos que otros usuarios han realizado con ellos. Además, ofrece librerías para integrar la recuperación de sus datos directamente con el código de desarrollo de modelos de aprendizaje. Otras librerías como Pandas para procesado de datos, ofrecen también opciones para descargar los datos fácilmente de la plataforma.
 
-A continuación se describen las características más importantes de los conjuntos empleados en orden ascendente de tamaño.
+A continuación se describen las características más importantes de los conjuntos de datos empleados.
 % ANNEX All attributes
 
 \subsection{Iris}
+
+% This is perhaps the best known database to be found in the pattern recognition literature. Fisher's paper is a classic in the field and is referenced frequently to this day. (See Duda & Hart, for example.) The data set contains 3 classes of 50 instances each, where each class refers to a type of iris plant. One class is linearly separable from the other 2; the latter are NOT linearly separable from each other.
+
+% Predicted attribute: class of iris plant.
+% This is an exceedingly simple domain.
+
+% Attribute Information:
+% 1. sepal length in cm
+% 2. sepal width in cm
+% 3. petal length in cm
+% 4. petal width in cm
+% 5. class: 
+%    -- Iris Setosa
+%    -- Iris Versicolour
+%    -- Iris Virginica
+
+Iris esta entre las primeras bases de datos recogidas, y es una de las más conocidas y utilizadas en la literatura sobre reconocimiento de patrones. Los datos originales fueron publicados por R.A. Fisher en 1936, y la versión utilizada en este proyecto procede de la UCI (1988) \cite{iris-dataset}.
+El conjunto contiene tres clases distintas con 50 ejemplos cada una, donde cada clase se refiere a una especie del género de plantas Iris. Cada ejemplo contiene cuatro atributos que describen la longitud y la anchura del sépalo y el pétalo de la planta en centímetros. Las tres opciones de clasificación son Iris Setosa, Iris Versicolour e Iris Virginica.
+
+Se trata de un campo de clasificación extremadamente simple, donde una de las clases es linealmente separable de las otras dos, y estas últimas son separable entre sí de forma no lineal.
+
+
 
 \subsection{Ionosfera}
 
@@ -33,5 +55,5 @@ Este conjunto de datos contiene información extraída de 1372 imágenes tomadas
 \subsection{Fonemas}
 \subsection{Electroencefalograma}
 \subsection{Electricidad}
-\subsection{Tipo de cubierta}
-\subsection{Mano de póquer}
+% \subsection{Tipo de cubierta}
+% \subsection{Mano de póquer}

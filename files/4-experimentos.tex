@@ -4,44 +4,26 @@
 El objetivo de este capítulo es mostrar el funcionamiento de la aplicación en un caso de uso real en el que se tratará de extraer conclusiones generales acerca del consumo eléctrico de cada modelo y de si este consumo irá necesariamente acompañado de una mejora de los resultados de predicción.
 Para ello se emplearán las herramientas descritas anteriormente para evaluar el consumo y el rendimiento de una serie de modelos formada por representantes de las principales familias de modelos de aprendizaje automático y recogidos en la sección~\ref{sec:models}. Estos modelos serán aplicados a los conjuntos de datos de distintas características definidos en la sección~\ref{sec:datasets}.
 
-Durante la validación de la aplicación se llevarán acabo tres experimentos distintos.
+\section{Estructura de los experimentos}
+
+Durante la validación de la aplicación se llevarán acabo dos experimentos distintos.
 El primero examinará el consumo energético en base al modelo seleccionado. En esta sección se tomarán varias medidas de consumo y rendimiento por modelo y conjunto de datos en una máquina con unos recursos de procesamiento concretos para analizar que modelos consumen más que otros y que características de los conjuntos de datos hacen incrementar este consumo.
-El segundo consistirá en aislar un par de conjuntos de datos y tomar medidas de consumo con distintos recursos de procesado dedicados a la tarea de aprendizaje automático para observar el efecto de los recursos disponibles en el consumo energético de cada modelo.
-Por último, se propondrán métodos de optimización de los modelos analizados y se examinará el efecto que pueda tener sobre su consumo. 
+El segundo experimento seleccionará un único conjuntos de datos de tamaño mediano y tomará medidas de consumo en tres entornos con distintos recursos de procesamiento dedicados a la tarea de aprendizaje automático para observar el efecto de los recursos disponibles en el consumo energético de cada modelo.
 
-A través de este análisis, se pretende obtener una comprensión profunda de cómo diferentes modelos de aprendizaje automático consumen energía bajo diversas condiciones de trabajo. Este experimento también busca identificar patrones de consumo y eficiencia que puedan informar el diseño y la implementación de modelos más sostenibles y eficientes en el futuro.
+A través de este análisis, se pretende obtener una comprensión profunda de cómo diferentes modelos de aprendizaje automático consumen energía bajo diversas condiciones de trabajo. Además se intentarán identificar patrones de menor consumo que puedan utilizarse como base para el diseño y la implementación de modelos más sostenibles y eficientes en el futuro.
 
-\todo[inline]{Añadir esquema ???}
-% What's the purpose of experiments?
-% What are the expected results? More energy, more precision
-% Outline / procedure / steps to follow
 
-% 4.1 Análisis del consumo energético en base al modelo escogido
-    % 4.1.1 Comparación en conjuntos de pequeño tamaño (100s - 1000s)
-        % Tres conjuntos: iris, ionosphere, hepatitis
-    % 4.1.2 Comparación en conjuntos de mediano tamaño (10000s)
-        % Dos conjuntos: eeg-eye-state, electricity, letter, mnist_784
-% 4.2 Análisis del consumo energético en base a los recursos disponibles
-    % 4.2.1 Evolución del consumo con la carga del procesador
-        % 1 dataset pequeño, 1 mediano
-    % 4.2.2 Evolución del consumo con el aumento de recursos
-        % 1 dataset grande (100000s) ?covertype?, 2-3 resource configs
-% 4.3 Optimización
+\begin{figure}[H]
+  \centerline{
+     \includegraphics[width=0.8\textwidth, keepaspectratio]{img/placeholder.png}
+  }
+  \caption{Esquema general a seguir durante los experimentos}
+  \label{fig:esquema-experimentos}
+\end{figure}
+\todo[inline]{Añadir esquema}
 
 \section{Consumo energético en función del modelo seleccionado}
 \label{sec:test-1-models}
-
- % - El consumo aumenta al aumentar el número de muestras
- %    1. Gráfico introductorio: número de muestras (x) vs emisiones (y), muchos modelos
- %        el consumo aumenta de forma exponencial con el número de muestras, unos modelos aumentan más que otros
- %    2. Introduce f-score: plot same lines with average f1-score instead of emissions. Los resultados son distintos, mayor consumo no implica mejor predicción
- %    3. Introduce scatter plot 4-way
-    
- % - Algunos modelos son mejores que otros
- %    - Aumento de score implica aumento de consumo?
- %    - Compara average f1-score con consumo por modelo y dataset
- %    3. Introduce f-score con scatter plot 4-way, all models, 3 datasets (no average)
- %    4. Bar plot de dos datasets pequeños comparando score 
 
 \subsubsection{Objetivos}
 
@@ -163,8 +145,8 @@ Marcar areas en la gráfica siguiendo la discusión para mejor visualización ? 
 \end{figure}
 
 \todoin{Line plots: \\
-> Best scores Forest, Neural, Neighbors \\
-> Their emission: medium, high, low, in that order \\
+> Mejores puntuaciones: Forest, Neural, Neighbors \\
+> Producen emisiones: media, alta, baja, respectivamente \\
 }
 
 
@@ -222,7 +204,7 @@ Python
 Configuración Azure               
     & B1s   & B2ms   & B4ms \rule{0pt}{3.5ex} \\
 Memoria               
-    & 0,7? GB   & 7,75 GB   & 15,57 GB \rule{0pt}{3.5ex} \\
+    & 0,8? GB   & 7,75 GB   & 15,57 GB \rule{0pt}{3.5ex} \\
 vCPUs 
     & 1   & 2   & 4  \rule{0pt}{3.5ex}                       
 \end{tabular}
@@ -274,20 +256,21 @@ vCPUs
 > ¿Cambiar y tomar medidas con -cv 8 para ser divisible entre número cpus de todas las configuraciones?
 }
 
-\section{?? Optimización del consumo energético}
+% \section{?? Optimización del consumo energético}
 
-\todoin{Proceso: \\
-> Elegir 2-3 modelos interesantes \\
-> Optimizar hiperparámetros para reducir consumo \\
-> Cambia que modelos son más eficientes con la optimización ???
-}
+% \todoin{Proceso: \\
+% > Elegir 2-3 modelos interesantes \\
+% > Run GridSearchCV \\
+% > Optimizar hiperparámetros para reducir consumo \\
+% > Cambia que modelos son más eficientes con la optimización ???
+% }
 
-\section{?? Consumo energético en función de la localización}
+% \section{?? Consumo energético en función de la localización}
 
-\todoin{
-> codecarbon permite indicar el país al medir el consumo \\
-> el calculo de energía a kg CO2 equivalentes cambia mucho \\
-> codecarbon-viz tool tiene gráficas de como varía el consumo por país, como se compara el consumo a usos domésticos
-}
+% \todoin{
+% > codecarbon permite indicar el país al medir el consumo \\
+% > el calculo de energía a kg CO2 equivalentes cambia mucho \\
+% > codecarbon-viz tool tiene gráficas de como varía el consumo por país, como se compara el consumo a usos domésticos
+% }
 
 \clearpage

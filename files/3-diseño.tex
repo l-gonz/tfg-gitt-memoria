@@ -6,9 +6,15 @@ Este capítulo describe el diseño de la aplicación desarrollada durante este p
 
 
 \section{Arquitectura}
-\todo[inline]{Esquema de funcionamiento y explicación vista de pájaro}
 
-\missingfigure{Arquitectura de la aplicación}
+\begin{figure}[H]
+  \centerline{
+     \includegraphics[width=0.8\textwidth, keepaspectratio]{img/placeholder.png}
+  }
+  \caption{Arquitectura de la aplicación desarrollada}
+  \label{fig:app-arch}
+\end{figure}
+\todo[inline]{Esquema de funcionamiento y explicación vista de pájaro}
 
 % > Read data
 % > Split train and test
@@ -61,7 +67,7 @@ Una vez que los datos están preparados para su uso comienza la fase de entrenam
 
 El procedimiento es sencillo. En primer lugar se comienzan las mediciones mediante la creación se un objeto de tipo \texttt{EmissionsTracker} que cuenta con simples métodos \texttt{start()} y \texttt{stop()}. A continuación, se entrena el modelo en la parte del conjunto de datos reservada para entrenamiento, y seguidamente se aplica el modelo entrenado a la parte del conjunto de datos reservada para testeo para intentar predecir correctamente la etiqueta de cada entrada que contiene. Para finalizar, se detiene la medición de emisiones y se almacenan los resultados obtenidos.
 
-\todo[inline]{Grid search crossvalidation for optimization ???}
+%\todo[inline]{Grid search crossvalidation for optimization ???}
 
 \subsection{Modelos escogidos}
 \label{subsec:models-short}
@@ -118,22 +124,21 @@ Con estos datos, la librería CodeCarbon calcula las emisiones a partir de medid
 
 \subsection{Herramientas de visualización}
 
-\todoin{AFTER CH 4 \\
-> describir proceso de herramienta para gráficos (graph.py) \\
-> codecarbon-viz}
+\todoin{TO-DO EXPLICAR \\
+> describir proceso de herramienta para gráficos (graph.py) \\}
 
 \section{Gestión de recursos}
 
-\todoin{AFTER CH 4 \\
+\todoin{TO-DO EXPLICAR \\
 > cómo tomar medidas en ordenadores con distintas potencias \\
-> Azure deployment }
+> Azure deployment
+> plantillas }
 
 \subsection{Procesamiento multi-núcleo}
 
-\todoin{AFTER CH 4 \\
-es comparable el consumo con n\_jobs > 1 ? \\
-aumenta la energía / min procesamiento ? \\
-que modelos permiten multiproceso, aplicar solo a cv ?}
+\todoin{TO-DO EXPLICAR \\
+> como funciona \texttt{joblib.parallel_backend} con el parametro n\_jobs \\
+> que modelos permiten multiproceso, aplicar solo a cv ?}
 
 
 \clearpage
