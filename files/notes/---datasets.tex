@@ -1,59 +1,48 @@
 \section{Datos utilizados}
 \label{sec:datasets}
 
-\todoin{Update with new datasets:  \\
-  > Iris, Ionosphere, Banknote, Phoneme, Eeg-eye-state, Electricity \\
-  > Covertype, Poker-hand \\
-  > For-each: \\
-  ---> content explain \\
-  ---> size \\
-  ---> features \\
-  ---> origin, cites \\
-  ---> what has been used for before}
+\todo[inline]{Add info on previous results ??}
+\todo[inline]{Arreglar "comillas"}
+\todo[inline]{Añadir link openml}
 
 Todos los conjuntos de datos utilizados en los análisis realizados están disponibles de forma libre en la web y proceden de dos fuentes: el repositorio de aprendizaje automático de la Universidad de California Irvine y la plataforma OpenML.
 
 El repositorio de aprendizaje automático de la UCI \cite{ml-uci} es una colección de bases de datos, teorías de dominios y generadores de datos que son utilizados por la comunidad de aprendizaje automático para el análisis empírico de algoritmos de aprendizaje automático. El archivo fue creado en 1987 como un servidor FTP por David Aha y otros compañeros estudiantes en la UCI. Desde entonces ha sido ampliamente utilizado por estudiantes, educadores e investigadores de todo el mundo como una fuente primaria de conjuntos de datos para aprendizaje automático.
 
-OpenML \cite{openml} es una plataforma abierta para compartir conjuntos de datos, algoritmos y experimentos, que tiene como objetivo lograr que las investigaciones sobre aprendizaje automático sean más fácilmente accesibles y reutilizables. Esta plataforma contiene un repositorio con más de cinco mil conjuntos de datos y resultados de experimentos que otros usuarios han realizado con ellos. Además, ofrece librerías para integrar la recuperación de sus datos directamente con el código de desarrollo de modelos de aprendizaje. Otras librerías como Pandas para procesado de datos, ofrecen también opciones para descargar los datos fácilmente de la plataforma.
+OpenML \cite{openml} es una plataforma abierta para compartir conjuntos de datos, algoritmos y experimentos, que tiene como objetivo lograr que las investigaciones sobre aprendizaje automático sean más fácilmente accesibles y reutilizables. Esta plataforma contiene un repositorio con más de cinco mil conjuntos de datos y resultados de experimentos que otros usuarios han realizado con ellos. Además, ofrece librerías propias para integrar la recuperación de sus datos directamente con el código de desarrollo de modelos de aprendizaje. Scikit-Learn ofrece también una función para descargar los datos fácilmente de esta plataforma, \texttt{fetch\_openml} \cite{sk-fetch-openml}, que toma el nombre de un conjunto de datos y devuelve un dataframe de Pandas con toda la información disponible.
 
 A continuación se describen las características más importantes de los conjuntos de datos empleados.
 % ANNEX All attributes
 
 \subsection{Iris}
 
-% This is perhaps the best known database to be found in the pattern recognition literature. Fisher's paper is a classic in the field and is referenced frequently to this day. (See Duda & Hart, for example.) The data set contains 3 classes of 50 instances each, where each class refers to a type of iris plant. One class is linearly separable from the other 2; the latter are NOT linearly separable from each other.
-
-% Predicted attribute: class of iris plant.
-% This is an exceedingly simple domain.
-
-% Attribute Information:
-% 1. sepal length in cm
-% 2. sepal width in cm
-% 3. petal length in cm
-% 4. petal width in cm
-% 5. class: 
-%    -- Iris Setosa
-%    -- Iris Versicolour
-%    -- Iris Virginica
-
 Iris esta entre las primeras bases de datos recogidas, y es una de las más conocidas y utilizadas en la literatura sobre reconocimiento de patrones. Los datos originales fueron publicados por R.A. Fisher en 1936, y la versión utilizada en este proyecto procede de la UCI (1988) \cite{iris-dataset}.
-El conjunto contiene tres clases distintas con 50 ejemplos cada una, donde cada clase se refiere a una especie del género de plantas Iris. Cada ejemplo contiene cuatro atributos que describen la longitud y la anchura del sépalo y el pétalo de la planta en centímetros. Las tres opciones de clasificación son Iris Setosa, Iris Versicolour e Iris Virginica.
-
-Se trata de un campo de clasificación extremadamente simple, donde una de las clases es linealmente separable de las otras dos, y estas últimas son separable entre sí de forma no lineal.
-
-
+El conjunto contiene tres clases distintas con 50 ejemplos cada una, donde cada clase se refiere a una especie del género de plantas Iris. Cada ejemplo contiene cuatro atributos que describen la longitud y la anchura del sépalo y el pétalo de la planta en centímetros. Las tres opciones de clasificación son Iris Setosa, Iris Versicolour e Iris Virginica, donde una de las clases es linealmente separable de las otras dos, y estas últimas no son separable entre sí de forma lineal.
 
 \subsection{Ionosfera}
 
-Se trata de un conjunto de datos con 351 muestras procedente del repositorio de la UCI\footnote{\url{https://archive.ics.uci.edu/ml/datasets/Ionosphere}}. Contiene datos de radar obtenidos por el grupo de física espacial de la Universidad John Hopkins y donados por Vince Sigillito en 1989. El sistema radar está ubicado en Goose Bay, Labrador y consiste en un array de 16 antenas de alta frecuencia. El objetivo es la medición de electrones libres en la ionosfera y su clasificación binaria entre "buenas" respuestas del radar que indican evidencia de algún tipo de estructura en la ionosfera y "malas" respuestas en las que las señales simplemente pasan a través de la ionosfera. Las señales recibidas se procesaron utilizando una función de autocorrelación con el tiempo de pulso y el número de pulso como argumentos y cada una de las muestras del conjunto de datos está descrita por dos atributos continuos para cada uno de los 17 números de pulso, correspondientes al valor complejo obtenido de la señal electromagnética compleja. Hay por lo tanto un total de 34 características continuas por muestra.
+Se trata de un conjunto de datos con 351 muestras procedente del repositorio de la UCI \cite{ionosphere-dataset}. Contiene datos de radar obtenidos por el grupo de física espacial de la Universidad John Hopkins y donados por Vince Sigillito en 1989. El sistema radar está ubicado en Goose Bay, Labrador y consiste en un array de 16 antenas de alta frecuencia. El objetivo es la medición de electrones libres en la ionosfera y su clasificación binaria entre "buenas" respuestas del radar que indican evidencia de algún tipo de estructura en la ionosfera y "malas" respuestas en las que las señales simplemente pasan a través de la ionosfera. Las señales recibidas se procesaron utilizando una función de autocorrelación con el tiempo de pulso y el número de pulso como argumentos y cada una de las muestras del conjunto de datos está descrita por dos atributos continuos para cada uno de los 17 números de pulso, correspondientes al valor complejo obtenido de la señal electromagnética compleja. Hay por lo tanto un total de 34 características continuas por muestra.
 
-\subsection{Billetes}
+\subsection{Autenticación de billetes}
 
-Este conjunto de datos contiene información extraída de 1372 imágenes tomadas para evaluar un procedimiento de autenticación de billetes. Fue donado en Agosto de 2012 por Volker Lohweg de la Universidad de Ciencias Aplicadas de Ostwestfalen-Lippe, Alemania, al repositorio de la UCI\footnote{\url{https://archive.ics.uci.edu/ml/datasets/banknote+authentication}}. Para la digitalización de las imágenes tomadas se empleó una cámara industrial normalmente utilizada para la inspección de impresiones. Las imágenes finales tienen un tamaño de 400x400 píxeles con una resolución de alrededor de 660 dpi en escala de grises. Posteriormente, se empleó una herramienta de transformada ondícula para extraer cuatro características continuas de las imágenes.
+Este conjunto de datos contiene información extraída de 1372 imágenes tomadas para evaluar un procedimiento de autenticación de billetes. Fue donado en Agosto de 2012 por Volker Lohweg de la Universidad de Ciencias Aplicadas de Ostwestfalen-Lippe, Alemania, al repositorio de la UCI \cite{banknote-dataset}. Para la digitalización de las imágenes tomadas se empleó una cámara industrial normalmente utilizada para la inspección de impresiones. Las imágenes finales tienen un tamaño de 400x400 píxeles con una resolución de alrededor de 660 dpi en escala de grises. Posteriormente, se empleó una herramienta de transformada ondícula para extraer cuatro características continuas de las imágenes. A partir de estas cuatro características, el objetivo es clasificar los billetes en dos clases, representadas en la tabla de datos con un cero para billetes falsos y un uno para billetes auténticos.
 
 \subsection{Fonemas}
+
+Este conjunto de datos tiene como objetivo diferenciar entre sonidos nasales (clase 0) y sonidos orales (clase 1) mediante el análisis de cinco atributos que representan las amplitudes de los cinco primeros armónicos normalizados con la energía total. El formato actual de los datos corresponde al repositorio KEEL \cite{keel-repo}, aunque originalmente los datos fueron alojados por el proyecto ELENA y obtenidos para el proyecto europeo ESPRIT 5516, ROARS, cuyo objetivo era desarrollar sistemas de reconocimiento del habla para español y francés.
+
+La base de datos consiste en vocales de 1809 sílabas aisladas, con tres puntos de observación por vocal, lo que resulta en 5427 instancias iniciales, que posteriormente se reducen a 5404 tras eliminar aquellas muestras con una amplitud armónica nula. Las observaciones incluyen el momento de máxima energía total y otro dos momentos 8 ms antes y después de este pico. Esta estrategia permite distinguir vocales nasales y orales examinando sus características armónicas en el tiempo. Cada observación contiene cinco atributos correspondientes a los armónicos de cinco fonemas: "sh" (como en inglés en \emph{she}), "dcl" (como en \emph{dark}), "iy" (como la vocal en \emph{she}), "aa" (como la vocal en \emph{dark}), y "ao" (como la primera vocal en \emph{water}).
+
 \subsection{Electroencefalograma}
+
+Los datos proceden de una medición continua de un electroencefalograma tomada con el dispositivo neuronal \emph{Emotiv EEG} \cite{eeg-eye-dataset}. La medición tuvo una duración total de 117 segundos,en los que se obtuvieron 14980 muestras individuales. Adicionalmente, el estado del ojo fue detectado mediante una cámara durante la medición del EEG y añadido posteriormente a los datos mediante el análisis de los fotogramas del vídeo. Para cada muestra, se identifico de forma manual el estado de ojo cerrado, al que se asignó un valor de "1", y de ojo abierto, con un valor "0". La base de datos está ordenada de forma cronológica con el primer valor medido al principio de los datos. Los atributos de cada instante de tiempo corresponden a las 14 medidas EEG del dispositivo, originalmente etiquetadas AF3, F7, F3, FC5, T7, P, O1, O2, P8, T8, FC6, F4, F8, AF4, en ese orden.
+
 \subsection{Electricidad}
+
+
+Este conjunto de datos fue descrito por M. Harries \cite{electricity-dataset} en 1999 y ha sido ampliamente utilizado para aprendizaje automático desde entonces. Los datos fueron obtenidos del mercado eléctrico australiano de Nuevo Gales del Sur. En este mercado, los precios no son fijos, sino que cambian según la demanda y el abastecimiento de electricidad cada cinco minutos. Además, se tienen en cuenta las transferencias de electricidad para aliviar fluctuaciones procedentes del estado contiguo de Virginia.
+
+El conjunto de datos (denominado originalmente ELEC2) contiene 45.312 muestras fechadas entre el 7 de mayo de 1996 y el 5 de diciembre de 1998. Cada ejemplo del conjunto hace referencia a un periodo de 30 minutos, lo que resulta en 48 muestras individuales para un periodo de un día. Hay ocho atributos para cada muestra: la fecha, el día de la semana, la hora, la demanda eléctrica y el precio en Nuevo Gales del Sur, la demanda eléctrica y el precio en Victoria y la cantidad planeada de electricidad a transferir entre los dos estados. Estos atributos están normalizados entre 0 y 1. La clasificación es binaria entre dos categorías: el cambio a la alza (UP) o a la baja (DOWN) del precio de la electricidad en Nuevo Gales del Sur relativo a una media móvil de las últimas 24 horas (para eliminar el impacto de las tendencias de precio a más largo plazo). 
+
 % \subsection{Tipo de cubierta}
 % \subsection{Mano de póquer}
