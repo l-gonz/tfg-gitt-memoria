@@ -269,7 +269,7 @@
 }
 
 @misc{ionosphere-dataset,
-  author       = {Sigillito,V., Wing,S., Hutton,L., and Baker,K.},
+  author       = {Sigillito,V. and Wing,S. and Hutton,L. and Baker,K.},
   title        = {{Ionosphere}},
   year         = {1989},
   howpublished = {UCI Machine Learning Repository},
@@ -310,6 +310,46 @@ title = {SPLICE-2 Comparative Evaluation: Electricity Pricing}
   publisher={Zenodo},
 }
 
+@software{codecarbon-software,
+  author       = {Benoit Courty and
+                  Victor Schmidt and
+                  Goyal-Kamal and
+                  MarionCoutarel and
+                  Boris Feld and
+                  Jérémy Lecourt and
+                  LiamConnell and
+                  SabAmine and
+                  kngoyal and
+                  inimaz and
+                  Mathilde Léval and
+                  Luis Blanche and
+                  Alexis Cruveiller and
+                  ouminasara and
+                  Franklin Zhao and
+                  Aditya Joshi and
+                  Alexis Bogroff and
+                  Amine Saboni and
+                  Hugues de Lavoreille and
+                  Niko Laskaris and
+                  Edoardo Abati and
+                  Douglas Blank and
+                  Ziyao Wang and
+                  Armin Catovic and
+                  alencon and
+                  Michał Stęchły and
+                  JPW and
+                  MinervaBooks and
+                  Necmettin Çarkacı and
+                  Jon Crall},
+  title        = {mlco2/codecarbon: v2.3.4},
+  month        = jan,
+  year         = 2024,
+  publisher    = {Zenodo},
+  version      = {v2.3.4},
+  doi          = {10.5281/zenodo.10594225},
+  url          = {https://doi.org/10.5281/zenodo.10594225}
+}
+
 @article{scikit-learn,
   title={Scikit-learn: Machine Learning in {P}ython},
   author={Pedregosa, F. and Varoquaux, G. and Gramfort, A. and Michel, V.
@@ -322,7 +362,7 @@ title = {SPLICE-2 Comparative Evaluation: Electricity Pricing}
   year={2011}
 }
 
-@inproceedings{sklearn_api,
+@inproceedings{scikit-learn-api,
   author    = {Lars Buitinck and Gilles Louppe and Mathieu Blondel and
                 Fabian Pedregosa and Andreas Mueller and Olivier Grisel and
                 Vlad Niculae and Peter Prettenhofer and Alexandre Gramfort
@@ -345,11 +385,87 @@ title = {SPLICE-2 Comparative Evaluation: Electricity Pricing}
   urldate={2024-03-13}
 }
 @online{sk-fetch-openml, 
-  title={fetch_openml — scikit-learn 1.5.0 documentation},
+  title={fetch\_openml — scikit-learn 1.5.0 documentation},
   url={https://scikit-learn.org/1.5/modules/generated/sklearn.datasets.fetch_openml.html},
   organization={Scikit-learn},
-  author={},
+  author={Scikit-learn developers},
   urldate={2024-06-10}
 }
-
+@online{sk-logistic-regression, 
+  title={LogisticRegression — scikit-learn 1.5.0 documentation},
+  url={https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression},
+  organization={Scikit-learn},
+  author={Scikit-learn developers},
+  urldate={2024-06-11}
+}
+@online{sk-decision-trees, 
+  title={1.10. Decision Trees — scikit-learn 1.5.0 documentation},
+  url={https://scikit-learn.org/stable/modules/tree.html},
+  organization={Scikit-learn},
+  author={Scikit-learn developers},
+  urldate={2024-06-11}
+}
+@online{sk-random-forest, 
+  title={RandomForestClassifier — scikit-learn 1.5.0 documentation},
+  url={https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html},
+  organization={Scikit-learn},
+  author={Scikit-learn developers},
+  urldate={2024-06-11}
+}
+@online{sk-svm-theory, 
+  title={1.4. Support Vector Machines — scikit-learn 1.5.0 documentation},
+  url={https://scikit-learn.org/stable/modules/svm.html},
+  organization={Scikit-learn},
+  author={Scikit-learn developers},
+  urldate={2024-06-12}
+}
+@online{sk-svm, 
+  title={SVC — scikit-learn 1.5.0 documentation},
+  url={https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html},
+  organization={Scikit-learn},
+  author={Scikit-learn developers},
+  urldate={2024-06-11}
+}
+@online{sk-knn, 
+  title={KNeighborsClassifier — scikit-learn 1.5.0 documentation},
+  url={https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html},
+  organization={Scikit-learn},
+  author={Scikit-learn developers},
+  urldate={2024-06-11}
+}
+@online{sk-naive-bayes, 
+  title={1.9. Naive Bayes — scikit-learn 1.5.0 documentation},
+  url={https://scikit-learn.org/stable/modules/naive_bayes.html},
+  organization={Scikit-learn},
+  author={Scikit-learn developers},
+  urldate={2024-06-12}
+}
+@online{sk-nb-gaussian, 
+  title={GaussianNB — scikit-learn 1.5.0 documentation},
+  url={https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html},
+  organization={Scikit-learn},
+  author={Scikit-learn developers},
+  urldate={2024-06-12}
+}
+@online{sk-gradient-boost, 
+  title={GradientBoostingClassifier — scikit-learn 1.5.0 documentation},
+  url={https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html},
+  organization={Scikit-learn},
+  author={Scikit-learn developers},
+  urldate={2024-06-12}
+}
+@online{sk-neural, 
+  title={1.17. Neural network models (supervised) — scikit-learn 1.5.0 documentation},
+  url={https://scikit-learn.org/stable/modules/neural_networks_supervised.html},
+  organization={Scikit-learn},
+  author={Scikit-learn developers},
+  urldate={2024-06-12}
+}
+@online{sk-multilayer-perceptron, 
+  title={MLPClassifier — scikit-learn 1.5.0 documentation},
+  url={https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html},
+  organization={Scikit-learn},
+  author={Scikit-learn developers},
+  urldate={2024-06-12}
+}
 

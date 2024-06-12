@@ -25,19 +25,23 @@ Literature review: \\
 
 \section{Librerías empleadas}
 
-\subsection{Entorno de desarrollo}
+\subsection{Entorno de desarrollo: Visual Studio Code y WSL}
 \label{sec:dev-env}
 
-\todo[inline]{VSCode + WSL}
+\todo[inline]{Get better info from other tfg}
+
+VSCode es un editor de código fuente abierto altamente extensible que se ha convertido en una herramienta predilecta entre desarrolladores debido a su interfaz amigable, integración con Git y soporte para una amplia gama de lenguajes de programación y extensiones. WSL (Windows Subsystem for Linux) es una característica de Windows que permite ejecutar un entorno de Linux completo directamente sobre Windows sin la necesidad de una máquina virtual o sistemas de arranque dual.
+
+Es posible combinar VSCode con WSL mediante una extensión específica ofrecida por VSCode para WSL que permite a los usuarios abrir carpetas y archivos directamente en el sistema de archivos de Linux, beneficiándose de las capacidades avanzadas de depuración y análisis de código que ofrece el editor. Además, la extensión proporciona a los desarrolladores acceso a un terminal de Linux real, donde pueden ejecutar y probar su código en el mismo entorno en el que se desplegará. 
 
 
 \subsection{Codecarbon}
 
-CodeCarbon es un paquete creado con la intención de permitir a desarrolladores monitorizar las emisiones de dióxido de carbono ($CO_{2}$) producidas por aplicaciones en Inteligencia Artificial y modelos de Aprendizaje Automático, que surge de la motivación de contar con una forma de registrar las enormes cantidades de energía que el auge de la IA ha provocado en la industria. El incremento del rendimiento y la precisión de los modelos de Aprendizaje Automático que se ha producido en años recientes se ha logrado a cambio de la utilización de enormes cantidades de información para conseguir el aprendizaje de los patrones y características subyacentes. Así, los modelos más avanzados emplean cantidades significativas de poder computacional, entrenando en procesadores avanzados durante semanas o meses y consumiendo en el proceso una gran cantidad de energía. Dependiendo de la red eléctrica utilizada, este desarrollo puede comportar la emisión de grandes cantidades de gases de efecto invernadero como el $CO_{2}$.
+CodeCarbon \cite{codecarbon}\cite{codecarbon-software} es un paquete creado con la intención de permitir a desarrolladores monitorizar las emisiones de dióxido de carbono ($CO_{2}$) producidas por aplicaciones en Inteligencia Artificial y modelos de Aprendizaje Automático, que surge de la motivación de contar con una forma de registrar las enormes cantidades de energía que el auge de la IA ha provocado en la industria. El incremento del rendimiento y la precisión de los modelos de Aprendizaje Automático que se ha producido en años recientes se ha logrado a cambio de la utilización de enormes cantidades de información para conseguir el aprendizaje de los patrones y características subyacentes. Así, los modelos más avanzados emplean cantidades significativas de poder computacional, entrenando en procesadores avanzados durante semanas o meses y consumiendo en el proceso una gran cantidad de energía. Dependiendo de la red eléctrica utilizada, este desarrollo puede comportar la emisión de grandes cantidades de gases de efecto invernadero como el $CO_{2}$.
 
 CodeCarbon estima la huella de carbono de una aplicación medida como kilogramos de $CO_{2}$ equivalentes, o $CO_{2}eq$, una medida estandarizada utilizada para expresar la capacidad de calentamiento global de varios gases de efecto invernadero como la cantidad de $CO_{2}$ que causaría un impacto ambiental equivalente. Para tareas de computación, que emiten $CO_{2}$ por medio de la electricidad que están consumiendo y que es generada como parte de la red eléctrica (por ejemplo, mediante la quema de combustibles fósiles como el carbón) las emisiones de carbono se miden en kilogramos de $CO_{2}$ equivalentes por kilovatio-hora. De esta forma, las emisiones de dióxido de carbono totales se calculan como el producto de la intensidad de carbono de la electricidad utilizada para la computación y la energía consumida por la infraestructura.
 
-La intensidad de carbono de la electricidad se calcula como la media ponderada de las emisiones de las distintas fuentes de energía usadas para generar electricidad, incluyendo combustibles fósiles y renovables. En la herramienta se asigna un valor conocido de dióxido de carbono emitido por kilovatio-hora generado para cada uno de los combustibles (carbón, petróleo y gas natural). Otras fuentes renovables o consideradas como de bajo carbono incluyen la energía solar, hidroeléctrica, biomasa o geotérmica. La intensidad de carbono de cada combustible individual se calcula en base a medidas de generación de carbono y electricidad en los Estados Unidos, y aplicadas de forma generalizada en el resto del mundo. Cada red eléctrica local incluye una mezcla distinta de fuentes de energía y tiene asignada entonces una intensidad de carbono total particular.
+La intensidad de carbono de la electricidad se calcula como la media ponderada de las emisiones de las distintas fuentes de energía usadas para generar electricidad, incluyendo combustibles fósiles y renovables. En la herramienta se asigna un valor conocido de dióxido de carbono emitido por kilovatio-hora generado para cada uno de los combustibles (carbón, petróleo y gas natural). Otras fuentes renovables o consideradas como de bajo carbono incluyen la energía solar, hidroeléctrica, biomasa o geotérmica. La intensidad de carbono de cada combustible individual se calcula en base a medidas de generación de carbono y electricidad en los Estados Unidos, y aplicadas de forma generalizada en el resto del mundo. Cada red eléctrica local incluye una mezcla distinta de fuentes de energía y tiene por lo tanto asignada una intensidad de carbono total particular.
 
 % IMAGE: Global distribution of carbon intensity (carbonboard)
 % TABLE: Carbon intensity by energy source (Codecarbon/Methodology)
@@ -48,18 +52,21 @@ La intensidad de carbono de la electricidad se calcula como la media ponderada d
 
 \subsection{Scikit-Learn}
 
-Scikit-learn es un módulo desarrollado para Python que integra un amplio rango de algoritmos de aprendizaje automático de última generación para problemas tanto supervisados como no supervisados. Este paquete pretende llevar el aprendizaje automático a desarrolladores no especialistas mediante el uso de un lenguaje generalista de alto nivel. Se hace hincapié en la facilidad de uso, el rendimiento, la documentación y la consistencia de la API. Tiene las mínimas dependencias necesarias y está distribuido bajo la licencia BSD, con el objetivo de incentivar su uso tanto en ambientes educativos como comerciales.
+Scikit-learn \cite{scikit-learn} es un módulo desarrollado para Python que integra un amplio rango de algoritmos de aprendizaje automático de última generación para problemas tanto supervisados como no supervisados. Este paquete pretende llevar el aprendizaje automático a desarrolladores no especialistas mediante el uso de un lenguaje generalista de alto nivel. Se hace hincapié en la facilidad de uso, el rendimiento, la documentación y la consistencia de la API \cite{scikit-learn-api}. Tiene las mínimas dependencias necesarias y está distribuido bajo la licencia BSD, con el objetivo de incentivar su uso tanto en ambientes educativos como comerciales.
 
 Scikit-learn expone una gran variedad de algoritmos de aprendizaje utilizando una interfaz consistente y orientada a la resolución de tareas, lo que permite una comparación sencilla entre distintos métodos de aprendizaje para una misma aplicación. Al depender del ecosistema científico de Python, puede ser integrado con facilidad en aplicaciones que se salgan del rango tradicional del análisis estadístico de datos. Además, los algoritmos, que han sido implementados en un lenguaje de alto nivel, pueden ser utilizados como bloques de construcción para desarrollar estrategias más complejas que se adecuen a cada caso particular.
-
-\todo[inline]{CITE: Scickit-learn/About}
 
 \subsection{Microsoft Azure}
 \label{subsec:azure}
 
+Microsoft Azure es una plataforma de servicios en la nube que ofrece una amplia gama de herramientas y recursos para el despliegue y gestión de aplicaciones y servicios. Entre sus múltiples servicios, Azure permite a los usuarios crear y gestionar máquinas virtuales (VMs) con diversas configuraciones de recursos, adaptándose a las necesidades específicas de cada proyecto. Esta capacidad es especialmente valiosa en el campo del aprendizaje automático, donde las tareas de entrenamiento y prueba de modelos requieren recursos computacionales significativos y variados. Con Azure, los desarrolladores e investigadores pueden seleccionar configuraciones específicas de CPU, GPU, memoria y almacenamiento para optimizar el rendimiento y costo de sus experimentos de aprendizaje automático. Microsoft Azure ofrece un programa especial para estudiantes llamado "Azure for Students", que proporciona acceso gratuito a una variedad de servicios en la nube. Este programa incluye un crédito inicial de \$100 USD para usar en cualquier servicio de Azure durante 12 meses, sin necesidad de una tarjeta de crédito para registrarse. 
+
 \subsection{Matplotlib}
 
-\todo[inline]{Graphics library}
+Matplotlib es una de las librerías más destacadas y utilizadas en el ecosistema de Python para la creación de gráficos y visualizaciones de datos. Esta herramienta permite a los desarrolladores y científicos de datos generar una amplia variedad de gráficos estáticos, animados e interactivos con relativa facilidad. Matplotlib se caracteriza por su flexibilidad y capacidad para crear visualizaciones de alta calidad y personalizables, que van desde simples gráficos de líneas y barras hasta complejas visualizaciones tridimensionales y de mapas de calor. Además, su integración con otras librerías populares de Python, como NumPy y pandas, facilita el proceso de análisis y visualización de datos, convirtiéndola en una opción preferida en ámbitos académicos y profesionales.
+
+El diseño de Matplotlib sigue una filosofía similar a la de MATLAB, lo que hace que sea especialmente accesible para usuarios familiarizados con ese entorno. Sin embargo, a diferencia de MATLAB, Matplotlib es de código abierto y gratuito. Las capacidades avanzadas de esta librería incluyen la personalización detallada de todos los elementos del gráfico, la posibilidad de exportar gráficos en múltiples formatos (como PNG, PDF y SVG), y la creación de gráficos interactivos utilizando bibliotecas adicionales como mpld3 y Plotly. 
+
 
 \input{files/notes/---models}
 \input{files/notes/---datasets}

@@ -5,95 +5,54 @@
 \section{Modelos utilizados}
 \label{sec:models}
 
-\todoin{Update with new models:  \\
-  > Same info for each \\
-  > Less/better math \\
-  > Expected emission results \\
-  > Optimization possibilities}
-
 \subsection{Modelos lineales: regresión logística}
 
-Los métodos lineales son un conjunto de métodos diseñados para problemas de regresión en los que se espera que el objetivo sea una combinación lineal de las características.
-En notación matemática, si $\hat{y}$ es el valor predicho:
+Los modelos lineales son una clase fundamental de técnicas estadísticas y de aprendizaje automático que se utilizan para predecir una variable objetivo a partir de una o más variables independientes. La característica principal de estos modelos es la relación lineal entre las variables independientes y la variable objetivo. En su forma más simple, el modelo lineal se representa mediante la ecuación $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_n x_n$, donde $y$ es la variable dependiente, $x_1, x_2, \dots, x_n$ son las variables independientes, y $\beta_1, \beta_2, \dots, \beta_n$ son los coeficientes que representan el impacto de cada variable independiente sobre la variable dependiente.
 
-\begin{equation}
-    \hat{y}(w,x)=w_{0} + x_{1}w_{1} + \dots + x_{p}w_{p}
-\end{equation}
+Dentro de los modelos lineales, la regresión logística es especialmente relevante para problemas de clasificación. A diferencia de la regresión lineal, que se utiliza para problemas de predicción continua, la regresión logística se emplea cuando la variable objetivo es categórica. En su forma binaria más simple, la regresión logística predice la probabilidad de que una observación pertenezca a una de dos posibles categorías. La función logística o sigmoide, 
+\begin{equation*}
+    P(y=1\mid x) = \frac{1}{1+e^{-\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_n x_n}},
+\end{equation*}
+transforma cualquier valor real de la combinación lineal de las variables independientes en un valor entre 0 y 1, lo que se interpreta como una probabilidad. Los parámetros desconocidos $\beta_i$ son estimados habitualmente a través del método de máxima verosimilitud.
 
-La regresión lineal trata, por tanto, de modelar la relación entre una variable continua y una o más variables independientes mediante el ajuste de una ecuación lineal (ajuste por mínimos cuadrados). La regresión lineal produce como resultado variables continuas. Su variante para problemas de clasificación se denomina regresión logística. 
+El uso de la regresión logística en problemas de clasificación es ventajoso por varias razones. Primero, es un modelo interpretativo, ya que los coeficientes obtenidos pueden proporcionar una idea clara de cómo cada variable independiente afecta la probabilidad de pertenecer a una categoría específica. Además, la regresión logística es relativamente fácil de implementar y eficiente computacionalmente, lo que la hace adecuada para grandes conjuntos de datos. Por último, aunque su capacidad para capturar relaciones complejas es limitada en comparación con modelos no lineales más avanzados, su simplicidad y efectividad la convierten en una opción sólida para establecer una línea base en proyectos de clasificación, permitiendo comparaciones posteriores con modelos más complejos.
 
-
-% La regresión lineal ordinaria suele presentar la limitación de no realizar una selección de predictores, es decir, todos los predictores se incorporan en el modelo aunque no aporten información relevante. Esto suele complicar la interpretación del modelo y reducir su capacidad predictiva.
-% Una forma de atenuar el impacto de estos problemas es utilizar estrategias de regularización como ridge, que fuerzan a que los coeficientes del modelo tiendan a cero, minimizando así el riesgo de overfitting, reduciendo varianza, atenuado el efecto de la correlación entre predictores y reduciendo la influencia en el modelo de los predictores menos relevantes.
-
-% Dado que estos métodos de regularización actúan sobre la magnitud de los coeficientes del modelo, todos deben de estar en la misma escala, por esta razón es necesario estandarizar o normalizar los predictores antes de entrenar el modelo.
-% % PROBLEMA ??????
-
-% La regularización Ridge penaliza la suma de los coeficientes elevados al cuadrado  ($||\beta||_{2}^{2}=\sum^{p}_{j=1}\beta^{2}_{j}$) . 
-% A esta penalización se le conoce como $l2$ y tiene el efecto de reducir de forma proporcional el valor de todos los coeficientes del modelo pero sin que estos lleguen a cero. El grado de penalización está controlado por el hiperparámetro  $\lambda$ . Cuando  $\lambda=0$ , la penalización es nula y el resultado es equivalente al de un modelo lineal por mínimos cuadrados ordinarios (OLS). A medida que  $\lambda$  aumenta, mayor es la penalización y menor el valor de los predictores.
-
-% CITE https://scikit-learn.org/stable/modules/linear_model.html#ridge-regression-and-classification
-
-% En Scikit-learn, el regresor ridge tiene una variante para clasificación, que primero convierte las etiquetas a {-1, 1} y después trata el problema como una tarea de regresión, optimizando para los mismos objetivos mencionados anteriormente. La clase predicha corresponde al signo de la predicción del regresor.
+La librería scikit-learn proporciona una interfaz para construir y evaluar modelos de regresión logística a través de su clase \texttt{LogisticRegression} \cite{sk-logistic-regression}. Esta clase permite a los usuarios configurar parámetros como la regularización, la penalización y el algoritmo de optimización. Esta implementación admite dos tipos de penalización: \texttt{L1} (Lasso) y \texttt{L2} (Ridge) que ayudan a prevenir el sobreajuste. Además, permite ajustar la fuerza de la regularización a través de un parámetro \texttt{C}. Esta flexibilidad facilita la adaptación del modelo a diferentes problemas y conjuntos de datos. La personalización aumenta al elegir un algoritmo de optimización mediante el parámetro \texttt{solver}, que admite varias opciones que pueden adaptarse al tamaño o el tipo de atributos del conjunto de datos a utilizar. Adicionalmente, \texttt{LogisticRegression} es capaz de manejar problemas de clasificación binaria y multiclase, con diferentes estrategias de acuerdo al algoritmo de resolución escogido.
 
 
+\subsection{Árboles de decisión: bosque aleatorio}
 
-\subsection{Árboles decisores: bosque aleatorio}
-\subsubsection{Árboles decisores}
+Otra técnica popular de aprendizaje automático utilizada para problemas tanto de clasificación como de regresión son los árboles de decisión \cite{sk-decision-trees}. Su estructura jerárquica consiste en nodos de decisión que dividen iterativamente el conjunto de datos en subconjuntos más homogéneos, facilitando así la predicción de la variable objetivo. Cada nodo del árbol representa una prueba sobre un atributo específico, y cada rama denota el resultado de la prueba. Los árboles de decisión son fáciles de interpretar y visualizar, lo que los hace muy útiles para entender las decisiones del modelo y comunicar los resultados a personas no técnicas.
 
-% CITE https://scikit-learn.org/stable/modules/tree.html
+Sin embargo, los árboles de decisión tienen algunas limitaciones, como su tendencia a sobreajustarse a los datos de entrenamiento, lo que puede llevar a un desempeño deficiente en datos nuevos. Para abordar estas limitaciones, se emplean técnicas de ensamblado como los bosques aleatorios (\emph{Random Forests}). Un bosque aleatorio es un conjunto de árboles de decisión entrenados sobre diferentes subconjuntos del conjunto de datos y con diferentes características seleccionadas aleatoriamente. La predicción final se obtiene mediante el promedio de las predicciones individuales de los árboles (en el caso de regresión) o mediante un voto mayoritario (en el caso de clasificación). Esta metodología mejora significativamente la precisión del modelo y reduce el riesgo de sobreajuste.
 
-Los árboles decisores son un método de aprendizaje supervisado no paramétrico utilizado para clasificación y predicción.
-Su propósito es crear un modelo que prediga el valor de una variable objetivo mediante el aprendizaje de reglas decisoras simples inferidas a partir de las características de los datos.
-Un árbol puede verse como una continua aproximación constante donde el modelo aprende a aproximar los datos mediante un conjunto de reglas condicionales (if-then-else).
-Cuanto más profundo es el árbol, más complejas son las reglas decisoras y más se ajusta el modelo.
+El uso de bosques aleatorios en problemas de clasificación ofrece varias ventajas. Primero, al combinar múltiples árboles, el modelo se vuelve más robusto y generalizable, mitigando la influencia de outliers y ruido en los datos. Además, los bosques aleatorios proporcionan una medida de importancia de las características, lo que permite identificar las variables más relevantes para la predicción. Esta capacidad es especialmente útil en contextos académicos y profesionales donde la interpretación del modelo y la identificación de factores clave son cruciales para la toma de decisiones informadas.
 
-Algunas de las ventajas de los árboles decisores son su facilidad de entender e interpretar el modelo, ya que se pueden visualizar, y la poca preparación que necesitan los datos (otras técnicas suelen requerir normalización o limpieza de valores en blanco).
-Además, el coste de usar el árbol (es decir, de predecir los datos) es logarítmico a el número de puntos utilizados para entrenar el árbol y es capaz de trabajar con datos de tipo numérico y categórico al mismo tiempo o con problemas de salida múltiple.
-Se trata de un modelo que se puede validar utilizando tests estadísticos,
-lo que hace posible dar cuenta de su fiabilidad.
+La implementación de un modelo de bosque aleatorio en la librería scikit-learn se ofrece a través de la clase \texttt{RandomForestClassifier} \cite{sk-random-forest}, que permite ajustar diversos parámetros como el número de árboles (\texttt{n\_estimators}), la profundidad máxima de los árboles (\texttt{max\_depth}) y el número mínimo de muestras por hoja (\texttt{min\_samples\_leaf}). 
 
-Por otra parte, también cuenta con varias desventajas.
-Estos modelos pueden crear árboles demasiado complejos que no generalicen bien los datos (sobre-ajuste, o \emph{overfitting}), por lo que se deben utilizar mecanismos de poda los árboles para evitarlo, es decir, establecer un número mínimo de muestras requeridas en un nodo hoja o una profundida máxima del árbol.
-Además, los árboles decisores pueden ser inestables, ya que pequeñas variaciones de los datos pueden resultar en la generación de árboles completamente distintos (este problema se puede mitigar utilizando los árboles decisores como parte de un conjunto de modelos).
-Otro problema que presentan es el sesgo que se puede crear si alguna de las clases en un clasificador domina sobre el resto, por lo que es recomendable el conjunto de datos este equilibrado antes de intentar modelarlo con un árbol decisor.
+\subsection{Máquinas de vector soporte (SVM)}
 
-\subsubsection{Bosque aleatorio}
+En las máquinas de vector soporte (\emph{Support Vector Machines}, SVM) \cite{sk-svm-theory} el principal objetivo es encontrar el hiperplano óptimo que maximiza el margen entre las diferentes clases en un espacio de características. Este margen es la distancia más amplia posible entre el hiperplano y los puntos de datos más cercanos de cualquier clase, conocidos como vectores soporte. La SVM es particularmente eficaz en espacios de alta dimensionalidad y es robusta frente al sobreajuste, lo que la hace adecuada para conjuntos de datos complejos.
 
-% CITE https://scikit-learn.org/stable/modules/ensemble.html#forests-of-randomized-trees
+Una de las ventajas clave de las SVM es su capacidad para manejar problemas no lineales mediante el uso de funciones kernel. Estos núcleos transforman los datos en un espacio de mayor dimensión donde un hiperplano lineal puede separarlos. Los tipos de kernel más comunes incluyen el lineal, polinómico, radial (RBF), y sigmoide. Esta flexibilidad permite a las SVM abordar una amplia gama de problemas de clasificación, incluso cuando las relaciones entre las características y las etiquetas son altamente no lineales. Sin embargo, para que funcione de forma adecuada es necesario seleccionar el kernel apropiado y ajustar sus parámetros, por ejemplo, mediante validación cruzada.
 
-El bosque aleatorio es un método que combina árboles predictores de forma que cada árbol depende de los valores de un vector aleatorio probado independientemente y con la misma distribución para cada uno de estos.
-En los bosques aleatorios, cada árbol del grupo está construido a partir de una muestra aleatoria tomada del conjunto de entrenamiento.
-Además, en el momento de separar cada nódulo durante la construcción de un árbol, la mejor separación se encuentra o a partir de todas las características de entrada o a partir de un subconjunto aleatorio de el tamaño del máximo de características.
+En el contexto de problemas de clasificación, las SVM son especialmente útiles debido a su alta precisión y su capacidad para manejar tanto clases linealmente separables como no separables. En escenarios de clasificación binaria, las SVM son capaces de encontrar la frontera de decisión que maximiza la separación entre las dos clases. Para problemas de clasificación multiclase, se pueden aplicar estrategias para descomponer el problema en múltiples problemas de clasificación binaria. Aunque las SVM pueden ser computacionalmente intensivas, especialmente con grandes conjuntos de datos, tienen una gran eficacia en términos de rendimiento y de capacidad para generalizar bien a datos no vistos.
 
-El motivo de esta doble fuente de aleatoriedad es reducir la varianza del estimador de bosque.
-De hecho, los árboles decisores individuales tipicamente exhiben una alta varianza y tienden a sobre-ajustarse a los datos.
-La aleatoriedad inyectada en los bosques da lugar a árboles decisores con errores de predicción en parte desconectados, 
-que se pueden cancelar entre sí mediante la utilización de la media de las predicciones.
+La clase \texttt{SVC} \cite{sk-svm} de scikit-learn permite ajustar parámetros clave como el tipo de kernel, el parámetro de regularización (\texttt{C}) y coeficientes específicos del kernel elegido.
 
-Los bosques aleatorios reducen la varianza mediante la combinación de árboles diversos, pero a veces lo consiguen a costa de un ligero aumento del sesgo (bias).
-En la práctica la reducción de varianza es a menudo más significativa, por lo que en general da lugar a un modelo mejor.
-En contraste a la publicación original %% CITE %%,
-la implementación de Scikit-learn combina los clasificadores promediando sus predicciones probabilisticas, en vez de dejar que cada clasificador decida en una clase individual.
+\subsection{Vecinos más cercanos (k-NN)}
 
-\subsection{Máquinas de vector soporte}
+El método de vecinos más cercanos (k-Nearest Neighbors, k-NN) es una técnica de aprendizaje supervisado utilizada para resolver problemas tanto de clasificación como de regresión. Este método se basa en la premisa de que objetos similares generalmente se encuentran cerca en el espacio de características. En problemas de clasificación, el algoritmo k-NN asigna una etiqueta a una nueva instancia basándose en las etiquetas de sus k vecinos más cercanos en el conjunto de datos de entrenamiento. La cercanía o similitud entre las instancias se mide generalmente utilizando distancias métricas, como la distancia euclidiana, Manhattan, o Minkowski.
 
-% CITE https://scikit-learn.org/stable/modules/svm.html
+Una de las principales ventajas del k-NN es su simplicidad y facilidad de implementación. A diferencia de otros algoritmos que requieren un proceso de entrenamiento explícito, k-NN es un algoritmo perezoso que almacena todas las instancias del conjunto de entrenamiento y realiza el cálculo de las distancias en el momento de la predicción. Esta característica lo convierte en un método intuitivo y fácil de entender, aunque también implica que puede ser computacionalmente costoso, especialmente con grandes conjuntos de datos. Además, la elección del número de vecinos (k) y la métrica de distancia son cruciales para el rendimiento del modelo. Valores de k demasiado bajos pueden llevar a un sobreajuste, mientras que valores demasiado altos pueden conducir a un subajuste.
 
-Las máquinas de vector soporte (Support Vector Machine, SVM) agrupan un conjunto de métodos de aprendizaje supervisado utilizados para clasificación, regresión y detección de valores atípicos. Las ventajas de las máquinas de vector soporte son su efectividad en espacios de alta dimensionalidad y el hecho de que continúan siendo efectivas en los casos donde el número de dimensiones es mayor que el número de muestras.
-Además, utilizan un subconjunto de los puntos de entrenamiento en la función decisora (llamados vectores soporte), lo que los hace eficientes en memoria, y acepta gran versatilidad en el sentido de que se pueden especificar diferentes funciones kernel para la función decisora.
+En el contexto de problemas de clasificación, el k-NN es especialmente útil en situaciones donde las fronteras de decisión entre clases no son lineales y pueden ser complejas. Debido a su naturaleza basada en instancias, el k-NN puede capturar patrones locales en los datos y adaptarse a cambios en la distribución de las clases. Sin embargo, el rendimiento de k-NN puede verse afectado por la presencia de ruido y características irrelevantes, lo que subraya la importancia de la preprocesamiento de datos, como la normalización y la selección de características. A pesar de estas limitaciones, el k-NN sigue siendo una herramienta valiosa para la clasificación debido a su simplicidad y flexibilidad.
 
-Sin embargo, las máquinas de vector soporte presentan algunas desventajas como el hecho de que si que el número de características es mucho mayor que el número de muestras, es facil que el modelo se sobre-ajuste a las muestras si no se elige la función kernel correcta. 
-Además, las SVM no proporcionan estimaciones de probabilidad directamente, sino que deben ser calculadas utilizando una costosa validación cruzada en cinco partes.
+La clase \texttt{KNeighborsClassifier} \cite{sk-knn} de la librería scikit-learn proporciona la interfaz para configurar y utilizar el algoritmo k-NN. Esta clase ofrece la posibilidad de especificar el número de vecinos a considerar mediante el parámetro \texttt{n\_neighbors} y de seleccionar la métrica de distancia adecuada utilizando el parámetro \texttt{metric}, que incluye opciones como la distancia euclidiana y Manhattan. Además, scikit-learn permite ajustar parámetros adicionales como el peso de los vecinos, que puede ser uniforme o basado en la distancia.
 
-\subsection{Vecinos más cercanos: k vecinos más cercanos (k-NN)}
 \subsection{Naive Bayes (Naive Bayes gaussiano)}
 
-% CITE https://scikit-learn.org/stable/modules/naive_bayes.html
-
-Los métodos Naive Bayes son un conjunto de algoritmos de aprendizaje supervisado basados en la aplicación del teorema de Bayes con la suposición "ingenua" (en inglés, \emph{naive}) de independencia condicional entre cada par de características dado el valor de la variable de clase. 
-
-El teorema de Bayes postula la siguiente relación, dada la variable de clase $y$ y los vectores característica dependientes $x_{1}$ a $x_{n}$:
+Los métodos Naive Bayes \cite{sk-naive-bayes} son un conjunto de algoritmos de aprendizaje supervisado basados en la aplicación del teorema de Bayes con la suposición "ingenua" (en inglés, \emph{naive}) de independencia condicional entre cada par de características dado el valor de la variable de clase. El teorema de Bayes postula la siguiente relación, dada la variable de clase $y$ y los vectores característica dependientes $x_{1}$ a $x_{n}$:
 \begin{equation*}
     P(y \mid x_{1},\dots,x_{n}) = \dfrac{P(y)P(x_{1},\dots,x_{n}\mid y)}{P(x_{1},\dots,x_{n})}
 \end{equation*}
@@ -116,18 +75,28 @@ Como $P(x_{1},\dots,x_{n})$ es constante dada la entrada, se puede utilizar la s
 
 y se puede usar la estimación de máximo a posteriori (MAP) para estimar $P(y)$ y $P(x_{i}\mid y)$; y la primera expresión es entonces la frecuencia relativa de la clase $y$ en el conjunto de entrenamiento.
 
-Los diferentes clasificadores Naive-Bayes difieren sobre todo en la suposición que realicen sobre la distribución de $P(x_{i} \mid y)$.
+Los diferentes clasificadores Naive-Bayes difieren sobre todo en la suposición que realicen sobre la distribución de $P(x_{i} \mid y)$. El algoritmo Naive-Bayes gaussiano es una variante específica de Naive-Bayes que se utiliza cuando las características son continuas y se asumen distribuidas según una distribución normal (gaussiana), lo que es común en muchas aplicaciones reales. En este caso, el clasificador estima los parámetros de la distribución (media y varianza) para cada característica en cada clase utilizando los datos de entrenamiento. Durante la clasificación de una nueva instancia, el algoritmo calcula la probabilidad de que esta instancia pertenezca a cada clase basándose en las distribuciones gaussianas estimadas y asigna la clase con la probabilidad a posteriori más alta.
 
-A pesar de sus suposiciones aparentemente simplificadas, 
-los clasificadores Naive-Bayes obtienen buenos resultados en muchos problemas del mundo real, 
-especialmente en aplicaciones como la clasificación de documentos y filtros de spam;
-y requieren pequeñas cantidades de datos de entrenamiento para estimar los parámetros necesarios.
+A pesar de sus suposiciones aparentemente simplificadas, los clasificadores Naive-Bayes obtienen buenos resultados en muchos problemas del mundo real, especialmente en aplicaciones como la clasificación de documentos y filtros de spam; y requieren pequeñas cantidades de datos de entrenamiento para estimar los parámetros necesarios. Estos clasificadores pueden llegar a ser extremadamente rápidos comparados a otros métodos más sofisticados. La separación de las características condicionales de clase significa que cada distribución puede ser estimada independientemente como una distribución unidimensional. Esto a su vez ayuda a aliviar problemas provocados por la dimensionalidad de las distribuciones.
 
-Estos clasificadores pueden llegar a ser extremadamente rápidos comparados a otros métodos más sofisticados. La separación de las características condicionales de clase significa que cada distribución puede ser estimada independientemente como una distribución unidimensional.
-Esto a su vez ayuda a aliviar problemas provocados por la dimensionalidad de las distribuciones.
+La implementación de este algoritmo en la librería scikit-learn se encuentra en la clase \texttt{GaussianNB} \cite{sk-nb-gaussian}.
 
-Por el lado contrario, y aunque Naive-Bayes es conocido como un clasificador decente, su uso como estimador es bastante deficiente, por lo que no se pueden tomar muy en serio los resultados de predicción de probabilidad del modelo.
+\subsection{Métodos de ensamblaje (ensemble): máquinas de potenciación de gradiente}
 
-\subsection{Métodos de conjuntos (ensemble): máquinas de potenciación de gradiente}
+El método de ensamblaje por máquinas de potenciación de gradiente (Gradient Boosting Machines, GBM) es una técnica de aprendizaje automático que combina múltiples modelos débiles para crear un modelo más fuerte y preciso. La idea central de GBM es construir el modelo de forma secuencial, donde cada modelo sucesivo intenta corregir los errores del modelo anterior. En el contexto de problemas de clasificación, cada nuevo árbol de decisión se ajusta a los residuos de los árboles anteriores, utilizando el gradiente de la función de pérdida como guía. Esta estrategia permite que GBM capture relaciones complejas y no lineales en los datos, mejorando considerablemente la precisión del modelo.
+
+Uno de los mayores beneficios de usar máquinas de potenciación de gradiente para problemas de clasificación es su capacidad para manejar datos heterogéneos y características con diferentes escalas y distribuciones. GBM puede ajustarse a los datos de manera muy detallada, lo que lo hace adecuado para problemas donde las relaciones entre las variables no son lineales ni simples. Sin embargo, este alto nivel de ajuste también puede llevar a un sobreajuste si no se controla adecuadamente. Por ello, es crucial utilizar técnicas como la validación cruzada y ajustar parámetros como el número de árboles, la tasa de aprendizaje, y la profundidad máxima de los árboles para encontrar el equilibrio adecuado entre sesgo y varianza.
+
+En problemas de clasificación, GBM es particularmente eficaz debido a su capacidad para manejar clases no balanceadas y proporcionar probabilidades de clasificación en lugar de simplemente etiquetas de clase. Esto es especialmente útil en aplicaciones como la detección de fraudes, diagnóstico médico y otros escenarios donde la probabilidad de pertenecer a una clase particular puede ser más informativa que la clasificación binaria. Además, las implementaciones modernas de GBM, como XGBoost, LightGBM y CatBoost, han optimizado significativamente la velocidad y eficiencia del algoritmo, permitiendo su aplicación en grandes conjuntos de datos y en tiempo real.
+
+La implementación de máquinas de potenciación de gradiente en la librería scikit-learn es accesible a través de la clase GradientBoostingClassifier \cite{sk-gradient-boost} permite a los usuarios ajustar una variedad de hiperparámetros para optimizar el rendimiento del modelo. Los usuarios pueden especificar el número de árboles, la tasa de aprendizaje, y otros parámetros clave para controlar la complejidad y la capacidad de generalización del modelo.
+
 \subsection{Redes neuronales (Deep Neural Networks, DNN) Multi-layer Perceptron}
 
+Las redes neuronales están compuestas por capas de neuronas artificiales que imitan el comportamiento de las neuronas en el cerebro humano. Cada neurona realiza una operación matemática simple sobre la entrada y pasa la salida a la siguiente capa. A través de múltiples capas, la red es capaz de capturar patrones y características complejas en los datos. Estás propiedades pueden aplicarse a situaciones de aprendizaje supervisado mediante el uso de algoritmos como el perceptrón multicapa (Multilayer Perceptron, MLP).
+
+El algoritmo del perceptrón multicapa es una clase de red neuronal supervisada que consiste en una capa de entrada, una o más capas ocultas y una capa de salida. Cada capa está totalmente conectada a la siguiente, y cada conexión tiene un peso ajustable que se optimiza durante el proceso de entrenamiento. En problemas de clasificación, el MLP es especialmente útil debido a su capacidad para aprender representaciones no lineales complejas de los datos. El algoritmo utiliza funciones de activación no lineales, como la función sigmoide o la ReLU (Rectified Linear Unit), que permiten que la red capture y modele relaciones no lineales en los datos. El entrenamiento de un MLP se realiza mediante un proceso llamado retropropagación del error (backpropagation), que ajusta iterativamente los pesos para minimizar una función de pérdida, típicamente la entropía cruzada en problemas de clasificación.
+
+El uso del MLP ofrece varias ventajas. Primero, debido a su estructura de múltiples capas, el MLP puede aprender y generalizar bien a partir de datos complejos y de alta dimensionalidad. Esto es particularmente útil en dominios como el reconocimiento de imágenes, la detección de voz y la clasificación de texto, donde las relaciones entre las características no son triviales. Además, las redes neuronales pueden ser adaptadas a problemas multiclase con facilidad, utilizando técnicas como la salida softmax en la capa final para obtener probabilidades de clase. Sin embargo, el MLP también requiere una cantidad considerable de datos y poder computacional para entrenar eficazmente, y la selección de la arquitectura y los hiperparámetros adecuados puede ser un proceso desafiante que a menudo implica ensayo y error y validación cruzada.
+
+La librería scikit-learn implementa la clase MLPClassifier \cite{sk-multilayer-perceptron} para el algoritmo del perceptrón multicapa. Los usuarios pueden definir parámetros como el número de capas ocultas y el número de neuronas por capa (hidden\_layer\_sizes), la función de activación (activation), y el algoritmo de optimización (solver). Scikit-learn también permite ajustar la tasa de aprendizaje (learning\_rate) y utilizar técnicas de regularización para prevenir el sobreajuste.
