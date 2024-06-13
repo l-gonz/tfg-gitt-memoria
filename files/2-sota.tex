@@ -4,24 +4,46 @@
 \section{Revisión de la literatura}
 \label{sec:lit-rev}
 
-\todoin{
-Literature review: \\
-  > Codecarbon paper \\
-  > Research projects into machine learning consumption \\
-  > Métodos que han utilizado y resultados \\
-  > ChatGPT, LLM, computer vision, cloud, etc. how much energy?
-}
+\todo[inline]{Añadir citas, hacer más específico, comprobar referencias}
 
-\section{Aprendizaje automático}
+El impacto energético del aprendizaje automático ha emergido como una preocupación significativa debido a la creciente complejidad y escala de los modelos utilizados en este campo. Investigaciones recientes han intentado cuantificar y mitigar el consumo energético asociado con el entrenamiento y la inferencia de modelos de aprendizaje automático. Entre los proyectos destacados se encuentra Codecarbon, una iniciativa que se ha centrado en medir y reducir la huella de carbono de las actividades computacionales en aprendizaje automático.
+
+Los métodos empleados para medir el consumo energético en el aprendizaje automático varían en precisión y granularidad. Codecarbon, por ejemplo, utiliza una combinación de información sobre la carga de trabajo del CPU/GPU, la ubicación geográfica de los centros de datos, y las emisiones promedio de CO2 por kWh de electricidad en diferentes regiones. Este enfoque permite estimaciones en tiempo real del consumo energético y las emisiones de carbono asociadas a las tareas de aprendizaje automático. Otros métodos más directos incluyen el uso de medidores de energía que se conectan directamente a los dispositivos de hardware utilizados para el entrenamiento de modelos, proporcionando datos más precisos pero con un alcance limitado a configuraciones específicas.
+
+Varios estudios han reportado el consumo energético de modelos de aprendizaje automático, destacando el alto costo energético de los grandes modelos de lenguaje natural y visión por computador. Por ejemplo, un estudio de Strubell et al. (2019) encontró que el entrenamiento de un solo modelo Transformer puede consumir tanta energía como el gasto anual de varios automóviles. Este hallazgo ha impulsado la investigación en técnicas de optimización y eficiencia, tales como la poda de redes neuronales, la cuantización de pesos, y el uso de hardware especializado como TPU (Tensor Processing Units) y FPGA (Field-Programmable Gate Arrays), que pueden reducir significativamente el consumo energético.
+
+Los resultados obtenidos de estas investigaciones resaltan la necesidad urgente de considerar la eficiencia energética como un criterio fundamental en el diseño y entrenamiento de modelos de aprendizaje automático. La iniciativa Codecarbon ha mostrado que, mediante la optimización de código y la selección de infraestructuras más sostenibles, se pueden lograr reducciones significativas en el consumo de energía y emisiones de carbono. Otros estudios han demostrado que la implementación de modelos más eficientes no necesariamente compromete la precisión, sugiriendo que es posible alcanzar un balance entre rendimiento y sostenibilidad.
+
+En el ámbito de los grandes modelos de aprendizaje, como los modelos de lenguaje (e.g., GPT-3), visión por computador y el aprendizaje en la nube, el impacto energético es particularmente elevado. Los grandes modelos de lenguaje, por ejemplo, requieren enormes cantidades de datos y recursos computacionales para su entrenamiento, lo que se traduce en un consumo energético considerable. Del mismo modo, las aplicaciones de visión por computador, especialmente aquellas que involucran redes convolucionales profundas (CNN), también son intensivas en energía. El aprendizaje en la nube agrava estos problemas al trasladar el consumo energético a los centros de datos, que pueden tener diferentes niveles de eficiencia y fuentes de energía.
+
+Los grandes modelos de aprendizaje, como los modelos de lenguaje de gran escala (large language models, LLMs), han mostrado un impacto significativo en el consumo energético debido a su tamaño y complejidad. GPT-3, uno de los modelos más conocidos, cuenta con 175 mil millones de parámetros y requiere una cantidad masiva de energía para su entrenamiento. Los modelos de visión por computador, como las redes neuronales convolucionales (CNNs) y sus variantes más profundas, también consumen cantidades sustanciales de energía durante el entrenamiento y la inferencia.
+
+El uso de aprendizaje en la nube, aunque ofrece flexibilidad y escalabilidad, puede tener implicaciones negativas para el consumo energético. Los centros de datos que alimentan estos servicios requieren grandes cantidades de electricidad, y su impacto depende en gran medida de la fuente de energía utilizada. Algunos centros de datos están migrando hacia fuentes de energía renovable para mitigar este impacto, pero la transición no es uniforme en todas las regiones.
+
+En conclusión, la literatura destaca la importancia de desarrollar métodos y tecnologías que reduzcan el consumo energético en el aprendizaje automático. Proyectos como Codecarbon son cruciales para aumentar la conciencia sobre este problema y proporcionar herramientas prácticas para medir y reducir la huella de carbono. A medida que la demanda de modelos grandes y complejos continúa creciendo, es imperativo que la comunidad de investigación se enfoque en soluciones sostenibles que equilibren la eficiencia energética con el rendimiento del modelo.
+
+\section{Introducción al aprendizaje automático}
 \label{sec:intro-ml}
 
-\todoin{Mini intro to machine learning:  \\
-  > supervised vs unsupervised \\
-  > classification vs regression \\
-  > modelos vs redes neuronales \\
-  > features vs labels \\
-  > train vs test \\
-  > types of features}
+El aprendizaje automático se ha consolidado como una disciplina fundamental dentro del campo de la ingeniería y la informática, debido a su capacidad para desarrollar sistemas que pueden aprender y mejorar a partir de la experiencia sin ser explícitamente programados. En el contexto de este trabajo de fin de grado, se desarrollará una aplicación para medir el consumo energético de proyectos de aprendizaje automático, un aspecto crítico dado el creciente uso de estos modelos en diversas aplicaciones y su impacto ambiental.
+
+El aprendizaje automático puede dividirse principalmente en dos categorías: aprendizaje supervisado y no supervisado. En el aprendizaje supervisado, el modelo se entrena utilizando un conjunto de datos etiquetados, es decir, cada muestra del conjunto de datos está asociada con una etiqueta que representa el resultado esperado. Las tareas más comunes en este tipo de aprendizaje son la clasificación, donde el objetivo es asignar muestras a una de varias categorías predefinidas, y la regresión, donde se predice un valor continuo. Por ejemplo, en un problema de clasificación, el modelo podría aprender a identificar correos electrónicos como "spam" o "no spam", mientras que en un problema de regresión, el modelo podría predecir el precio de una vivienda basada en características como el tamaño y la ubicación.
+
+En contraste, el aprendizaje no supervisado no utiliza etiquetas. En su lugar, el modelo intenta identificar patrones y estructuras inherentes en los datos. Las tareas típicas en este enfoque incluyen la agrupación (clustering), donde el objetivo es agrupar muestras similares, y la reducción de dimensionalidad, que busca simplificar los datos manteniendo su estructura esencial. Por ejemplo, en la agrupación, un modelo podría agrupar clientes de un supermercado en segmentos basados en sus comportamientos de compra.
+
+Entre los modelos más habituales en el aprendizaje automático se encuentran los árboles de decisión, los modelos de Naive Bayes, las máquinas de soporte vectorial y las redes neuronales. Las redes neuronales, inspiradas en la estructura del cerebro humano, son particularmente relevantes en problemas complejos de reconocimiento de patrones y se destacan por su capacidad de aproximar funciones no lineales mediante la composición de varias capas de neuronas artificiales. Otros modelos, como los bosques aleatorios (Random Forests) y los modelos de potenciación de gradiente (Gradient Boosting Machines), también son ampliamente utilizados debido a su capacidad para mejorar la precisión a través de la combinación de múltiples predictores.
+
+La calidad y estructura de los conjuntos de datos juegan un papel crucial en el éxito de los modelos de aprendizaje automático. Un conjunto de datos típico está compuesto por muestras (o instancias), cada una descrita por una serie de atributos (o características) y, en el caso de aprendizaje supervisado, asociada con una etiqueta (o variable objetivo). Los atributos pueden ser de diversos tipos: continuos (por ejemplo, la altura), categóricos (por ejemplo, el género), binarios (por ejemplo, sí/no), o ordinales (por ejemplo, la clasificación de satisfacción de un cliente en una escala de 1 a 5).
+
+% Para evaluar el rendimiento de un modelo, los datos se dividen generalmente en un conjunto de entrenamiento y un conjunto de prueba. El conjunto de entrenamiento se utiliza para ajustar los parámetros del modelo, mientras que el conjunto de prueba se emplea para evaluar su capacidad de generalización a datos no vistos. 
+El proceso de aprendizaje de estos modelos implica varias etapas clave. Primero, los datos se recopilan y preprocesan para asegurar su calidad y pertinencia. Luego, el modelo se entrena utilizando el conjunto de entrenamiento, ajustando sus parámetros internos para minimizar el error en la predicción. Este ajuste se realiza mediante algoritmos de optimización, como el descenso del gradiente, que iterativamente modifica los parámetros para encontrar la configuración que produce el menor error. Finalmente, el modelo se evalúa utilizando el conjunto de prueba para verificar su capacidad de generalización.
+
+La precisión de un modelo de aprendizaje automático está influenciada por diversos factores. La calidad y cantidad de los datos de entrenamiento son cruciales; datos ruidosos o insuficientes pueden llevar a modelos inexactos. Además, la elección del modelo y sus hiperparámetros, como la profundidad de los árboles en un bosque aleatorio o la tasa de aprendizaje en un modelo de potenciación de gradiente, también juegan un papel determinante. La complejidad del modelo debe equilibrarse cuidadosamente para evitar el sobreajuste, donde el modelo se ajusta demasiado bien a los datos de entrenamiento y falla en generalizar a nuevos datos.
+% Dos problemas comunes en el aprendizaje automático son el sobreajuste, donde el modelo se ajusta demasiado bien a los datos de entrenamiento y no generaliza bien, y el desequilibrio de clases, donde una clase puede estar significativamente subrepresentada en el conjunto de datos, afectando la precisión del modelo.
+
+El consumo energético de los modelos de aprendizaje automático es otro aspecto crítico, especialmente a medida que aumentan la escala y complejidad de los modelos. Modelos más complejos, como las redes neuronales profundas, requieren un mayor poder computacional y, por ende, un mayor consumo de energía durante el entrenamiento y la inferencia. Factores que afectan el consumo energético incluyen la arquitectura del modelo, la cantidad de datos, el hardware utilizado (como CPUs, GPUs o TPUs) y la eficiencia de los algoritmos de optimización. Medir y optimizar el consumo energético es esencial para desarrollar soluciones sostenibles y escalables, especialmente en aplicaciones a gran escala como el procesamiento de grandes volúmenes de datos o la inteligencia artificial en tiempo real.
+
+En conclusión, este trabajo de fin de grado se centrará en la implementación de una aplicación para medir el consumo energético de proyectos de aprendizaje automático. Dicha aplicación considerará varios aspectos técnicos y metodológicos del aprendizaje automático, incluyendo la selección y evaluación de modelos, la gestión de conjuntos de datos, y la mitigación de problemas comunes, con el objetivo de contribuir a la eficiencia energética y sostenibilidad en el desarrollo de estas tecnologías avanzadas.
 
 \section{Librerías empleadas}
 
