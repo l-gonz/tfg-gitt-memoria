@@ -4,8 +4,6 @@
 \section{Revisión de la literatura}
 \label{sec:lit-rev}
 
-\todo[inline]{Añadir citas, hacer más específico, comprobar referencias}
-
 % Herramientas
 % Estudios comparativos
 % Métodos de medición
@@ -20,7 +18,7 @@ A día de hoy existen un gran número de herramientas para medir el consumo de e
 
 %%%% HERRAMIENTAS
 
-Entre los proyectos destacados se encuentra Codecarbon\cite{codecarbon}, una iniciativa que se ha centrado en medir la huella de carbono de las actividades computacionales en aprendizaje automático mediante un paquete para Python fácilmente integrable con librerías existentes. Otras herramientas (\cite{getzner2023accuracy}) proponen un método de estimación sin necesidad de llegar a entrenar los modelos, mediante la recopilación previa de medidas de calidad de consumo energético en modelos de base. El \emph{Machine Learning Emissions Calculator} (MLCO2)\cite{lacoste2019mlco2} presenta otro modelo de medida basado en la localización, la red eléctrica y el tiempo utilizado por el servidor responsable del entrenamiento. Otras herramientas disponibles para Python incluyen \emph{experiment-impact-tracker} \cite{henderson2020tracker}, Carbontracker \cite{anthony2020carbontracker} y Eco2AI \cite{budennyy2022eco2ai}. Estos paquetes utilizan métodos similares de estimación de la energía utilizada por CPUs y GPUs y su correlación con las emisiones de carbono de acuerdo a la red eléctrica utilizada.
+Entre los proyectos destacados se encuentra Codecarbon\cite{codecarbon}, una iniciativa que se ha centrado en medir la huella de carbono de las actividades computacionales en aprendizaje automático mediante un paquete para Python fácilmente integrable con librerías existentes. Otras herramientas (\cite{getzner2023accuracy}) proponen un método de estimación sin necesidad de llegar a entrenar los modelos, mediante la recopilación previa de medidas de calidad de consumo energético en modelos de base. El \emph{Machine Learning Emissions Calculator} (MLCO2)\cite{lacoste2022mlco2} presenta otro modelo de medida basado en la localización, la red eléctrica y el tiempo utilizado por el servidor responsable del entrenamiento. Otras herramientas disponibles para Python incluyen \emph{experiment-impact-tracker} \cite{henderson2020tracker}, Carbontracker \cite{anthony2020carbontracker} y Eco2AI \cite{budennyy2022eco2ai}. Estos paquetes utilizan métodos similares de estimación de la energía utilizada por CPUs y GPUs y su correlación con las emisiones de carbono de acuerdo a la red eléctrica utilizada.
 
 Los resultados obtenidos de estas investigaciones resaltan la necesidad de considerar la eficiencia energética como un criterio fundamental en el diseño y entrenamiento de modelos de aprendizaje automático. Numerosas iniciativas han mostrado que, mediante la optimización de código y la selección de infraestructuras más sostenibles, se pueden lograr reducciones significativas en el consumo de energía y emisiones de carbono. Otros estudios han demostrado que la implementación de modelos más eficientes no necesariamente compromete la precisión, sugiriendo que es posible alcanzar un balance entre rendimiento y sostenibilidad.
 
@@ -33,6 +31,8 @@ El aprendizaje automático se ha consolidado como una disciplina fundamental den
 
 El aprendizaje automático puede dividirse principalmente en dos categorías: aprendizaje supervisado y no supervisado. En el aprendizaje supervisado, el modelo se entrena utilizando un conjunto de datos etiquetados, es decir, cada muestra del conjunto de datos está asociada con una etiqueta que representa el resultado esperado. Las tareas más comunes en este tipo de aprendizaje son la clasificación, donde el objetivo es asignar muestras a una de varias categorías predefinidas, y la regresión, donde se predice un valor continuo. 
 En contraste, el aprendizaje no supervisado no utiliza etiquetas. En su lugar, el modelo intenta identificar patrones y estructuras inherentes en los datos. Las tareas típicas en este enfoque incluyen la agrupación (clustering), donde el objetivo es agrupar muestras similares, y la reducción de dimensionalidad, que busca simplificar los datos manteniendo su estructura esencial. Este proyecto se centrará en tareas de clasificación mediante aprendizaje supervisado.
+
+Dentro de las tareas de clasificación se pueden distinguir dos casos: la clasificación binaria y la multiclase. La clasificación multiclase es una técnica de aprendizaje automático supervisado en la que el objetivo es categorizar cada muestra de datos en una de tres o más clases posibles. A diferencia de la clasificación binaria, que se limita a dos clases, la clasificación multiclase es más compleja debido a varios factores. En primer lugar, el aumento en el número de clases incrementa la dificultad para separar las categorías correctamente, ya que el modelo debe aprender a distinguir entre múltiples fronteras de decisión. Además, el desequilibrio entre clases puede ser más pronunciado, lo que complica el entrenamiento del modelo. Por último, las métricas de evaluación se vuelven más complejas, ya que es necesario considerar el rendimiento del modelo en todas las clases para obtener una visión completa de su precisión y robustez. 
 
 Entre los modelos más habituales en el aprendizaje automático se encuentran los árboles de decisión, los modelos de Naive Bayes, las máquinas de soporte vectorial y las redes neuronales. Las redes neuronales, inspiradas en la estructura del cerebro humano, son particularmente relevantes en problemas complejos de reconocimiento de patrones y se destacan por su capacidad de aproximar funciones no lineales mediante la composición de varias capas de neuronas artificiales. Otros modelos, como los bosques aleatorios (Random Forests) y los modelos de potenciación de gradiente (Gradient Boosting Machines), también son ampliamente utilizados debido a su capacidad para mejorar la precisión a través de la combinación de múltiples predictores.
 
@@ -51,8 +51,6 @@ En conclusión, este trabajo de fin de grado se centrará en la implementación 
 
 \subsection{Entorno de desarrollo: Visual Studio Code y WSL}
 \label{sec:dev-env}
-
-\todo[inline]{Get better info from other tfg}
 
 VSCode es un editor de código fuente abierto altamente extensible que se ha convertido en una herramienta predilecta entre desarrolladores debido a su interfaz amigable, integración con Git y soporte para una amplia gama de lenguajes de programación y extensiones. WSL (Windows Subsystem for Linux) es una característica de Windows que permite ejecutar un entorno de Linux completo directamente sobre Windows sin la necesidad de una máquina virtual o sistemas de arranque dual.
 
@@ -92,7 +90,7 @@ Matplotlib es una de las librerías más destacadas y utilizadas en el ecosistem
 El diseño de Matplotlib sigue una filosofía similar a la de MATLAB, lo que hace que sea especialmente accesible para usuarios familiarizados con ese entorno. Sin embargo, a diferencia de MATLAB, Matplotlib es de código abierto y gratuito. Las capacidades avanzadas de esta librería incluyen la personalización detallada de todos los elementos del gráfico, la posibilidad de exportar gráficos en múltiples formatos (como PNG, PDF y SVG), y la creación de gráficos interactivos utilizando bibliotecas adicionales como mpld3 y Plotly. 
 
 
-\input{files/notes/---models}
-\input{files/notes/---datasets}
+\input{files/2.1-models}
+\input{files/2.2-datasets}
 
 %\cleardoublepage

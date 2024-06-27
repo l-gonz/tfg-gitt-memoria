@@ -16,11 +16,20 @@ Este capítulo describe el diseño de la aplicación desarrollada durante este p
 \end{figure}
 \todo[inline]{Esquema de funcionamiento y explicación vista de pájaro}
 
-% > Read data
-% > Split train and test
-% > Clean data
-% > ( Train ) < Measure emissions
-% > Score
+La arquitectura de la aplicación se organiza en torno a varios componentes clave que se integran en el paquete \texttt{mlcost} para ofrecer un entorno robusto para la evaluación de modelos de aprendizaje automático en términos de precisión y eficiencia energética. 
+%% info on packaging
+
+El punto de entrada de la aplicación es el módulo \texttt{cli}, que se encarga de gestionar la interfaz de línea de comandos (\emph{command-line interface}, CLI) que facilita la interacción del usuario con las funcionalidades principales de la aplicación. Este módulo permite a los usuarios ejecutar la aplicación desde la terminal, proporcionando una manera flexible y accesible de realizar diversas operaciones, como la selección de modelos de aprendizaje automático, la configuración de parámetros de ejecución y la especificación de archivos de datos de entrada. El módulo \texttt{cli} utiliza la librería \texttt{click} para facilitar el procesamiento de los argumentos de la línea de comandos. Este enfoque permite definir una variedad de opciones y argumentos que los usuarios pueden especificar al ejecutar la aplicación. Por ejemplo, los usuarios pueden seleccionar que opciones de limpieza de datos serán utilizadas, establecer el número iteraciones para la validación cruzada, y decidir si serán ejecutadas en paralelo en el procesador. El conjunto completo de opciones de línea de comandos que se pueden utilizar está recogido en el Anexo~\ref{app:cli}. Una vez que se capturan los argumentos, \texttt{cli} invoca las funciones correspondientes definidas en el modulo \texttt{mlcost}.
+
+Este modulo se encarga de la integración del seguimiento de emisiones de carbono y consumo energético durante el entrenamiento y la evaluación de los modelos de aprendizaje automático. Este módulo utiliza la biblioteca codecarbon para realizar el seguimiento del impacto ambiental de estos procesos computacionales. El módulo es responsable de gestionar el proceso de entrenamiento, creando un objeto de la clase \texttt{Trainer} por cada modelo a evaluar y asegurándose de que los datos son preprocesados para mejorar la precisión del modelo. Una vez que los datos están preparados, el módulo comienza la medición de emisiones, encarga el entrenamiento del modelo y, al finalizar, detiene el rastreador de emisiones y recupera los datos finales de consumo. Estos datos incluyen la duración del seguimiento, el consumo energético y las emisiones equivalentes de carbono. Los resultados, junto con los datos de rendimiento obtenidos durante la validación del modelo, se registran en un archivo para posterior referencia.
+
+El núcleo de la aplicación reside en el modulo \texttt{learn}, que expone la clase \texttt{Trainer} ya mencionada, donde se definen las tareas principales de carga de datos, entrenamiento y evaluación de modelos, así como la recopilación de métricas de desempeño. Estos procesos serán descritos en mayor detalle en las secciones posteriores.
+
+Para finalizar, la aplicación contiene dos módulos auxiliares que facilitan el desarrollo y proporcionan utilidades para examinar los resultados obtenidos.
+
+El modulo \texttt{graphs} maneja la visualización de los resultados mediante diversas funciones de creación de gráficas que utilizan la librería matplotlib para crear gráficos de dispersión, de líneas y de barras. Estas visualizaciones ayudan a interpretar las relaciones entre las emisiones, el consumo de energía y las métricas de rendimiento de los modelos evaluados. Las gráficas también permiten comparar el desempeño de diferentes modelos bajo diversas cargas de CPU, ofreciendo una visión clara de cómo los recursos del sistema afectan la eficiencia y la precisión del modelo.
+
+El componente \texttt{utils} proporciona funciones auxiliares para la aplicación, tales como la impresión de resultados y la recopilación de información del sistema operativo, así como la gestión de archivos de salida en formato CSV. Este archivo incluye utilidades para manejar los datos de emisiones y consumo energético, formateando la información de manera que sea fácilmente interpretable. 
 
 
 \section{Lectura y limpieza de los datos}
@@ -55,10 +64,7 @@ En la sección de limpieza, el objetivo es eliminar las características que pue
 
 Respecto a las columnas categóricas, muchos algoritmos de aprendizaje no están diseñados para trabajar directamente con variables no numéricas (generalmente, porque limitaría la eficiencia de los algoritmos). Para resolverlo, se utilizará un transformador denominado \texttt{OneHotEncoder}. Este transformador reemplaza una característica categórica con varias características booleanas, de forma que para cada posible valor de la categoría se crea una nueva columna con un valor de sí o no dependiendo de a cual pertenece cada dato. Para simplificar, características categóricas con más de diez valores distintos posibles serán descartadas completamente. Lo mismo ocurrirá con cualquier otra columna que no pueda ser identificada como numérica o categórica y con las filas en las que falten datos de tipo categórico.
 
-Un último transformador, \texttt{StandardScaler}, será aplicado a las características numéricas para alinear las escalas de todas ellas. El escalador estándar provoca que todas las características tengan media cero y varianza uno. Esta estandarización es especialmente importante para algunos modelos de aprendizaje, como las máquinas de vector soporte, que son sensibles a diferentes escalas en los datos.
-
-\todo[inline]{Add feature scaling explanation}
-% https://scikit-learn.org/stable/auto_examples/preprocessing/plot_scaling_importance.html#sphx-glr-auto-examples-preprocessing-plot-scaling-importance-py
+Un último transformador, \texttt{StandardScaler}, será aplicado a las características numéricas para alinear la escala de todas ellas mediante una técnica denominada normalización de características. Este proceso consiste en transformar las características numéricas para que se sitúen dentro de un rango común, generalmente entre 0 y 1 o para que tengan media cero y varianza uno, como se hace con el \texttt{StandardScaler}. Esto ayuda a obtener mejores resultados en los modelos de aprendizaje automático por dos razones. Primero, evita que características con valores grandes dominen a aquellas con valores más pequeños, asegurando que todas las características contribuyan de manera equitativa al modelo. Segundo, algunos algoritmos, como los basados en distancias (por ejemplo, vecinos más cercanos o máquinas de vector soporte), funcionan mejor y convergen más rápido cuando las características están en la misma escala.
 
 
 \section{Entrenamiento}
@@ -74,20 +80,16 @@ El procedimiento es sencillo. En primer lugar se comienzan las mediciones median
 
 Dentro de los modelos de aprendizaje automático existen numerosas clasificaciones de acuerdo al tipo de tareas a realizar y la naturaleza de los datos. Este proyecto se centrará en tareas de clasificación por aprendizaje supervisado. En este subgrupo, destacan una serie de familias de algoritmos que suelen obtener buenos resultados para una gran variedad de tipos de datos.
 \begin{enumerate}
-    \item Modelos lineales. Se trata de modelos sencillos, fáciles de interpretar y eficientes computacionalmente, que funcionan bien cuando las relaciones entre las características de entrada y la salida son aproximadamente lineales. Uno de sus modelos más representativos es el de regresión logística.
-    \item Árboles decisores. Estos algoritmos pueden modelar relaciones complejas en los datos y lidiar con no linealidad. Dentro de esta familia destaca el modelo de Bosque Aleatorio, que agrega predicciones de varios árboles decisores para mejorar la robustez del modelo.
-    \item Máquinas de vector soporte. Estos modelos son efectivos tanto en tareas de clasificación lineales como no lineales y destacan por su gran versatilidad. Funcionan de forma óptima en conjuntos de datos relativamente pequeños pero de gran complejidad.
-    \item Vecinos más cercanos. Su máximo representante, k vecinos más cercanos (k-NN), es un algoritmo simple e intuitivo que se basa en buscar relaciones locales entre los datos y puede ser efectivo en tareas tanto de regresión como de clasificación.
-    \item Naive Bayes (bayesiano ingenuo). Se trata de una familia de modelos que destaca por su gran eficiencia, especialmente frente a conjunto de datos de gran complejidad, y especialmente útil en tareas de clasificación de texto. El clasificador más representativo es el Naive Bayes gaussiano.
-    \item Métodos de conjuntos (ensemble). Estos métodos combinan las características de múltiples modelos para intentar mejorar el desempeño total. Entre ellos destacan las máquinas de potenciación de gradiente, que construyen sólidos modelos predictivos de forma iterativa.
-    \item Redes neuronales. Las redes neuronales, especialmente los modelos de aprendizaje profundo como las redes neuronales profundas (Deep Neural Networks, DNN), pueden formar representaciones jerárquicas complejas a partir de los datos, y son especialmente efectivas en tareas que involucran grandes cantidades de datos con patrones complejos.
+    \item Modelos lineales. Se trata de modelos sencillos, fáciles de interpretar y eficientes computacionalmente, que funcionan bien cuando las relaciones entre las características de entrada y la salida son aproximadamente lineales. Uno de sus modelos más representativos es el de regresión logística (ver \ref{subsec:model-linear}).
+    \item Árboles decisores. Estos algoritmos pueden modelar relaciones complejas en los datos y lidiar con no linealidad. Dentro de esta familia destaca el modelo de Bosque Aleatorio, que agrega predicciones de varios árboles decisores para mejorar la robustez del modelo (ver \ref{subsec:model-random-forest}).
+    \item Máquinas de vector soporte (\ref{subsec:model-svm}). Estos modelos son efectivos tanto en tareas de clasificación lineales como no lineales y destacan por su gran versatilidad. Funcionan de forma óptima en conjuntos de datos relativamente pequeños pero de gran complejidad.
+    \item Vecinos más cercanos. Su máximo representante, k vecinos más cercanos (k-NN, ver \ref{subsec:model-neighbors}), es un algoritmo simple e intuitivo que se basa en buscar relaciones locales entre los datos y puede ser efectivo en tareas tanto de regresión como de clasificación.
+    \item Naive Bayes (bayesiano ingenuo). Se trata de una familia de modelos que destaca por su gran eficiencia, especialmente frente a conjunto de datos de gran complejidad, y especialmente útil en tareas de clasificación de texto. El clasificador más representativo es el Naive Bayes gaussiano (\ref{subsec:model-naive-bayes}).
+    \item Métodos de conjuntos (ensemble). Estos métodos combinan las características de múltiples modelos para intentar mejorar el desempeño total. Entre ellos destacan las máquinas de potenciación de gradiente, que construyen sólidos modelos predictivos de forma iterativa (ver \ref{subsec:model-gradient}).
+    \item Redes neuronales. Las redes neuronales, especialmente los modelos de aprendizaje profundo como las redes neuronales profundas (Deep Neural Networks, DNN, ver \ref{subsec:model-neural}), pueden formar representaciones jerárquicas complejas a partir de los datos, y son especialmente efectivas en tareas que involucran grandes cantidades de datos con patrones complejos.
 \end{enumerate}
 
-En general, se espera que modelos de aprendizaje más complejos como los métodos de conjuntos, las redes neuronales y las máquinas de vector soporte produzcan mejores predicciones a cambio de un mayor gasto energético que otros modelos comparativamente más sencillos computacionalmente, como los modelos lineales, Naive Bayes y vecinos más cercanos. En el capitulo~\ref{chap:experimentos}, se analizará si los resultados obtenidos durante los experimentos se corresponden con esta aproximación teórica. 
-
-\todoin{
-> ref to main explanation in 2.2 \\
-}
+En general, se espera que modelos de aprendizaje más complejos como los métodos de conjuntos, las redes neuronales y las máquinas de vector soporte produzcan mejores predicciones a cambio de un mayor gasto energético que otros modelos comparativamente más sencillos computacionalmente, como los modelos lineales, Naive Bayes y vecinos más cercanos. En el capitulo~\ref{chap:experimentos}, se analizará si los resultados obtenidos durante los experimentos se corresponden con esta aproximación teórica.
 
 
 \section{Registro de resultados}
@@ -95,17 +97,16 @@ En general, se espera que modelos de aprendizaje más complejos como los método
 \subsection{Evaluación de las predicciones}
 \label{sec:scoring}
 
-\todoin{Make sure multiclass is explained somewhere\\
-Explain how scoring is used in project\\
+\todoin{Explain how scoring is used in project\\
 Add good formulas\\
-Add graph to explain scoring}
+Add roc graph to explain scoring}
 
 Para poder obtener una medida de utilidad de los distintos modelos, es necesario evaluar la calidad de las predicciones que realizan. Existen dos métodos principales realizar esta evaluación. El primero y más sencillo consiste en aplicar la función de predicción del modelo a un subconjunto de muestras que hayan sido aisladas previamente para no formar parte del proceso de entrenamiento. Estas predicciones se comparan con las etiquetas correctas de las muestras para determinar si cada predicción ha sido acertada.
 Cuatro resultados distintos son posibles por muestra y clase concreta: true positive (identificada correctamente como perteneciente a la clase), false positive (identificada incorrectamente como perteneciente a la clase), false negative (identificada incorrectamente como no perteneciente a la clase), y true negative (identificada correctamente como no perteneciente a la clase). Una forma común de visualizar estos resultados es mediante una matriz de confusión. \todo[inline]{Add example confusion matrix}
 A partir de las relaciones entre el número de muestras en cada uno de estos grupos se pueden extraer varias métricas del modelo, siendo las más comunes la exactitud, la precisión, la exhaustividad y el \emph{f-score}\cite{scikit-model-eval}. Estas métricas corresponden a un valor de 0 a 1, donde 0 es el peor resultado y 1 el mejor.
 
 
-La exactitud (\emph{accuracy}) se define como la cercanía de la predicciones a su valor real. En tareas de clasificación se calcula como el número de predicciones correctas entre el número de muestras totales (tp+tn/all). Una variante interesante de la exactitud que \texttt{scikit-learn} permite calcular es la exactitud balanceada, que evita medidas infladas de exactitud en conjuntos de datos no balanceados (con una o más clases sobrerrepresentadas en el conjunto) mediante la ponderación de cada muestra de acuerdo a la prevalencia inversa de su verdadera clase.
+La exactitud (\emph{accuracy}) se define como la cercanía de la predicciones a su valor real. En tareas de clasificación se calcula como el número de predicciones correctas entre el número de muestras totales ($\dfrac{tp+tn}{all}$). Una variante interesante de la exactitud que \texttt{scikit-learn} permite calcular es la exactitud balanceada, que evita medidas infladas de exactitud en conjuntos de datos no balanceados (con una o más clases sobrerrepresentadas en el conjunto) mediante la ponderación de cada muestra de acuerdo a la prevalencia inversa de su verdadera clase.
 
 La precisión (\emph{precision}) y la exhaustividad (\emph{recall}) son métricas que analizan la relevancia de las muestras asignadas a cada clase y se calculan individualmente por clase. La precisión analiza el número de muestras correctamente clasificadas dentro de todas las muestras asignadas a una clase concreta ( tp / (tp + fp) ), mientras que la exhaustividad analiza el número de muestras correctamente clasificadas en relación al número total de muestras reales existentes ( tp / (tp + fn) ). Estas dos métricas pueden ser promediadas en función del peso relativo de cada clase un el conjunto para obtener una medida global de la precisión y exhaustividad del modelo.
 

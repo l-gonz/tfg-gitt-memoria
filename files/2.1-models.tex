@@ -6,6 +6,7 @@
 \label{sec:models}
 
 \subsection{Modelos lineales: regresión logística}
+\label{subsec:model-linear}
 
 Los modelos lineales son una clase fundamental de técnicas estadísticas y de aprendizaje automático que se utilizan para predecir una variable objetivo a partir de una o más variables independientes. La característica principal de estos modelos es la relación lineal entre las variables independientes y la variable objetivo. En su forma más simple, el modelo lineal se representa mediante la ecuación $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_n x_n$, donde $y$ es la variable dependiente, $x_1, x_2, \dots, x_n$ son las variables independientes, y $\beta_1, \beta_2, \dots, \beta_n$ son los coeficientes que representan el impacto de cada variable independiente sobre la variable dependiente.
 
@@ -21,6 +22,7 @@ La librería scikit-learn proporciona una interfaz para construir y evaluar mode
 
 
 \subsection{Árboles de decisión: bosque aleatorio}
+\label{subsec:model-random-forest}
 
 Otra técnica popular de aprendizaje automático utilizada para problemas tanto de clasificación como de regresión son los árboles de decisión \cite{sk-decision-trees}. Su estructura jerárquica consiste en nodos de decisión que dividen iterativamente el conjunto de datos en subconjuntos más homogéneos, facilitando así la predicción de la variable objetivo. Cada nodo del árbol representa una prueba sobre un atributo específico, y cada rama denota el resultado de la prueba. Los árboles de decisión son fáciles de interpretar y visualizar, lo que los hace muy útiles para entender las decisiones del modelo y comunicar los resultados a personas no técnicas.
 
@@ -31,6 +33,7 @@ El uso de bosques aleatorios en problemas de clasificación ofrece varias ventaj
 La implementación de un modelo de bosque aleatorio en la librería scikit-learn se ofrece a través de la clase \texttt{RandomForestClassifier} \cite{sk-random-forest}, que permite ajustar diversos parámetros como el número de árboles (\texttt{n\_estimators}), la profundidad máxima de los árboles (\texttt{max\_depth}) y el número mínimo de muestras por hoja (\texttt{min\_samples\_leaf}). 
 
 \subsection{Máquinas de vector soporte (SVM)}
+\label{subsec:model-svm}
 
 En las máquinas de vector soporte (\emph{Support Vector Machines}, SVM) \cite{sk-svm-theory} el principal objetivo es encontrar el hiperplano óptimo que maximiza el margen entre las diferentes clases en un espacio de características. Este margen es la distancia más amplia posible entre el hiperplano y los puntos de datos más cercanos de cualquier clase, conocidos como vectores soporte. La SVM es particularmente eficaz en espacios de alta dimensionalidad y es robusta frente al sobreajuste, lo que la hace adecuada para conjuntos de datos complejos.
 
@@ -41,6 +44,7 @@ En el contexto de problemas de clasificación, las SVM son especialmente útiles
 La clase \texttt{SVC} \cite{sk-svm} de scikit-learn permite ajustar parámetros clave como el tipo de kernel, el parámetro de regularización (\texttt{C}) y coeficientes específicos del kernel elegido.
 
 \subsection{Vecinos más cercanos (k-NN)}
+\label{subsec:model-neighbors}
 
 El método de vecinos más cercanos (k-Nearest Neighbors, k-NN) es una técnica de aprendizaje supervisado utilizada para resolver problemas tanto de clasificación como de regresión. Este método se basa en la premisa de que objetos similares generalmente se encuentran cerca en el espacio de características. En problemas de clasificación, el algoritmo k-NN asigna una etiqueta a una nueva instancia basándose en las etiquetas de sus k vecinos más cercanos en el conjunto de datos de entrenamiento. La cercanía o similitud entre las instancias se mide generalmente utilizando distancias métricas, como la distancia euclidiana, Manhattan, o Minkowski.
 
@@ -51,6 +55,7 @@ En el contexto de problemas de clasificación, el k-NN es especialmente útil en
 La clase \texttt{KNeighborsClassifier} \cite{sk-knn} de la librería scikit-learn proporciona la interfaz para configurar y utilizar el algoritmo k-NN. Esta clase ofrece la posibilidad de especificar el número de vecinos a considerar mediante el parámetro \texttt{n\_neighbors} y de seleccionar la métrica de distancia adecuada utilizando el parámetro \texttt{metric}, que incluye opciones como la distancia euclidiana y Manhattan. Además, scikit-learn permite ajustar parámetros adicionales como el peso de los vecinos, que puede ser uniforme o basado en la distancia.
 
 \subsection{Naive Bayes (Naive Bayes gaussiano)}
+\label{subsec:model-naive-bayes}
 
 Los métodos Naive Bayes \cite{sk-naive-bayes} son un conjunto de algoritmos de aprendizaje supervisado basados en la aplicación del teorema de Bayes con la suposición "ingenua" (en inglés, \emph{naive}) de independencia condicional entre cada par de características dado el valor de la variable de clase. El teorema de Bayes postula la siguiente relación, dada la variable de clase $y$ y los vectores característica dependientes $x_{1}$ a $x_{n}$:
 \begin{equation*}
@@ -82,6 +87,7 @@ A pesar de sus suposiciones aparentemente simplificadas, los clasificadores Naiv
 La implementación de este algoritmo en la librería scikit-learn se encuentra en la clase \texttt{GaussianNB} \cite{sk-nb-gaussian}.
 
 \subsection{Métodos de ensamblaje (ensemble): máquinas de potenciación de gradiente}
+\label{subsec:model-gradient}
 
 El método de ensamblaje por máquinas de potenciación de gradiente (Gradient Boosting Machines, GBM) es una técnica de aprendizaje automático que combina múltiples modelos débiles para crear un modelo más fuerte y preciso. La idea central de GBM es construir el modelo de forma secuencial, donde cada modelo sucesivo intenta corregir los errores del modelo anterior. En el contexto de problemas de clasificación, cada nuevo árbol de decisión se ajusta a los residuos de los árboles anteriores, utilizando el gradiente de la función de pérdida como guía. Esta estrategia permite que GBM capture relaciones complejas y no lineales en los datos, mejorando considerablemente la precisión del modelo.
 
@@ -92,6 +98,7 @@ En problemas de clasificación, GBM es particularmente eficaz debido a su capaci
 La implementación de máquinas de potenciación de gradiente en la librería scikit-learn es accesible a través de la clase GradientBoostingClassifier \cite{sk-gradient-boost} permite a los usuarios ajustar una variedad de hiperparámetros para optimizar el rendimiento del modelo. Los usuarios pueden especificar el número de árboles, la tasa de aprendizaje, y otros parámetros clave para controlar la complejidad y la capacidad de generalización del modelo.
 
 \subsection{Redes neuronales (Deep Neural Networks, DNN) Multi-layer Perceptron}
+\label{subsec:model-neural}
 
 Las redes neuronales están compuestas por capas de neuronas artificiales que imitan el comportamiento de las neuronas en el cerebro humano. Cada neurona realiza una operación matemática simple sobre la entrada y pasa la salida a la siguiente capa. A través de múltiples capas, la red es capaz de capturar patrones y características complejas en los datos. Estás propiedades pueden aplicarse a situaciones de aprendizaje supervisado mediante el uso de algoritmos como el perceptrón multicapa (Multilayer Perceptron, MLP).
 
