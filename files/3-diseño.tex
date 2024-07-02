@@ -10,12 +10,11 @@ Durante la fase de entrenamiento, se empleará la biblioteca CodeCarbon para med
 
 \begin{figure}[H]
   \centerline{
-     \includegraphics[width=0.8\textwidth, keepaspectratio]{img/placeholder.png}
+     \includegraphics[width=\textwidth, keepaspectratio]{img/general-arch.jpg}
   }
   \caption{Arquitectura de la aplicación desarrollada}
   \label{fig:app-arch}
 \end{figure}
-\todo[inline]{Esquema de funcionamiento}
 
 La arquitectura de la aplicación se organiza en torno a varios componentes clave que se integran en el paquete \texttt{mlcost} para ofrecer un entorno robusto para la evaluación de modelos de aprendizaje automático en términos de precisión y eficiencia energética. 
 %% info on packaging
@@ -102,7 +101,7 @@ Cuatro resultados distintos son posibles por muestra y clase concreta: verdadero
 
 \begin{figure}[H]
   \centerline{
-     \includegraphics[width=0.5\textwidth, keepaspectratio]{img/placeholder.png}
+     \includegraphics[width=0.8\textwidth, keepaspectratio]{img/confusion-matrix.jpg}
   }
   \caption{Matriz de confusión que muestra las relaciones entre posible resultados de la predicción.}
   \label{fig:confusion-matrix}
@@ -117,7 +116,7 @@ La \textbf{exactitud} (\emph{accuracy}) se define como la cercanía de la predic
 \label{eq:accuracy}
 \end{equation}
 
-La precisión (\emph{precision}) y la exhaustividad (\emph{recall}) son métricas que analizan la relevancia de las muestras asignadas a cada clase y se calculan individualmente por clase. La precisión analiza el número de muestras correctamente clasificadas dentro de todas las muestras asignadas a una clase concreta, como muestra la ecuación \ref{eq:precision}, mientras que la exhaustividad analiza el número de muestras correctamente clasificadas en relación al número total de muestras reales existentes, como muestra la ecuación \ref{eq:recall}. Estas dos métricas pueden ser promediadas en función del peso relativo de cada clase un el conjunto para obtener una medida global de la precisión y exhaustividad del modelo.
+La \textbf{precisión} (\emph{precision}) y la \textbf{exhaustividad} (\emph{recall}) son métricas que analizan la relevancia de las muestras asignadas a cada clase y se calculan individualmente por clase. La precisión analiza el número de muestras correctamente clasificadas dentro de todas las muestras asignadas a una clase concreta, como muestra la ecuación \ref{eq:precision}, mientras que la exhaustividad analiza el número de muestras correctamente clasificadas en relación al número total de muestras reales existentes, como muestra la ecuación \ref{eq:recall}. Estas dos métricas pueden ser promediadas en función del peso relativo de cada clase un el conjunto para obtener una medida global de la precisión y exhaustividad del modelo.
 
 \noindent
 \begin{tabular}{@{}p{.4\linewidth}@{}p{.6\linewidth}@{}}
