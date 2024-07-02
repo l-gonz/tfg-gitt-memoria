@@ -61,6 +61,13 @@
 \linespread{1.07}                   % Aumentar interlineado para fuentes tipo Palatino
 \setlength{\parskip}{\baselineskip} % Separar párrafos con línea en blanco
 
+% Line and page breaking
+\sloppy
+\clubpenalty = 10000
+\widowpenalty = 10000
+\brokenpenalty = 10000
+\usepackage{ragged2e}				% Enhanced ragged commands
+
 %%-- Hipervínculos
 \usepackage{url}
 
@@ -73,14 +80,17 @@
 \usepackage{svg}                        % Integración de imágenes en formato SVG
 \usepackage{float}                      % H para posicionar figuras
 \usepackage{booktabs}                   % Already loads package xcolor
+\usepackage{longtable}                  % Tables spanning several pages
 \usepackage{multicol}                   % multiple column layout facilities
 \usepackage{colortbl}                   % For coloured tables
+\usepackage{array}                      % Column adjustment in tables
 
 %%-- Bibliografía con Biblatex y Biber
 % Más info:
 % https://www.overleaf.com/learn/latex/Biblatex_bibliography_styles
 % https://www.overleaf.com/learn/latex/biblatex_citation_styles
 \usepackage[
+    backend=biber,
     style=numeric,
     sorting=none
     ]{biblatex}

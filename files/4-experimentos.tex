@@ -42,16 +42,21 @@ Dónde sea posible, se tratará de analizar estas cuestiones de forma general y 
 Para analizar estas cuestiones todas las medidas de consumo serán tomadas con la aplicación desarrollada ejecutando en una misma máquina. Para cada modelo y conjunto de datos, se tomarán medidas de consumo y rendimiento utilizando validación cruzada con cinco iteraciones con un tamaño definido para los datos de testeo del 20\% del conjunto de datos. Esta técnica proporcionará una evaluación robusta y precisa tanto del comportamiento energético de los modelos como de su precisión y exactitud, ya que evitará en gran medida la presencia de valores atípicos y el riesgo de sobreajuste de los modelos.
 
 \begin{table}[h]
-    \centering
-    \begin{tabular}{rl}
-         Modelo & Dell XPS 15 9500\\
-         Sistema Operativo & Ubuntu 20.04.6 LTS x86\_64\\
-         Python & 3.12.2\\
-         Procesador & Intel(R) Core(TM) i9-10885H CPU @ 2.40GHz\\
-         Memoria & 7,63 GB\\
-    \end{tabular}
     \caption{Características técnicas de la máquina utilizada para tomar las medidas}
     \label{tab:caracteristicas-tecnicas}
+    \renewcommand\arraystretch{1.4}
+    \centering
+    \begin{tabular}{m{0.3\textwidth} m{0.55\textwidth}}
+        \toprule
+         \textbf{Característica} & \textbf{Descripción} \\
+         \midrule
+         Modelo & Dell XPS 15 9500\\
+         Sistema Operativo & Ubuntu 20.04.6 LTS x86\_64\\
+         Procesador & Intel(R) Core(TM) i9-10885H CPU @ 2.40GHz\\
+         Versión Python & 3.12.2\\
+         Memoria & 7,63 GB\\
+         \bottomrule
+    \end{tabular}
 \end{table}
 
 La aplicación será ejecutada con el siguiente comando para cada conjunto de datos distinto, en el cual \texttt{[dataset]} será sustituido por el archivo que contenga cada conjunto de datos. Adicionalmente, cualquiera de las opciones de lectura de datos descritas en la sección~\ref{sec:limpieza} podrá ser utilizada si el formato en el que se encuentren los datos lo requiere. Las características de la máquina utilizada están recogidas en la tabla~\ref{tab:caracteristicas-tecnicas}.
@@ -64,42 +69,56 @@ mlcost measure --log -cv 5 -d [dataset] [dataset-options]
 La ejecución del comando anterior producirá un archivo tipo tabla de datos en formato \texttt{.csv}. La tabla~\ref{tab:medidas-1} recoge un extracto de los resultados obtenidos en el ordenador de referencia para seis conjuntos de datos distintos. El archivo completo está disponible en el repositorio de la aplicación.
 
 \begin{table}[H]
-\centerline{
-\scalebox{0.78}{
-\begin{tabular}{|llllllllllll|}
-\hline
-Dataset     & Modelo & CPU & Accuracy & Precision & F-score & Recall & Fit  & Total (s) & Emisiones & Energía  & Muestras \\
- &  & load (\%) &  & & & &  time (s) & &  (kg) &  (kWh) &  \\ \hline
-Banknote    & Linear & 2.7           & 0.98      & 0.98      & 0.98    & 0.98          & 0.007             & 0.071            & 2.13E-07  & 1.10E-06 & 1372     \\
-Banknote    & Linear & 2.7           & 0.97      & 0.97      & 0.97    & 0.97          & 0.006             & 0.071            & 2.13E-07  & 1.10E-06 & 1372     \\
-Banknote    & Linear & 2.7           & 0.97      & 0.97      & 0.97    & 0.97          & 0.006             & 0.071            & 2.13E-07  & 1.10E-06 & 1372     \\
-Banknote    & Linear & 2.7           & 0.99      & 0.99      & 0.99    & 0.99          & 0.005             & 0.071            & 2.13E-07  & 1.10E-06 & 1372     \\
-Banknote    & Linear & 2.7           & 0.99      & 0.99      & 0.99    & 0.99          & 0.005             & 0.071            & 2.13E-07  & 1.10E-06 & 1372     \\
-Banknote    & Forest & 2.7           & 0.99      & 0.99      & 0.99    & 0.99          & 0.184             & 1.429            & 3.27E-06  & 1.69E-05 & 1372     \\
-Banknote    & Forest & 2.7           & 1.00      & 1.00      & 1.00    & 1.00          & 0.171             & 1.429            & 3.27E-06  & 1.69E-05 & 1372     \\
-Banknote    & Forest & 2.7           & 0.99      & 0.99      & 0.99    & 0.99          & 0.154             & 1.429            & 3.27E-06  & 1.69E-05 & 1372     \\
-Banknote    & Forest & 2.7           & 1.00      & 1.00      & 1.00    & 1.00          & 0.172             & 1.429            & 3.27E-06  & 1.69E-05 & 1372     \\
-Banknote    & Forest & 2.7           & 1.00      & 1.00      & 1.00    & 1.00          & 0.158             & 1.429            & 3.27E-06  & 1.69E-05 & 1372     \\
-\multicolumn{12}{|c|}{...} \\
-Electricity & Neural & 102.4         & 0.82      & 0.83      & 0.83    & 0.83          & 132.768           & 518.905          & 1.19E-03  & 6.15E-03 & 45312 \\  \hline
-\end{tabular}}}
-\caption[Extracto de los resultados de entrenamiento]{Extracto de los resultados de entrenamiento\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/model-comp-many.csv}}
-\todo[inline]{Fix header format}}
+\caption[Extracto de los resultados de entrenamiento]{Extracto de los resultados de entrenamiento\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/model-comp-many.csv}}.}
+
 \label{tab:medidas-1}
+\renewcommand\arraystretch{1.4}
+\centerline{
+\scalebox{0.75}{
+\begin{tabular}{ >{\raggedright\arraybackslash}p{0.11\textwidth}  % Name
+                 >{\raggedright\arraybackslash}p{0.1\textwidth}  % Model
+                 >{\raggedleft\arraybackslash}p{0.11\textwidth} % CPU Load
+                 >{\raggedleft\arraybackslash}p{0.11\textwidth}  % Acc
+                 >{\raggedleft\arraybackslash}p{0.11\textwidth}  % Prec
+                 >{\raggedleft\arraybackslash}p{0.09\textwidth}  % F-score
+                 >{\raggedleft\arraybackslash}p{0.08\textwidth} % Recall
+                 >{\raggedleft\arraybackslash}p{0.09\textwidth}  % Fit
+                 >{\raggedleft\arraybackslash}p{0.07\textwidth} % Time
+                 >{\raggedleft\arraybackslash}p{0.12\textwidth} % Emiss
+                 >{\raggedleft\arraybackslash}p{0.1\textwidth}  % Ener
+                 >{\raggedleft\arraybackslash}p{0.05\textwidth} % Samples
+                 }
+\toprule
+\textbf{Dataset}     & \textbf{Modelo} & \textbf{CPU load (\%)} & \textbf{Accuracy} & \textbf{Precision} & \textbf{F-score} & \textbf{Recall} & \textbf{Fit time (s)}  & \textbf{Total (s)} & \textbf{Emisiones (kg)} & \textbf{Energía (kWh)}  & \textbf{N} \\ 
+\midrule
+Banknote    & Linear & 2.7     & 0.98    & 0.98  & 0.98 & 0.98 & 0.007             & 0.071 & 2.13E-07 & 1.10E-06 & 1372 \\
+Banknote    & Linear & 2.7      & 0.97  & 0.97  & 0.97  & 0.97  & 0.006             & 0.071       & 2.13E-07  & 1.10E-06 & 1372     \\
+Banknote    & Linear & 2.7     & 0.97      & 0.97      & 0.97    & 0.97 & 0.006             & 0.071      & 2.13E-07  & 1.10E-06 & 1372     \\
+Banknote    & Linear & 2.7     & 0.99      & 0.99   & 0.99  & 0.99  & 0.005             & 0.071      & 2.13E-07  & 1.10E-06 & 1372     \\
+Banknote    & Linear & 2.7     & 0.99      & 0.99      & 0.99 & 0.99  & 0.005             & 0.071      & 2.13E-07  & 1.10E-06 & 1372     \\
+Banknote    & Forest & 2.7      & 0.99      & 0.99      & 0.99    & 0.99  & 0.184             & 1.429     & 3.27E-06  & 1.69E-05 & 1372     \\
+Banknote    & Forest & 2.7    & 1.00  & 1.00      & 1.00    & 1.00   & 0.171             & 1.429  & 3.27E-06  & 1.69E-05 & 1372     \\
+Banknote    & Forest & 2.7   & 0.99   & 0.99      & 0.99    & 0.99 & 0.154             & 1.429  & 3.27E-06  & 1.69E-05 & 1372     \\
+Banknote    & Forest & 2.7   & 1.00   & 1.00      & 1.00    & 1.00  & 0.172             & 1.429  & 3.27E-06  & 1.69E-05 & 1372     \\
+Banknote    & Forest & 2.7    & 1.00  & 1.00      & 1.00    & 1.00  & 0.158             & 1.429    & 3.27E-06  & 1.69E-05 & 1372     \\
+\multicolumn{12}{ c }{$\dots$} \\
+Electricity & Neural & 102.4         & 0.82      & 0.83      & 0.83    & 0.83          & 132.768           & 518.905          & 1.19E-03  & 6.15E-03 & 45312 \\
+\bottomrule
+\end{tabular}}}
 \end{table}
 
 Cada fila en la tabla corresponde a las medidas tomadas durante una iteración de entrenamiento de cada modelo por validación cruzada. Al haber escogido utilizar validación cruzada de cinco iteraciones, la tabla de resultados cuenta con cinco filas por modelo y conjunto de datos. Sin embargo, algunas de las medidas, como la carga del procesador, el número de muestras del conjunto de datos, el tiempo total de entrenamiento, las emisiones del proceso y la energía consumida, son tomadas de forma global al finalizar todas las iteraciones de entrenamiento de cada modelo y conjunto.
-Para cada iteración individual se recogen las medidas estadísticas de exactitud, precisión, exhaustividad y valor-F calculadas. Además, la implementación de validación cruzada de \texttt{scikit-learn} proporciona una medida del tiempo de entrenamiento empleado en cada iteración (fit time). Este valor puede ser utilizado junto con las emisiones y el tiempo totales de todas las iteraciones para calcular las emisiones de cada iteración de entrenamiento como muestra la ecuación~\ref{eq:fit-emissions}.
+Para cada iteración individual se recogen las medidas estadísticas de exactitud, precisión, exhaustividad y valor-F calculadas. Además, la implementación de validación cruzada de \texttt{scikit-learn} proporciona una medida del tiempo de entrenamiento empleado en cada iteración (fit time). Este valor puede ser utilizado junto con las emisiones y el tiempo totales de todas las iteraciones para calcular las emisiones de cada iteración de entrenamiento, como muestra la ecuación~\ref{eq:fit-emissions}.
 
 \begin{equation}
-    E_1 = \frac{E_T}{t_T} \cdot t_1
+    E_1 = \frac{E_T}{t_T} \cdot t_1 \;,
     \label{eq:fit-emissions}
 \end{equation}
 \begin{conditions}
-E_1   &   emisiones de la iteración \\
-E_T   &   emisiones totales \\
-t_T   &   tiempo total \\
-t_1   &   tiempo de entrenamiento de la iteración
+E_1   &   emisiones de una iteración (kg [$CO_{2}eq$]), \\
+E_T   &   emisiones totales (kg [$CO_{2}eq$]), \\
+t_T   &   tiempo total (s), \\
+t_1   &   tiempo de entrenamiento de la iteración (s).
 \end{conditions}
 
 A partir de los resultados obtenidos se puede dibujar un diagrama de dispersión para visualizar cómo varían las emisiones. En la figura~\ref{fig:scatter-1} se ha utilizado el valor-F como medida de la calidad de las predicciones (eje Y), ya que es habitualmente más informativa en casos de distribuciones de clases no balanceadas. En el eje X, se han dibujado las emisiones con una escala logarítmica.
@@ -167,7 +186,7 @@ Marcar areas en la gráfica siguiendo la discusión para mejor visualización ? 
 
 \subsubsection{Metodología}
 
-La característica principal a analizar de las máquinas utilizadas será el número de procesadores dedicados a las tareas de entrenamiento. En un ordenador de un solo núcleo, cada iteración de la validación cruzada debe realizarse secuencialmente. Sin embargo, al aumentar el número de núcleos del procesador, es posible realizar las tareas de forma paralela. Para utilizar este mecanismo, es necesario activarla indicando a \texttt{scikit-learn} la opción \texttt{n\_jobs=1} para indicar el número de procesos a ejecutar en paralelo, donde -1 indica utilizar todos los disponibles.
+La característica principal a analizar de las máquinas utilizadas será el número de procesadores dedicados a las tareas de entrenamiento. En un ordenador de un solo núcleo, cada iteración de la validación cruzada debe realizarse secuencialmente. Sin embargo, al aumentar el número de núcleos del procesador, es posible realizar las tareas de forma paralela. Para utilizar este mecanismo, es necesario activarla indicando a \texttt{scikit-learn} la opción \texttt{n\_jobs=-1} para indicar el número de procesos a ejecutar en paralelo, donde -1 indica utilizar todos los disponibles.
 
 Para analizar como afecta el número de procesadores disponibles al consumo energético, se tomarán medidas en máquinas con tres configuraciones diferentes. Estas máquinas serán desplegadas como máquinas virtuales en la nube, lo que facilitará controlar los recursos disponibles para cada configuración y ofrecerá un entorno similar de trabajo para todos los casos. La plataforma elegida para el despliegue es Microsoft Azure (sección~\ref{subsec:azure}), que ofrece una gran capacidad de personalización en los recursos desplegados y cuenta con una oferta de créditos gratuitos para el sector educativo que pueden ser empleados en minutos de ejecución de maquinas virtuales.
 
@@ -187,29 +206,35 @@ El proceso completo seguido para cada configuración de recursos puede resumirse
 
 
 \begin{table}[h]
-    \centering
-    \begin{tabular}{r|ccc}
-\multicolumn{1}{l|}{} 
-    & Test 1                             
-    & Test 2                             
-    & Test 3 \rule[-1.5ex]{0pt}{0pt} \\ \hline
-Sistema operativo     
-    & \multicolumn{3}{c}{Ubuntu 20.04.6 LTS x86\_64} 
-    \rule{0pt}{3.5ex} \rule[-1.5ex]{0pt}{0pt} \\
-Procesador            
-    & \multicolumn{3}{c}{\begin{tabular}[c]{@{}c@{}}Intel(R) Xeon(R) Platinum\\ 8272CL CPU @ 2.60GHz\end{tabular}} 
-    \rule{0pt}{3.5ex} \\
-Python                
-    & \multicolumn{3}{c}{3.12.3} \rule{0pt}{3.5ex}  \\
-Configuración Azure               
-    & B1s   & B2ms   & B4ms \rule{0pt}{3.5ex} \\
-Memoria               
-    & 0,8? GB   & 7,75 GB   & 15,57 GB \rule{0pt}{3.5ex} \\
-vCPUs 
-    & 1   & 2   & 4  \rule{0pt}{3.5ex}                       
-\end{tabular}
     \caption{Características técnicas de las máquina virtuales comparadas}
     \label{tab:caracteristicas-tecnicas-multi}
+    \renewcommand\arraystretch{1.6}
+    \centering
+    \begin{tabular}{>{\raggedright\arraybackslash}m{0.2\textwidth}
+                    >{\centering\arraybackslash}m{0.2\textwidth}
+                    >{\centering\arraybackslash}m{0.2\textwidth}
+                    >{\centering\arraybackslash}m{0.2\textwidth}
+                    }
+    \toprule
+    \textbf{Característica}  
+    & \textbf{Test 1}                             
+    & \textbf{Test 2}                             
+    & \textbf{Test 3} \\ \midrule
+Sistema operativo     
+    & \multicolumn{3}{c}{Ubuntu 20.04.6 LTS x86\_64} \\
+Procesador            
+    & \multicolumn{3}{c}{\begin{tabular}[c]{@{}c@{}}Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz\end{tabular}} 
+     \\
+Versión Python                
+    & \multicolumn{3}{c}{3.12.3}  \\
+Configuración Azure               
+    & B1s   & B2ms   & B4ms  \\
+Memoria (GB)              
+    & 0,8?   & 7,75  & 15,57  \\
+vCPUs 
+    & 1   & 2   & 4  \\
+    \bottomrule
+\end{tabular}
 \end{table}
 
 % Low - B1s: 1vcpu, 1GB ram
