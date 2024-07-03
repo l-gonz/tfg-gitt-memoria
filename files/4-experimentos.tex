@@ -12,6 +12,8 @@ El segundo experimento seleccionará un único conjuntos de datos de tamaño med
 
 A través de este análisis, se pretende obtener una comprensión profunda de cómo diferentes modelos de aprendizaje automático consumen energía bajo diversas condiciones de trabajo. Además se intentarán identificar patrones de menor consumo que puedan utilizarse como base para el diseño y la implementación de modelos más sostenibles y eficientes en el futuro.
 
+\todo[inline]{Añadir aquí el comando para dataset con las opciones necesarias y el output de limpieza / balanceo de clases ????}
+
 
 \begin{figure}[H]
   \centerline{
@@ -30,12 +32,12 @@ A través de este análisis, se pretende obtener una comprensión profunda de c�
 En esta sección se examinará el consumo energético una serie de modelos representativos aplicados a varios conjuntos de datos. El objetivo de este análisis será abordar las siguientes cuestiones clave:
 
 \begin{itemize}
-    \item Identificación de los modelos con mayor consumo energético.
-    \item Determinación de los modelos cuyo consumo energético incrementa significativamente al aumentar el número de muestras.
-    \item Evaluación de modelos que ofrecen mejores predicciones con menor consumo energético.
+    \item Identificar los modelos con mayor consumo energético.
+    \item Determinar los modelos cuyo consumo energético incrementa significativamente al aumentar el número de muestras.
+    \item Evaluar que modelos ofrecen mejores predicciones con menor consumo energético.
 \end{itemize}
 
-Dónde sea posible, se tratará de analizar estas cuestiones de forma general y obtener conclusiones que sean extrapolables más allá de los conjuntos de datos concretos que se hayan medido. Sin embargo, debido a la gran cantidad de variables involucradas en las variaciones de consumo entre unos casos y otros, es posible en otros conjuntos de datos se observen comportamientos distintos del consumo.
+Dónde sea posible, se tratará de analizar estas cuestiones de forma general y obtener conclusiones que sean extrapolables más allá de los conjuntos de datos concretos que se hayan medido. Sin embargo, debido a la gran cantidad de variables involucradas y a las variaciones de consumo presentes entre unos casos y otros, es posible en otros conjuntos de datos muy diferentes de los considerados se observen distintos patrones de consumo.
 
 \subsubsection{Metodología}
 
@@ -121,31 +123,34 @@ t_T   &   tiempo total (s), \\
 t_1   &   tiempo de entrenamiento de la iteración (s).
 \end{conditions}
 
-A partir de los resultados obtenidos se puede dibujar un diagrama de dispersión para visualizar cómo varían las emisiones. En la figura~\ref{fig:scatter-1} se ha utilizado el valor-F como medida de la calidad de las predicciones (eje Y), ya que es habitualmente más informativa en casos de distribuciones de clases no balanceadas. En el eje X, se han dibujado las emisiones con una escala logarítmica.
+A partir de los resultados obtenidos se puede dibujar un diagrama de dispersión para visualizar cómo varían las emisiones. En la figura~\ref{fig:scatter-1} se ha utilizado el valor-F como medida de la calidad de las predicciones (eje Y), ya que es habitualmente más informativa en casos de distribuciones de clases no balanceadas. En el eje X, se han dibujado las emisiones en kilogramos de carbono equivalentes con una escala logarítmica. Los distintos conjuntos de datos analizados se indican con formas geométricas distintas de los marcadores y cada modelo se indica en un color distinto. Los conjuntos están ordenados en la leyenda de la parte inferior de la gráfica por número de muestras, de menor a mayor tamaño.
 
 \begin{figure}[H]
   \centerline{
      \includegraphics[width=1.3\textwidth, keepaspectratio]{img/graph/4scatter-dataset-model.png}
   }
-  \caption{Valor-F alcanzado por el modelo frente a las emisiones de carbono necesarias para entrenarlo, por modelo empleado y conjunto de datos utilizado}
+  \caption{Valor-F alcanzado por el modelo frente a las emisiones de carbono necesarias para entrenarlo, por modelo empleado y conjunto de datos utilizado.}
   \label{fig:scatter-1}
 \end{figure}
 \todo[inline]{Fix plot titles}
 
-\todoin{Desarrollo explicación scatter plot:\\
-> Outlier eeg-eye-state lower score, high variance \\
-> Neural, higher emissions, average score, high variance, better score more complex dataset  \\
-> Support vector, starts well, but low score for eye and very high emissions for electricity \\
+Este tipo de representación de los resultados permite observar las relaciones entre cuatro variables al mismo tiempo. De esta forma, se puede observar como cambia la relación entre la puntuación del modelo y sus emisiones de carbono para todas las distintas combinaciones de conjunto de datos y modelo de aprendizaje. Analizando esta gráfica, se puede obtener una idea de que modelos consiguen mantener una buena puntuación con un consumo bajo en la mayoría de las ocasiones.
 
-> Forest, high score, medium emissions, even for eye dataset  \\
-> Gradient, same but a little worse on both \\
+En primer lugar, cabe destacar que la mayoría de las predicciones tienen una puntuación que se encuentra por encima del 70\%. Sin embargo, en la mitad inferior de la gráfica~\ref{fig:scatter-1} destacan los resultados obtenidos para el conjunto del electroencefalograma (\emph{eeg-eye-state}). Este conjunto presenta un valor-F que llega a estar incluso por debajo del 50\% al utilizar el modelo Naive Bayes, lo que representa un resultado peor incluso que un predictor que simplemente eligiera la clase de cada muestra de forma aleatoria entre los dos valores posibles. Para este conjunto, también se obtienen resultados bastante deficientes con el modelo lineal y el de vector soporte, que se encuentran entre el 50 y el 70\%. Estos resultados podrían indicar un problema en la fase de limpieza y preprocesamiento de las características, que no actúa de manera adecuada para un caso específico que presente este conjunto de datos. En la gráfica se puede apreciar que modelos que suelen ser en general menos sensibles al utilizarse con conjuntos poco preparados, como el bosque aleatorio o las redes neuronales, consiguen obtener resultados más aceptables para el conjunto del electroencefalograma.
 
-> Neighbors, very low emissions \\
+Para el resto de resultados que se encuentran en el rango superior del valor-F, se observa en general que las mayores variaciones vienen dadas por el modelo empleado, de forma que los resultados para un modelo particular para todos los conjuntos se encuentran ligeramente agrupados en una sección de la gráfica, con las emisiones aumentando a medida que se incrementa el tamaño del conjunto de datos. Sin embargo, para el caso específico del modelo de vector soporte, se observa una variación mucho más extrema de las emisiones con el aumento de tamaño del conjunto utilizado, a la vez que la puntuación obtenida en las predicciones disminuye considerablemente en comparación con los resultados obtenidos para los conjuntos más pequeños, que dominan la parte superior izquierda de la gráfica.
 
-> Linear, low emissions, low score \\
-> Naive bayes, very low score, low emissions \\ \\ \\
-Marcar areas en la gráfica siguiendo la discusión para mejor visualización ? \\
-}
+Otro caso de emisiones especialmente elevadas se produce al usar el modelo de redes neuronales que destaca por conseguir puntuaciones de valor-F bastante elevadas para todos los conjuntos de datos, incluso para los datos del electroencefalograma, pero a costa de una utilización de recursos que aumenta exponencialmente y produce las emisiones más elevadas de todos los modelos para los conjuntos más grandes y complejos.
+
+Los últimos modelos fácilmente descartables en la mayoría de los casos son el modelo lineal y Naive Bayes, que presentan unos resultados muy similares. Estos modelos consigue mantener unas emisiones particularmente bajas para todos los conjuntos analizados. Sin embargo, presentan una tendencia claramente a la baja en el valor-F al aumentar la complejidad del conjunto de datos utilizado, incluso sin tener en cuenta los valores anómalos obtenidos en el conjunto del electroencefalograma.
+
+De entre los modelos restantes, se distinguen claramente dos patrones distintos. Por un lado el modelo de vecinos más cercanos (\emph{neighbors}) sigue un patrón de emisiones similar al caso lineal, que comienza en la parte izquierda de la gráfica y consigue incrementar muy poco en emisiones al aumentar la complejidad del conjunto de datos. Sin embargo, a diferencia del caso lineal, el valor-F no se muestra tan afectado por el aumento del tamaño del conjunto y se mantiene entre el 80 y el 90\%.
+
+El último caso se da con los modelos de bosque aleatorio y de potenciación de gradiente. Estos modelos se encuentran en la parte media de la gráfica en cuanto a emisiones, con resultados muy parecidos entre los dos modelos. Sin embargo, su puntuación de valor-F se mantiene particularmente elevada para todos los conjuntos de datos, sin muchas variaciones. Dentro de estos dos modelos, el de bosque aleatorio obtiene los mejores resultados, consiguiendo emisiones más reducidas para conjuntos de pequeño tamaño y manteniendo una mayor puntuación para los conjuntos de mayor tamaño.
+
+En conclusión, ...... %%%%%%%%
+
+%Marcar areas en la gráfica siguiendo la discusión para mejor visualización ? \\
 
 
 \begin{figure}[H]

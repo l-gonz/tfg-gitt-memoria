@@ -39,7 +39,7 @@ La base de datos consiste en vocales de 1809 sílabas aisladas, con tres puntos 
 Los datos proceden de una medición continua de un electroencefalograma tomada con el dispositivo neuronal \emph{Emotiv EEG} \cite{eeg-eye-dataset}. La medición tuvo una duración total de 117 segundos,en los que se obtuvieron 14980 muestras individuales. Adicionalmente, el estado del ojo fue detectado mediante una cámara durante la medición del EEG y añadido posteriormente a los datos mediante el análisis de los fotogramas del vídeo. Para cada muestra, se identifico de forma manual el estado de ojo cerrado, al que se asignó un valor de "1", y de ojo abierto, con un valor "0". La base de datos está ordenada de forma cronológica con el primer valor medido al principio de los datos. Los atributos de cada instante de tiempo corresponden a las 14 medidas EEG del dispositivo, originalmente etiquetadas AF3, F7, F3, FC5, T7, P, O1, O2, P8, T8, FC6, F4, F8, AF4, en ese orden.
 
 \subsection{Electricidad}
-
+\label{subsec:dataset-electricity}
 
 Este conjunto de datos fue descrito por M. Harries \cite{electricity-dataset} en 1999 y ha sido ampliamente utilizado para aprendizaje automático desde entonces. Los datos fueron obtenidos del mercado eléctrico australiano de Nuevo Gales del Sur. En este mercado, los precios no son fijos, sino que cambian según la demanda y el abastecimiento de electricidad cada cinco minutos. Además, se tienen en cuenta las transferencias de electricidad para aliviar fluctuaciones procedentes del estado contiguo de Virginia.
 
