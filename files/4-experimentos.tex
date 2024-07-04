@@ -148,30 +148,31 @@ De entre los modelos restantes, se distinguen claramente dos patrones distintos.
 
 El último caso se da con los modelos de bosque aleatorio y de potenciación de gradiente. Estos modelos se encuentran en la parte media de la gráfica en cuanto a emisiones, con resultados muy parecidos entre los dos modelos. Sin embargo, su puntuación de valor-F se mantiene particularmente elevada para todos los conjuntos de datos, sin muchas variaciones. Dentro de estos dos modelos, el de bosque aleatorio obtiene los mejores resultados, consiguiendo emisiones más reducidas para conjuntos de pequeño tamaño y manteniendo una mayor puntuación para los conjuntos de mayor tamaño.
 
-En conclusión, ...... %%%%%%%%
+
 
 %Marcar areas en la gráfica siguiendo la discusión para mejor visualización ? \\
 
 
+Para observar estos resultados de una forma más clara, se puede presentar la información en forma de gráfico de líneas. Las figuras \ref{fig:line-emissions-samples} y \ref{fig:line-fscore-samples} muestran de forma independiente las variaciones de la cantidad de emisiones y del valor-F al aumentar el número de muestras del conjunto de datos. Para estas gráficas, se han utilizado la media de emisiones y puntuación medidas en todas las iteraciones para cada modelo y conjunto.
+
 \begin{figure}[H]
   \centerline{
-     \includegraphics[width=1\textwidth, keepaspectratio]{img/graph/line-nsamples-emission-log.png}
+     \includegraphics[width=0.9\textwidth, keepaspectratio]{img/graph/line-nsamples-emission-log.png}
   }
   \caption{Evolución de las emisiones de carbono con el aumento de número de muestras del conjunto de datos}
   \label{fig:line-emissions-samples}
 \end{figure}
 \begin{figure}[H]
   \centerline{
-     \includegraphics[width=1\textwidth, keepaspectratio]{img/graph/line-nsamples-fscore-loglin.png}
+     \includegraphics[width=0.9\textwidth, keepaspectratio]{img/graph/line-nsamples-fscore-loglin.png}
   }
   \caption{Evolución de las emisiones de carbono con el aumento de número de muestras del conjunto de datos}
   \label{fig:line-fscore-samples}
 \end{figure}
 
-\todoin{Line plots: \\
-> Mejores puntuaciones: Forest, Neural, Neighbors \\
-> Producen emisiones: media, alta, baja, respectivamente \\
-}
+En la figura \ref{fig:line-emissions-samples}, es fácilmente apreciable la gran velocidad de crecimiento de las emisiones con el aumento de complejidad que presentan parte de los modelos (redes neuronales y vector soporte). Este tipo de gráfica permite seleccionar modelos interesantes en cuanto a las emisiones de forma sencilla, observando la inclinación de cada línea y su punto de partida. En la figura \ref{fig:line-fscore-samples}, el mayor beneficio que ofrece es poder descartar modelos que no alcancen un mínimo de puntuación en todos los escenarios, dependiendo de las necesidades específicas de cada caso. De este modo, se observa que los modelos de vector soporte, lineal y Naive Bayes serían fácilmente descartables como los más adecuados en este experimento concreto. 
+
+Para resumir los resultados, de todos los modelos analizados, destacan especialmente el modelo de vecinos más cercanos y el de bosque aleatorio. El primero sobresale por sus bajas emisiones y mantiene un valor-F adecuado en todos los casos. El segundo logra una gran puntuación de valor-F, mientras que sus emisiones se mantienen contenidas, incluso cuando aumenta la complejidad. Cabe destacar el caso del modelo de red neuronal, que muestra claramente la importancia de considerar el consumo energético al elegir modelos. Aunque obtiene resultados ligeramente superiores en puntuación al modelo de vecinos más cercanos, sus emisiones son hasta cuatro órdenes de magnitud mayores. Esta información adicional permite tomar mejores decisiones al seleccionar que modelo utilizar para una aplicación concreta.
 
 
 \section{Consumo energético en función de los recursos\\ disponibles}
@@ -179,9 +180,9 @@ En conclusión, ...... %%%%%%%%
 
 \subsubsection{Objetivos}
 
- En el experimento anterior se observó que el modelo utilizado en el entrenamiento determina en gran medida el consumo energético. Sin embargo, hay una dimensión más que se puede estudiar para intentar reducir este consumo: los recursos computacionales dedicados a la tarea. Al utilizar un ordenador con menores recursos, el proceso de entrenamiento sin duda llevará más tiempo que en una máquina con mayores recursos. Sin embargo, su consumo energético por unidad de tiempo será comparativamente menor.
+En el experimento anterior se observó que el modelo utilizado en el entrenamiento determina en gran medida el consumo energético. Sin embargo, hay una dimensión más que se puede estudiar para intentar reducir este consumo: los recursos computacionales dedicados a la tarea. Al utilizar un ordenador con menores recursos, el proceso de entrenamiento sin duda llevará más tiempo que en una máquina con mayores recursos. Sin embargo, su consumo energético por unidad de tiempo será comparativamente menor.
  
- En esta sección pretende analizar que configuración de recursos actuará de forma más eficiente durante el entrenamiento de un conjunto de datos de gran tamaño, atendiendo a las siguientes cuestiones:
+En esta sección pretende analizar que configuración de recursos actuará de forma más eficiente durante el entrenamiento de un conjunto de datos de gran tamaño, atendiendo a las siguientes cuestiones:
 
  \begin{itemize}
     \item Si es posible compensar más tiempo con menos consumo.
@@ -193,24 +194,9 @@ En conclusión, ...... %%%%%%%%
 
 La característica principal a analizar de las máquinas utilizadas será el número de procesadores dedicados a las tareas de entrenamiento. En un ordenador de un solo núcleo, cada iteración de la validación cruzada debe realizarse secuencialmente. Sin embargo, al aumentar el número de núcleos del procesador, es posible realizar las tareas de forma paralela. Para utilizar este mecanismo, es necesario activarla indicando a \texttt{scikit-learn} la opción \texttt{n\_jobs=-1} para indicar el número de procesos a ejecutar en paralelo, donde -1 indica utilizar todos los disponibles.
 
-Para analizar como afecta el número de procesadores disponibles al consumo energético, se tomarán medidas en máquinas con tres configuraciones diferentes. Estas máquinas serán desplegadas como máquinas virtuales en la nube, lo que facilitará controlar los recursos disponibles para cada configuración y ofrecerá un entorno similar de trabajo para todos los casos. La plataforma elegida para el despliegue es Microsoft Azure (sección~\ref{subsec:azure}), que ofrece una gran capacidad de personalización en los recursos desplegados y cuenta con una oferta de créditos gratuitos para el sector educativo que pueden ser empleados en minutos de ejecución de maquinas virtuales.
+Para analizar como afecta el número de procesadores disponibles al consumo energético, se tomarán medidas en máquinas con tres configuraciones diferentes. Estas máquinas serán desplegadas como máquinas virtuales en la nube, lo que facilitará controlar los recursos disponibles para cada configuración y ofrecerá un entorno similar de trabajo para todos los casos. La plataforma elegida para el despliegue es Microsoft Azure (sección~\ref{subsec:azure}), que ofrece una gran capacidad de personalización en los recursos desplegados y cuenta con una oferta de créditos gratuitos para el sector educativo que pueden ser empleados en minutos de ejecución de maquinas virtuales. La configuración elegida para cada una de las máquinas donde se tomarán las medidas está recogida en la tabla~\ref{tab:caracteristicas-tecnicas-multi}. Todas las máquinas utilizarán la misma versión de sistema operativo y el mismo tipo de procesador, con variaciones en el número de CPUs virtuales y la cantidad de memoria RAM disponible.
 
-El proceso seguido será similar para cada combinación de recursos elegida. En primer lugar es necesario desplegar la máquina virtual con una red virtual configurada que permita conexiones mediante \texttt{ssh}, para poder ser controlada por línea de comandos. A continuación, se ejecutará el script \texttt{azure/install.sh} ubicado en el repositorio del proyecto\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/azure/install.sh}}. Este script instalará la aplicación MLCost y todas sus dependencias, tomará una serie de medidas de entrenamiento en un conjunto de datos concreto, y exportará los resultados para su posterior análisis.
-
-El conjunto de datos elegido para analizar este proceso será \emph{electricity} (ver \ref{subsec:dataset-electricity}), que contiene alrededor de 45K muestras. Este tamaño moderado permite ejecutar los experimentos en un tiempo razonable del orden de pocos minutos por modelo. Al mismo tiempo, tiene un tamaño suficiente para que las diferencias de consumo generadas por las distintas configuraciones de recursos sean visibles.
-Las configuraciones de recursos elegidas para las máquinas virtuales están recogidas en la Tabla~\ref{tab:caracteristicas-tecnicas-multi}. El Anexo \ref{ax:az-templates} contiene unas plantillas que se pueden utilizar dentro de Microsoft Azure para desplegar máquinas virtuales con una configuración idéntica a las utilizadas para tomar las medidas de este experimento.
-\todo[inline]{Guardar plantillas}
-
-El proceso completo seguido para cada configuración de recursos puede resumirse en los siguientes pasos:
-\begin{enumerate}
-    \item Desplegar una máquina virtual en la nube con la configuración deseada.
-    \item Conectarse a la máquina virtual mediante SSH.
-    \item Descargar el repositorio del proyecto.
-    \item Ejecutar el script \texttt{azure/install.sh}.
-\end{enumerate}
-
-
-\begin{table}[h]
+\begin{table}[H]
     \caption{Características técnicas de las máquina virtuales comparadas}
     \label{tab:caracteristicas-tecnicas-multi}
     \renewcommand\arraystretch{1.6}
@@ -242,15 +228,45 @@ vCPUs
 \end{tabular}
 \end{table}
 
-% Low - B1s: 1vcpu, 1GB ram
+El proceso completo seguido para cada configuración de recursos puede resumirse en los siguientes pasos:
+\begin{enumerate}
+    \item Desplegar una máquina virtual en la nube con la configuración deseada.
+    \item Conectarse a la máquina virtual mediante SSH.
+    \item Descargar el repositorio del proyecto.
+    \item Ejecutar el script \texttt{azure/install.sh}.
+    \item Ejecutar el script \texttt{azure/parallel.sh}.
+\end{enumerate}
 
-% Mid - B2ms: 2vcpus, 8GB ram
+Este proceso será similar para cada combinación de recursos elegida. En primer lugar es necesario desplegar la máquina virtual con una red virtual configurada que permita conexiones mediante \texttt{ssh}, para poder ser controlada por línea de comandos. Los nombres que asigna Azure a las combinaciones de recursos específicas utilizadas están recogidos en la tabla~\ref{tab:caracteristicas-tecnicas-multi}. Además, el Anexo \ref{ax:az-templates} contiene unas plantillas que se pueden utilizar dentro de Microsoft Azure para desplegar de forma automática máquinas virtuales con una configuración idéntica a las utilizadas para tomar las medidas en este experimento.
 
-% Xtra - B4ms: 4vcpus, 16GB memory
-% Running on paralleltest3
-% Intel(R) Xeon(R) CPU E5-2673 v4 @ 2.30GHz
-% Memory: 15.57 GB
-% Start load: 4.00% for 4 CPUs
+Una vez que la máquina virtual se ha inicializado, será posible conectarse a ella mediante el protocolo \texttt{ssh}. Para no tener que configurar claves de acceso, es posible conectarse directamente con un terminal en línea que ofrece Azure directamente en su portal en la página de configuración de la máquina virtual. Cuando la conexión se establezca, el siguiente paso es descargar el repositorio del proyecto para tener acceso al código de la aplicación y a los recursos de instalación incluidos.
+
+% git clone https://github.com/l-gonz/tfg-gitt-mlcost.git --branch=azure tfg-gitt-mlcost-azure
+
+A continuación, se ejecutará el script \texttt{azure/install.sh} ubicado en el repositorio del proyecto\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/azure/install.sh}}. Este script instalará la aplicación MLCost y todas sus dependencias, tomará una serie de medidas de entrenamiento en un conjunto de datos concreto, y exportará los resultados para su posterior análisis.
+
+% # Installation
+% curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+% az login
+
+% sudo add-apt-repository ppa:deadsnakes/ppa -y
+% sudo apt install -y python3.12
+% sudo apt install -y python3.12-venv
+
+% ghtoken=$(az keyvault secret show -n Github-Token --vault-name kv-mlcost --query "value" -o tsv)
+% cd ~/tfg-gitt-mlcost-azure
+% git remote set-url origin https://azure-machine:${ghtoken}@github.com/l-gonz/tfg-gitt-mlcost.git
+% git config --local user.email "azure.machine@email.com"
+% git config --local user.name "azure-machine"
+
+% python3.12 -m venv .venv
+% source .venv/bin/activate
+% python3.12 -m pip install -r requirements.txt
+% python3.12 -m pip install -e .
+
+Por último, se ejecutará el script \texttt{azure/parallel.sh}\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/azure/parallel.sh}}. Este archivo tomará dos medidas distintas. La primera simplemente medirá la puntuación y las emisiones de todos los modelos de aprendizaje en un conjunto de datos con validación cruzada de forma similar al experimento anterior. La segunda medida, sin embargo, utilizará la opción \texttt{--parallel} de la aplicación, que provoca que las distintas iteraciones de entrenamiento se ejecuten de forma paralela. Al finalizar el proceso de entrenamiento de todos los modelos, los archivos CSV con las medidas tomadas se exportarán automáticamente al repositorio de la aplicación para poder ser analizados fuera de la máquina virtual. Este proceso se repetirá para cada una de las tres máquinas virtuales desplegadas, obteniendo medidas de entrenamiento de seis casos en total.
+
+El conjunto de datos elegido para analizar este proceso será \emph{electricity} (ver \ref{subsec:dataset-electricity}), que contiene alrededor de 45K muestras. Este tamaño moderado permite ejecutar los experimentos en un tiempo razonable del orden de pocos minutos por modelo. Al mismo tiempo, tiene un tamaño suficiente para que las diferencias de consumo generadas por las distintas configuraciones de recursos sean visibles. 
 
 
 \subsubsection{Resultados}
