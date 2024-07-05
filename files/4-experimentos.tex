@@ -68,10 +68,10 @@ mlcost measure --log -cv 5 -d [dataset] [dataset-options]
 
 \subsubsection{Resultados}
 
-La ejecución del comando anterior producirá un archivo tipo tabla de datos en formato \texttt{.csv}. La tabla~\ref{tab:medidas-1} recoge un extracto de los resultados obtenidos en el ordenador de referencia para seis conjuntos de datos distintos. El archivo completo está disponible en el repositorio de la aplicación.
+La ejecución del comando anterior producirá un archivo tipo tabla de datos en formato \texttt{.csv}. La tabla~\ref{tab:medidas-1} recoge un extracto de los resultados obtenidos en el ordenador de referencia para seis conjuntos de datos distintos. El archivo completo está disponible en el repositorio de la aplicación\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/out/all-models-laptop.csv}}.
 
 \begin{table}[H]
-\caption[Extracto de los resultados de entrenamiento]{Extracto de los resultados de entrenamiento\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/model-comp-many.csv}}.}
+\caption[Extracto de los resultados de entrenamiento]{Extracto de los resultados de entrenamiento.}
 
 \label{tab:medidas-1}
 \renewcommand\arraystretch{1.4}
@@ -172,7 +172,13 @@ Para observar estos resultados de una forma más clara, se puede presentar la in
 
 En la figura \ref{fig:line-emissions-samples}, es fácilmente apreciable la gran velocidad de crecimiento de las emisiones con el aumento de complejidad que presentan parte de los modelos (redes neuronales y vector soporte). Este tipo de gráfica permite seleccionar modelos interesantes en cuanto a las emisiones de forma sencilla, observando la inclinación de cada línea y su punto de partida. En la figura \ref{fig:line-fscore-samples}, el mayor beneficio que ofrece es poder descartar modelos que no alcancen un mínimo de puntuación en todos los escenarios, dependiendo de las necesidades específicas de cada caso. De este modo, se observa que los modelos de vector soporte, lineal y Naive Bayes serían fácilmente descartables como los más adecuados en este experimento concreto. 
 
-Para resumir los resultados, de todos los modelos analizados, destacan especialmente el modelo de vecinos más cercanos y el de bosque aleatorio. El primero sobresale por sus bajas emisiones y mantiene un valor-F adecuado en todos los casos. El segundo logra una gran puntuación de valor-F, mientras que sus emisiones se mantienen contenidas, incluso cuando aumenta la complejidad. Cabe destacar el caso del modelo de red neuronal, que muestra claramente la importancia de considerar el consumo energético al elegir modelos. Aunque obtiene resultados ligeramente superiores en puntuación al modelo de vecinos más cercanos, sus emisiones son hasta cuatro órdenes de magnitud mayores. Esta información adicional permite tomar mejores decisiones al seleccionar que modelo utilizar para una aplicación concreta.
+% Para resumir los resultados, de todos los modelos analizados, destacan especialmente el modelo de vecinos más cercanos y el de bosque aleatorio. El primero sobresale por sus bajas emisiones y mantiene un valor-F adecuado en todos los casos. El segundo logra una gran puntuación de valor-F, mientras que sus emisiones se mantienen contenidas, incluso cuando aumenta la complejidad. Cabe destacar el caso del modelo de red neuronal, que muestra claramente la importancia de considerar el consumo energético al elegir modelos. Aunque obtiene resultados ligeramente superiores en puntuación al modelo de vecinos más cercanos, sus emisiones son hasta cuatro órdenes de magnitud mayores. Esta información adicional permite tomar mejores decisiones al seleccionar que modelo utilizar para una aplicación concreta.
+
+\subsubsection{Conclusiones}
+
+En el experimento, se analizaron las emisiones de carbono y el rendimiento de varios modelos de aprendizaje automático utilizando validación cruzada con cinco iteraciones. Los resultados se exportaron a un archivo CSV, y se observaron variaciones en las emisiones y puntuaciones de valor-F. La figura de dispersión mostró cómo las emisiones y el valor-F varían entre los modelos y conjuntos de datos, destacando las diferencias significativas entre ellos.
+
+El modelo de vecinos más cercanos se destacó por sus bajas emisiones y un valor-F constante entre 80\% y 90\%. El modelo de bosque aleatorio y el de potenciación de gradiente mostraron emisiones moderadas y un alto valor-F. Sin embargo, el modelo de red neuronal, aunque obtuvo puntuaciones elevadas, tuvo las emisiones más altas, especialmente con conjuntos de datos grandes. Los modelos lineal y Naive Bayes presentaron bajas emisiones, pero su valor-F disminuyó con la complejidad del conjunto de datos. Los resultados indican que la selección del modelo debe considerar tanto el rendimiento como las emisiones, siendo el modelo de vecinos más cercanos y el de bosque aleatorio opciones destacadas por su equilibrio entre ambos aspectos.
 
 
 \section{Consumo energético en función de los recursos\\ disponibles}
@@ -264,59 +270,76 @@ A continuación, se ejecutará el script \texttt{azure/install.sh} ubicado en el
 % python3.12 -m pip install -r requirements.txt
 % python3.12 -m pip install -e .
 
-Por último, se ejecutará el script \texttt{azure/parallel.sh}\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/azure/parallel.sh}}. Este archivo tomará dos medidas distintas. La primera simplemente medirá la puntuación y las emisiones de todos los modelos de aprendizaje en un conjunto de datos con validación cruzada de forma similar al experimento anterior. La segunda medida, sin embargo, utilizará la opción \texttt{--parallel} de la aplicación, que provoca que las distintas iteraciones de entrenamiento se ejecuten de forma paralela. Al finalizar el proceso de entrenamiento de todos los modelos, los archivos CSV con las medidas tomadas se exportarán automáticamente al repositorio de la aplicación para poder ser analizados fuera de la máquina virtual. Este proceso se repetirá para cada una de las tres máquinas virtuales desplegadas, obteniendo medidas de entrenamiento de seis casos en total.
+Por último, se ejecutará el script \texttt{azure/parallel.sh}\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/azure/parallel.sh}}. Este archivo tomará dos medidas distintas. La primera simplemente medirá la puntuación y las emisiones de todos los modelos de aprendizaje en un conjunto de datos con validación cruzada de forma similar al experimento anterior. La segunda medida, sin embargo, utilizará la opción \texttt{--parallel} de la aplicación, que provoca que las distintas iteraciones de entrenamiento se ejecuten de forma paralela. Al finalizar el proceso de entrenamiento de todos los modelos, los archivos CSV con las medidas tomadas se exportarán automáticamente al repositorio de la aplicación para poder ser analizados fuera de la máquina virtual. Este proceso se repetirá para cada una de las tres máquinas virtuales desplegadas, obteniendo medidas de entrenamiento de seis casos en total. Los comandos utilizados en este script para realizar las medidas en cada una de las máquinas serán los siguientes:
+\begin{minted}{bash}
+mlcost measure --log -cv 5 --openml -d electricity
+mlcost measure --log -cv 5 --openml -d electricity --parallel
+\end{minted}
 
 El conjunto de datos elegido para analizar este proceso será \emph{electricity} (ver \ref{subsec:dataset-electricity}), que contiene alrededor de 45K muestras. Este tamaño moderado permite ejecutar los experimentos en un tiempo razonable del orden de pocos minutos por modelo. Al mismo tiempo, tiene un tamaño suficiente para que las diferencias de consumo generadas por las distintas configuraciones de recursos sean visibles. 
 
 
 \subsubsection{Resultados}
 
+Tras la ejecución de las seis mediciones tomadas los resultados se exportan a un archivo CSV de la misma manera que en el experimento anterior. El archivo completo con los resultados obtenidos está disponible en el repositorio de la aplicación\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/out/output-parallel-azure-electricity.csv}}. En este caso, en vez de múltiples conjuntos de datos, se comparan las distintas configuraciones utilizadas. La figura~\ref{fig:4-2-non-average-scatter} representa todas las medidas obtenidas con sus puntuaciones de valor-F y emisiones producidas por iteración de entrenamiento. A diferencia de en el experimento anterior, ahora las distintas medidas obtienen resultados muy similares para cada iteración, por lo que los puntos de la gráfica se encuentran muy agrupados. Esto se debe a que la configuración de la máquina de entrenamiento produce un efecto mucho menor en las emisiones que la complejidad del conjunto de datos a analizar. Además, al ejecutar el experimento en una máquina virtual dedicada únicamente a esta tarea, con muy pocos programas adicionales instalados, las iteraciones obtienen resultados mucho más consistentes, que apenas se desvían en emisiones o valor-F obtenido. Por esta razón, se observarán directamente los valores medios de emisiones y puntuación por modelo y configuración.
+
 \begin{figure}[H]
   \centerline{
-     \includegraphics[width=\textwidth, keepaspectratio]{img/graph/2-scat-energy-p-s.png}
+     \includegraphics[width=\textwidth, keepaspectratio]{img/graph/2-scat-emissions-non-average.png}
   }
-  \caption{Distribución de la energía por segundo}
-  \label{fig:4-2-energy-per-second}
+  \caption{Valor-F alcanzado por el modelo frente a las emisiones de carbono necesarias para entrenarlo, por modelo empleado y configuración de la máquina utilizada.}
+  \label{fig:4-2-non-average-scatter}
 \end{figure}
+
+La figura~\ref{fig:4-2-average-scatter-fit-emissions} muestra el mismo gráfico de dispersión con estos valores medios calculados. En primer lugar, se puede observar que el valor-F medio obtenido se mantiene completamente constante para todas las configuraciones analizadas, y solo depende del modelo utilizado. Por lo tanto, para este experimento se puede obviar este valor, ya que no hay diferencia con el análisis de la sección anterior.
+
 \begin{figure}[H]
   \centerline{
      \includegraphics[width=\textwidth, keepaspectratio]{img/graph/2-scat-fit-emissions.png}
   }
   \caption{Distribución de las emisiones por hilo de ejecución}
-  \label{fig:4-2-energy-per-second}
+  \label{fig:4-2-average-scatter-fit-emissions}
 \end{figure}
+
+En cuanto a las emisiones obtenidas por iteración , se puede apreciar que existe algún tipo de separación entre las diferentes máquinas. Estos cambios son difíciles de analizar cuando la diferencia entre emisiones es mucho más grande entre distintos modelos que entre distintas configuraciones de recursos. Para poder obtener una visión más concreta del efecto de los recursos empleados, se pueden calcular las emisiones por segundo de computo de forma global, teniendo en cuenta las emisiones totales del proceso de entrenamiento y el tiempo total empleado, en vez de las emisiones por cada iteración. Esta nueva medida será calculada siguiendo la formula~\ref{eq:emissions-per-second}.
+
+\begin{equation}
+E(t) = \dfrac{E_T}{t_T}  \;,
+\label{eq:emissions-per-second}
+\end{equation}
+\begin{conditions}
+E(t)  &   emisiones por segundo (kg [$CO_{2}eq$] / s), \\
+E_T   &   emisiones totales (kg [$CO_{2}eq$]), \\
+t_T   &   tiempo total (s).
+\end{conditions}
+
+A partir de los resultados obtenidos, se puede utilizar un gráfico de líneas para observar las variaciones por configuración de recursos, como muestra la figura~\ref{fig:4-2-line-energy-per-second}. Con esta representación, se puede observar claramente que las emisiones aumentan al utilizar paralelismo, y en mayor medida al utilizar más procesadores en paralelo. Este resultado corresponde con lo esperado, ya que una máquina con mayores recursos utilizados consumirá más energía. Es interesante destacar que no se encuentran grandes diferencias en emisiones entre las distintas configuraciones si no se usa paralelismo, lo que indica que no se están aprovechando todos los recursos disponibles.
+
 \begin{figure}[H]
   \centerline{
-     \includegraphics[width=\textwidth, keepaspectratio]{img/graph/2-scat-emissions.png}
+     \includegraphics[width=\textwidth, keepaspectratio]{img/graph/2-line-energy-p-s.png}
   }
-  \caption{Distribución de las emisiones totales del entrenamiento}
-  \label{fig:4-2-energy-per-second}
+  \caption{Distribución de la energía por segundo}
+  \label{fig:4-2-line-energy-per-second}
 \end{figure}
 
-\todoin{Análisis: \\
-> Dice algo f\_score en el eje y? Cambiar? \\
-> Energía por segundo es la misma prácticamente para todos los casos \\
-> En emisiones totales sí consume menos las opciones -P (excepto T1, por tener solo 1 procesador es lo mismo) (excepto Linear model, no paraleliza ??)
-> En emisiones por iteración no hay apenas diferencia (T2 consume menos en general por poco) \\ \\ 
+Sin embargo, una medida de emisiones por segundo no tiene en cuenta el tiempo total empleado en el proceso de entrenamiento. Como ya se ha comentado anteriormente, el mayor consumo de energía de una configuración más potente podría ser compensado con creces al emplear un tiempo mucho menor en el entrenamiento. La figura~\ref{4-2-line-total-emissions} muestra las emisiones totales por configuración. Aquí se pude observar que para todos los modelos, las opciones que utilizan procesamiento en paralelo tienen unas emisiones totales menores, siendo la diferencia más significativa con un mayor numero de procesadores utilizados (T3-P).
 
-> ¿Cambiar y tomar medidas con -cv 8 para ser divisible entre número cpus de todas las configuraciones?
-}
+\begin{figure}[H]
+  \centerline{
+     \includegraphics[width=\textwidth, keepaspectratio]{img/graph/2-line-emissions.png}
+  }
+  \caption{Distribución de la energía por segundo}
+  \label{fig:4-2-line-total-emissions}
+\end{figure}
+%%% Gráfico de barras ?? grouped by model, coloured by config
 
-% \section{?? Optimización del consumo energético}
+%%> ¿Cambiar y tomar medidas con -cv 8 para ser divisible entre número cpus de todas las configuraciones?
 
-% \todoin{Proceso: \\
-% > Elegir 2-3 modelos interesantes \\
-% > Run GridSearchCV \\
-% > Optimizar hiperparámetros para reducir consumo \\
-% > Cambia que modelos son más eficientes con la optimización ???
-% }
+\subsubsection{Conclusiones}
 
-% \section{?? Consumo energético en función de la localización}
+En este experimento, se realizaron seis mediciones cuyos resultados fueron exportados a un archivo CSV. A diferencia del experimento anterior, las configuraciones de hardware utilizadas en este experimento mostraron resultados muy consistentes en términos de emisiones y valor-F, debido a la uniformidad de la máquina de entrenamiento y la dedicación exclusiva de la máquina virtual.
 
-% \todoin{
-% > codecarbon permite indicar el país al medir el consumo \\
-% > el calculo de energía a kg CO2 equivalentes cambia mucho \\
-% > codecarbon-viz tool tiene gráficas de como varía el consumo por país, como se compara el consumo a usos domésticos
-% }
+El análisis de los valores medios reveló que el valor-F medio se mantuvo constante independientemente de la configuración, dependiendo únicamente del modelo utilizado. Las emisiones por iteración variaron más entre diferentes modelos que entre configuraciones de recursos. Se observó que las emisiones aumentan con el uso de paralelismo y más procesadores en paralelo, como era de esperarse, dado que el uso de más recursos incrementa el consumo de energía. Sin embargo, no se encontraron grandes diferencias en emisiones entre configuraciones sin paralelismo. Finalmente, se constató que aunque una configuración más potente consume más energía por segundo, el menor tiempo de entrenamiento requerido compensa este consumo, resultando en menores emisiones totales para opciones con procesamiento en paralelo.
 
 \clearpage
