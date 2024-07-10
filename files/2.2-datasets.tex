@@ -7,15 +7,41 @@ El repositorio de aprendizaje automático de la UCI \cite{ml-uci} es una colecci
 
 OpenML \cite{openml} es una plataforma abierta para compartir conjuntos de datos, algoritmos y experimentos, que tiene como objetivo lograr que las investigaciones sobre aprendizaje automático sean más fácilmente accesibles y reutilizables. Esta plataforma contiene un repositorio con más de cinco mil conjuntos de datos y resultados de experimentos que otros usuarios han realizado con ellos. Además, ofrece librerías propias para integrar la recuperación de sus datos directamente con el código de desarrollo de modelos de aprendizaje. Scikit-Learn ofrece también una función para descargar los datos fácilmente de esta plataforma, \texttt{fetch\_openml} \cite{sk-fetch-openml}, que toma el nombre de un conjunto de datos y devuelve un dataframe de Pandas con toda la información disponible.
 
-A continuación se describen las características más importantes de los conjuntos de datos empleados.
-% ANNEX All attributes
+La tabla \ref{tab:datasets} recoge las características más importantes de los conjuntos de datos empleados, que serán descritos a continuación en mayor detalle.
+
+\begin{table}[H]
+    \caption{Características de los conjuntos de datos utilizados}
+    \label{tab:datasets}
+    \renewcommand\arraystretch{1.6}
+    \centering
+    \begin{tabular}{>{\raggedright\arraybackslash}m{0.25\textwidth}
+                    >{\centering\arraybackslash}m{0.18\textwidth}
+                    >{\centering\arraybackslash}m{0.18\textwidth}
+                    >{\centering\arraybackslash}m{0.12\textwidth}
+                    >{\centering\arraybackslash}m{0.15\textwidth}
+                    }
+    \toprule
+    \textbf{Nombre}  
+    & \textbf{Características numéricas}                             
+    & \textbf{Características categóricas} 
+    & \textbf{Nº clases}
+    & \textbf{Nº muestras} \\ \midrule
+Iris                         & 4   & 0  & 3   & 150  \\
+Ionosfera                    & 34  & 0  & 2   & 351  \\
+Autenticación de billetes    & 4   & 0  & 2   & 1372  \\
+Fonemas                      & 5   & 0  & 2   & 5404  \\
+Electroencefalograma         & 14  & 0  & 2   & 14980  \\
+Electricidad         & 7   & 1  & 2   & 45312  \\
+    \bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Iris}
 
 Iris esta entre las primeras bases de datos recogidas, y es una de las más conocidas y utilizadas en la literatura sobre reconocimiento de patrones. Los datos originales fueron publicados por R.A. Fisher en 1936, y la versión utilizada en este proyecto procede de la UCI (1988) \cite{iris-dataset}.
 El conjunto contiene tres clases distintas con 50 ejemplos cada una, donde cada clase se refiere a una especie del género de plantas Iris. Cada ejemplo contiene cuatro atributos que describen la longitud y la anchura del sépalo y el pétalo de la planta en centímetros. Las tres opciones de clasificación son Iris Setosa, Iris Versicolour e Iris Virginica, donde una de las clases es linealmente separable de las otras dos, y estas últimas no son separable entre sí de forma lineal.
 
-La versión utilizada corresponde a la implementación \texttt{load\_iris} de Scikit-Learn.
+La versión utilizada corresponde a la implementación \texttt{load\_iris} de scikit-learn.
 
 \subsection{Ionosfera}
 

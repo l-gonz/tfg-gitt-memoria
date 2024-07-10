@@ -15,7 +15,7 @@ Durante el desarrollo de la aplicación, los principales obstáculos encontrados
 
 El objetivo principal de este proyecto era obtener una comparación del consumo y el impacto medioambiental de diferentes técnicas de clasificación. Este objetivo ha sido conseguido mediante la creación de una herramienta que usa técnicas de medición modernas para calcular las emisiones producidas durante el aprendizaje. La aplicación de esta herramienta a diferentes modelos representativos permite obtener una comparación de su rendimiento en múltiples situaciones.
 
-Respecto a los objetivos específicos, la sección~\ref{sec:lit-rev} estudió distintas herramientas ya existentes usadas en el campo de la medición de emisiones del aprendizaje automático. De estas, se eligió Scikit-Learn como motor de aprendizaje y CodeCarbon como base para las mediciones del impacto ambiental, debido a su facilidad de desarrollo e integración con otras librerías. Durante el desarrollo de la aplicación, ambas herramientas han sido ampliamente estudiadas para asegurar su buen funcionamiento en las pruebas llevadas a cabo.
+Respecto a los objetivos específicos, la sección~\ref{sec:lit-rev} estudió distintas herramientas ya existentes usadas en el campo de la medición de emisiones del aprendizaje automático. De estas, se eligió scikit-learn como motor de aprendizaje y CodeCarbon como base para las mediciones del impacto ambiental, debido a su facilidad de desarrollo e integración con otras librerías. Durante el desarrollo de la aplicación, ambas herramientas han sido ampliamente estudiadas para asegurar su buen funcionamiento en las pruebas llevadas a cabo.
 
 Estas pruebas tenían como objetivo comparar el consumo energético de los algoritmos más importantes y analizar la relación entre la precisión y el consumo. El experimento de la sección~\ref{sec:test-1-models} recoge varias de estas pruebas y extrae conclusiones sobre que modelos pueden ser más interesantes en el contexto de la limitación de las emisiones de carbono producidas.
 
@@ -44,7 +44,7 @@ Durante el desarrollo de este proyecto, varios desafíos han requerido expandir 
         \item Creación de gráficas personalizables para diferentes motores gráficos con la librería Matplotlib.
     \end{itemize}
     \item Conocimiento de modelos de aprendizaje, ampliando el conocimiento teórico a la aplicación de los modelos a diferentes conjuntos de datos.
-    \item Uso de Scikit-Learn como motor de aprendizaje automático, abstrayendo la implementación teórica de los algoritmos a analizar.
+    \item Uso de scikit-learn como motor de aprendizaje automático, abstrayendo la implementación teórica de los algoritmos a analizar.
     \item Métodos de cálculo de emisiones, incluyendo el método utilizado por CodeCarbon en función de la energía consumida y la mezcla energética de la red eléctrica de cada país.
 \end{itemize}
 
@@ -55,7 +55,7 @@ Durante el desarrollo de este proyecto, varios desafíos han requerido expandir 
 El trabajo de este proyecto está enfocado en presentar pruebas básicas del funcionamiento de la aplicación comparativa desarrollada. Por lo tanto, existen muchas avenidas adicionales de estudio para ampliar este análisis. 
 
 \subsubsection{Ampliación a modelos personalizados}
-Una posible línea de investigación futura es la ampliación del número y la diversidad de los modelos utilizados, incluyendo la posibilidad de trabajar con algoritmos adicionales además de los incluidos en la librería Scikit-Learn. De este modo, se podría comparar el consumo energético en contextos más específicos. Además, probar una gama más amplia de modelos de aprendizaje automático, incluidos aquellos basados en arquitecturas modernas como transformadores y redes neuronales profundas, podría ofrecer una visión más completa del consumo energético y el rendimiento.
+Una posible línea de investigación futura es la ampliación del número y la diversidad de los modelos utilizados, incluyendo la posibilidad de trabajar con algoritmos adicionales además de los incluidos en la librería scikit-learn. De este modo, se podría comparar el consumo energético en contextos más específicos. Además, probar una gama más amplia de modelos de aprendizaje automático, incluidos aquellos basados en arquitecturas modernas como transformadores y redes neuronales profundas, podría ofrecer una visión más completa del consumo energético y el rendimiento.
 
 \subsubsection{Optimización Energética}
 Otro enfoque relevante sería investigar técnicas de optimización energética específicamente diseñadas para el entrenamiento de modelos de aprendizaje automático. Esto podría incluir el desarrollo de algoritmos de ajuste de hiperparámetros que consideren no solo el rendimiento del modelo, sino también su consumo energético. Asimismo, explorar técnicas de compresión de modelos y aprendizaje federado (aprendizaje colaborativo a través de una arquitectura descentralizada en múltiples dispositivos) podría reducir significativamente las emisiones asociadas al entrenamiento.
