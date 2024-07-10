@@ -12,17 +12,16 @@ El segundo experimento seleccionará un único conjuntos de datos de tamaño med
 
 A través de este análisis, se pretende obtener una comprensión profunda de cómo diferentes modelos de aprendizaje automático consumen energía bajo diversas condiciones de trabajo. Además se intentarán identificar patrones de menor consumo que puedan utilizarse como base para el diseño y la implementación de modelos más sostenibles y eficientes en el futuro.
 
-\todo[inline]{Añadir aquí el comando para dataset con las opciones necesarias y el output de limpieza / balanceo de clases ????}
-
 
 \begin{figure}[H]
   \centerline{
-     \includegraphics[width=0.8\textwidth, keepaspectratio]{img/placeholder.png}
+     \includegraphics[width=\textwidth, keepaspectratio]{img/test-structure.jpg}
   }
   \caption{Esquema general a seguir durante los experimentos}
   \label{fig:esquema-experimentos}
 \end{figure}
-\todo[inline]{Añadir esquema}
+
+La figura~\ref{fig:esquema-experimentos} muestra un esquema general que seguirán ambos experimentos. En primer lugar, se plantearán los modelos a analizar, los conjuntos de datos en los que serán entrenados y los recursos la máquina en la que se realizará el entrenamiento. Posteriormente, se utilizará la función "\texttt{mlcost measure}" de la aplicación, especificando los modelos y datos escogidos. De esta manera se llevarán a cabo las tres fases del proceso de medición por cada combinación modelo-conjunto posible: limpieza de los datos, entrenamiento del modelo y validación de la calidad de las predicciones. Para finalizar, se recogerán los datos resultantes del paso anterior y se alimentarán a la función "\texttt{mlcost plot}", que producirá las gráficas necesarias para analizar las relaciones entre el rendimiento de los modelos y su consumo energético y emisiones producidas.
 
 \section{Consumo energético en función del modelo\\ seleccionado}
 \label{sec:test-1-models}
@@ -41,7 +40,7 @@ Dónde sea posible, se tratará de analizar estas cuestiones de forma general y 
 
 \subsubsection{Metodología}
 
-Para analizar estas cuestiones todas las medidas de consumo serán tomadas con la aplicación desarrollada ejecutando en una misma máquina. Para cada modelo y conjunto de datos, se tomarán medidas de consumo y rendimiento utilizando validación cruzada con cinco iteraciones con un tamaño definido para los datos de testeo del 20\% del conjunto de datos. Esta técnica proporcionará una evaluación robusta y precisa tanto del comportamiento energético de los modelos como de su precisión y exactitud, ya que evitará en gran medida la presencia de valores atípicos y el riesgo de sobreajuste de los modelos.
+Para analizar estas cuestiones todas las medidas de consumo serán tomadas con la aplicación desarrollada ejecutando en una misma máquina. Las características de la máquina utilizada están recogidas en la tabla~\ref{tab:caracteristicas-tecnicas}.
 
 \begin{table}[h]
     \caption{Características técnicas de la máquina utilizada para tomar las medidas}
@@ -61,14 +60,34 @@ Para analizar estas cuestiones todas las medidas de consumo serán tomadas con l
     \end{tabular}
 \end{table}
 
-La aplicación será ejecutada con el siguiente comando para cada conjunto de datos distinto, en el cual \texttt{[dataset]} será sustituido por el archivo que contenga cada conjunto de datos. Adicionalmente, cualquiera de las opciones de lectura de datos descritas en la sección~\ref{sec:limpieza} podrá ser utilizada si el formato en el que se encuentren los datos lo requiere. Las características de la máquina utilizada están recogidas en la tabla~\ref{tab:caracteristicas-tecnicas}.
+Para cada modelo y conjunto de datos, se tomarán medidas de consumo y rendimiento utilizando validación cruzada con cinco iteraciones con un tamaño definido para los datos de testeo del 20\% del conjunto de datos. Esta técnica proporcionará una evaluación robusta y precisa tanto del comportamiento energético de los modelos como de su precisión y exactitud, ya que evitará en gran medida la presencia de valores atípicos y el riesgo de sobreajuste de los modelos. La aplicación será ejecutada con el siguiente comando para cada conjunto de datos distinto, en el cual \texttt{[dataset]} será sustituido por el archivo que contenga cada conjunto de datos. Adicionalmente, cualquiera de las opciones de lectura de datos descritas en la sección~\ref{sec:limpieza} podrá ser utilizada si el formato en el que se encuentren los datos lo requiere.
 \begin{minted}{bash}
 mlcost measure --log -cv 5 -d [dataset] [dataset-options]
 \end{minted}
 
+Al ejecutar este comando, el programa escribirá al terminal en primer lugar una descripción de las características técnicas de la máquina donde se realiza el entrenamiento, con la información mostrada en la tabla \ref{tab:caracteristicas-tecnicas}. A continuación, se imprimirá un resumen del preprocesamiento realizado en el conjunto de datos elegido, incluyendo las características que se usarán en el entrenamiento, el número de muestras en los conjuntos de entrenamiento y de prueba y la distribución de las clases permitidas.
+
+Para obtener los resultados buscados, se deberá ejecutar el comando mencionado para todos los conjuntos a analizar. A continuación, se enumeran las opciones exactas utilizadas para tratar de forma adecuada cada uno de ellos. La salida del terminal con todos los resultados de la limpieza y preprocesado se encuentran recogida en el apéndice~\ref{app:preprocessing}.
+
+\begin{minted}[tabsize=2,breaklines]{bash}
+# Iris (conjunto por defecto)
+mlcost measure --log -cv 5
+# Ionosfera
+mlcost measure --log -cv 5 -d data/ionosphere/ionosphere.data --no-header
+# Autenticación de billetes
+mlcost measure -d data/banknote/banknote.txt --no-header
+# Fonemas
+mlcost measure --log -cv 5 -openml -d phoneme
+# Electroencefalograma
+mlcost measure --log -cv 5 -openml -d eeg-eye-state
+# Electricidad
+mlcost measure --log -cv 5 -openml -d electricity
+\end{minted}
+
+
 \subsubsection{Resultados}
 
-La ejecución del comando anterior producirá un archivo tipo tabla de datos en formato \texttt{.csv}. La tabla~\ref{tab:medidas-1} recoge un extracto de los resultados obtenidos en el ordenador de referencia para seis conjuntos de datos distintos. El archivo completo está disponible en el repositorio de la aplicación\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/out/all-models-laptop.csv}}.
+La ejecución de los comando anterior producirá un archivo tipo tabla de datos en formato CSV. La tabla~\ref{tab:medidas-1} recoge un extracto de los resultados obtenidos en el ordenador de referencia para seis conjuntos de datos distintos. El archivo completo está disponible en el repositorio de la aplicación\footnote{\url{https://github.com/l-gonz/tfg-gitt-mlcost/blob/main/out/all-models-laptop.csv}}.
 
 \begin{table}[H]
 \caption[Extracto de los resultados de entrenamiento]{Extracto de los resultados de entrenamiento.}
@@ -132,7 +151,6 @@ A partir de los resultados obtenidos se puede dibujar un diagrama de dispersión
   \caption{Valor-F alcanzado por el modelo frente a las emisiones de carbono necesarias para entrenarlo, por modelo empleado y conjunto de datos utilizado.}
   \label{fig:scatter-1}
 \end{figure}
-\todo[inline]{Fix plot titles}
 
 Este tipo de representación de los resultados permite observar las relaciones entre cuatro variables al mismo tiempo. De esta forma, se puede observar como cambia la relación entre la puntuación del modelo y sus emisiones de carbono para todas las distintas combinaciones de conjunto de datos y modelo de aprendizaje. Analizando esta gráfica, se puede obtener una idea de que modelos consiguen mantener una buena puntuación con un consumo bajo en la mayoría de las ocasiones.
 

@@ -395,65 +395,56 @@ Algunos derechos reservados. \\
 %\addcontentsline{toc}{chapter}{Agradecimientos} % si queremos que aparezca en el índice
 \markboth{AGRADECIMIENTOS}{AGRADECIMIENTOS} % encabezado 
 
-% I would like to take this opportunity to express my deepest gratitude to the many individuals who have played a significant role in the completion of this bachelor thesis.
+Quisiera aprovechar esta oportunidad para agradecer a las muchas personas que han contribuido de manera significativa a la realización de esta memoria de grado.
 
-% First and foremost, I want to thank my family for their unwavering support and patience throughout my academic journey. They never doubted me, even when I did it myself. Thank you as well for your help during this project, for being there when I needed a camera person or an extra hand to fly the drone. To my sister, especially, thank you for putting up with me these two years while I inched along this project.
+En primer lugar, agradezco a mi familia por su apoyo constante y paciencia a lo largo de mi trayectoria académica. Siempre confiaron en mí, incluso en los momentos de duda. Gracias también por su ayuda durante este proyecto, ya sea con la recopilación de datos o revisando mis resultados. A mi hermana, especialmente, gracias por soportarme estos últimos años mientras avanzaba en este proyecto.
 
-% I also extend my thanks to my supervisors for their guidance, expertise, and invaluable feedback throughout the thesis project. Your dedication to my academic growth and your willingness to share your knowledge have been indispensable.
+Extiendo mi agradecimiento a mis supervisores por su orientación, experiencia y valiosos comentarios durante el desarrollo de la memoria. Su dedicación y disposición para compartir su conocimiento han sido esenciales.
 
-% I would also like to express my gratitude to all my friends and colleagues who were by my side during this journey. Your camaraderie and the frequent inquiries about the status of my "never-ending drone project" pushed me towards the finish line.
+A mis amigos y colegas, gracias por estar a mi lado durante este proceso. Su apoyo y las frecuentes preguntas sobre el estado de mi "interminable proyecto de IA sostenible" me motivaron a seguir adelante.
 
-% This thesis represents the culmination of years of hard work and dedication, and I am grateful for the support of everyone who stood by my side.
-
-% Thank you all for being a part of this journey.
+Esta memoria es el resultado de años de esfuerzo y dedicación, y agradezco a todos los que me apoyaron en este camino.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Resumen
 
 \chapter*{Resumen}
 \thispagestyle{empty}
-%\addcontentsline{toc}{chapter}{Resumen} % si queremos que aparezca en el índice
+\addcontentsline{toc}{chapter}{Resumen} % si queremos que aparezca en el índice
 \markboth{RESUMEN}{RESUMEN} % encabezado
 %(máximo una página, se recomienda la estructura: antecedentes,
 %objetivos, métodos, resultados y conclusiones)
 
-Aquí viene un resumen del proyecto.
-Ha de constar de tres o cuatro párrafos, donde se presente de manera clara y concisa de qué va el proyecto. 
-Han de quedar respondidas las siguientes preguntas:
+El aprendizaje automático se ha desarrollado a pasos de gigante durante los últimos años, permitiendo a los sistemas informáticos abstraer relaciones complejas entre datos y hacer predicciones precisas. Sin embargo, estos avances también han incrementado el consumo energético debido al procesamiento de enormes cantidades de datos, lo que genera una huella ambiental significativa. En este contexto, se vuelve imperativo equilibrar la precisión y eficacia de los modelos de aprendizaje automático con su impacto energético.
 
-\begin{itemize}
-  \item ¿De qué va este proyecto? ¿Cuál es su objetivo principal?
-  \item ¿Cómo se ha realizado? ¿Qué tecnologías están involucradas?
-  \item ¿En qué contexto se ha realizado el proyecto? ¿Es un proyecto dentro de un marco general?
-\end{itemize}
+Este proyecto tiene como objetivo proporcionar una herramienta que permita comparar modelos de aprendizaje automático en términos de precisión y consumo energético. Para ello, se ha desarrollado una aplicación utilizando scikit-learn, Python y CodeCarbon, junto con conjuntos de datos públicos. La arquitectura de la aplicación está diseñada para medir las emisiones de carbono producidas durante el entrenamiento de varios modelos, abarcando todo el proceso de aprendizaje desde la preparación de datos y la validación cruzada de los modelos hasta la recopilación de consumo energético usando CodeCarbon.
 
-Lo mejor es escribir el resumen al final.
-\\\noindent\rule{\textwidth}{0.4pt}
-Intro provisional:
+Para ofrecer una muestra del funcionamiento de la aplicación se llevaron a cabo dos experimentos principales. El primero comparó las emisiones y la precisión de varios modelos en diferentes conjuntos de datos de creciente complejidad. El modelo de vecinos más cercanos mostró un consumo energético bajo y precisión moderada, mientras que el modelo de bosque aleatorio ofreció alta precisión con consumo moderado. Las redes neuronales, aunque precisas, presentaron un consumo significativamente mayor. El segundo experimento evaluó las emisiones en máquinas con distintas configuraciones de recursos, usando máquinas virtuales en Microsoft Azure. Los resultados indicaron que el uso de paralelismo y mayor cantidad de procesadores aumenta el consumo energético por unidad de tiempo, pero reduce el tiempo total de entrenamiento, compensando el incremento en consumo.
 
-El aprendizaje automático se ha desarrollado a pasos de gigante durante los últimos años y sus avances han permitido que los sistemas informáticos sean capaces de abstraer relaciones entre objetos y hacer predicciones sobre el futuro. Pero los grandes proyectos de aprendizaje requieren de la utilización de grandes cantidades de datos y los correspondientes potentes procesadores que sean capaces de trabajar con ellos. En el panorama actual cada vez más se vuelve una responsabilidad ser consciente de la huella causada en el medio ambiente por el consumo energético de los ordenadores.
-
-Con este proyecto se pretende proporcionar una herramienta capaz de comparar entre los modelos más comunes empleados en aprendizaje automático, que pueda dar respuesta a la preocupación de equilibrar la precisión y eficacia de los modelos de aprendizaje con su impacto desde el punto de vista energético. Para ello se utilizarán las herramientas proporcionadas por Scikit-learn, Python y Codecarbon y conjuntos de datos representativos disponibles públicamente en la web con licencia abierta.
-
+En conclusión, este proyecto no solo proporciona una herramienta útil para la evaluación de modelos de aprendizaje automático desde una perspectiva de sostenibilidad, sino que también destaca la necesidad de tener en cuenta el impacto ambiental en el desarrollo de soluciones tecnológicas avanzadas. Futuros trabajos podrán expandir sobre esta base, explorando nuevos modelos y técnicas de optimización para reducir aún más el consumo energético sin comprometer la precisión.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Resumen en inglés
 
 \chapter*{Summary}
-%\addcontentsline{toc}{chapter}{Summary} % si queremos que aparezca en el índice
+\addcontentsline{toc}{chapter}{Summary} % si queremos que aparezca en el índice
 \markboth{SUMMARY}{SUMMARY} % encabezado
 
-Here comes a translation of the ``Resumen'' into English. 
-Please, double check it for correct grammar and spelling.
-As it is the translation of the ``Resumen'', which is supposed to be written at the end, this as well should be filled out just before submitting.
+Machine learning has experienced great progress in recent years, allowing computer systems to abstract complex relationships between data and make accurate predictions. However, these advances have also increased energy consumption due to the cost of processing vast amounts of data, resulting in a significant environmental footprint. In this context, it is imperative to balance the precision and efficiency of machine learning models with their energy impact.
+
+This project aims to provide a tool to compare machine learning models in terms of their precision and energy consumption. To achieve this, an application was developed using scikit-learn, Python, and CodeCarbon, along with publicly available datasets. The application's architecture is designed to measure carbon emissions produced during the training of various models, covering the entire learning process from data preparation and model cross-validation to energy consumption collection using CodeCarbon.
+
+To demonstrate the application’s functionality, two main experiments were conducted. The first compared the emissions and precision of various models on different datasets of increasing complexity. The k-nearest neighbors model showed low energy consumption and moderate precision, while the random forest model offered high precision with moderate consumption. Neural networks, although precise, had significantly higher consumption. The second experiment evaluated emissions on machines with different resource configurations using virtual machines on Microsoft Azure. The results indicated that using parallelism and more processors increases energy consumption per unit of time but reduces total training time, compensating for the increased consumption.
+
+In conclusion, this project provides a useful tool for evaluating machine learning models from a sustainability perspective, highlighting the importance of considering environmental impact in developing advanced technological solutions. Future work can build on this foundation by exploring new models and optimization techniques to further reduce energy consumption without compromising precision.
 
 %%%%--------------------------------------------------------------------
 % Lista de comentarios de revisión
 % Se puede borrar este bloque al acabar el borrador
 
-\listoftodos
-\thispagestyle{empty}
-\markboth{TODO LIST}{TODO LIST} % encabezado
+% \listoftodos
+% \thispagestyle{empty}
+% \markboth{TODO LIST}{TODO LIST} % encabezado
 %%%%--------------------------------------------------------------------
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

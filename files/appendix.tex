@@ -1,32 +1,189 @@
-\chapter{Title}
+\chapter{Output del programa}
 
 \section{Interfaz de comandos de la aplicación}
 \label{app:cli}
-\todo[inline]{Update}
 
 \begin{minted}[breaklines, fontsize=\footnotesize, baselinestretch=1]{text}
 Usage: mlcost measure [OPTIONS]
 
 Options:
-  -d, --dataset TEXT          filepath to dataset, uses Iris dataset if none
-                              given
-  -l, --labels TEXT           labels column, defaults to last column
-  -t, --test TEXT             filepath to testset, if none will get split
-                              testset from dataset
-  -s, --separator TEXT        separator, defaults to a comma (no spaces)
-  -f, --codecarbon-file TEXT  filename for default output from codecarbon, can
-                              be used with codecarbon's own visualization tool
-  --online                    use Codecarbon Emission Tracker in online mode
-  --log                       output to additional csv file with whole
-                              experiment data
-  --no-header                 do not consider the first row in the data to be
-                              the header
-  -h, --help                  Show this message and exit.
+  -d, --dataset FILE             filepath to dataset, uses Iris dataset if
+                                 none given. If using the --openml option, it
+                                 is the dataset id in openml
+  -l, --labels TEXT              labels column, defaults to last column
+  -t, --test FILE                filepath to test set, if none will get split
+                                 test set from dataset
+  -s, --separator TEXT           separator, defaults to a comma (no spaces)
+  -f, --codecarbon-file TEXT     filename for default output from codecarbon,
+                                 can be used with codecarbon's own
+                                 visualization tool
+  -m, --model TEXT               specify one model to run, default is to run
+                                 everything
+  -cv, --cross-validate INTEGER  cross validate the model, specify the number
+                                 of folds (default is 1, no cross validation)
+  --online                       use Codecarbon Emission Tracker in online
+                                 mode
+  --log                          output to additional csv file with whole
+                                 experiment data
+  --no-header                    do not consider the first row in the data to
+                                 be the header
+  --openml                       fetch dataset from openml
+  --parallel                     parellelize cross validation between all
+                                 cores, needs -cv option
+  -h, --help                     Show this message and exit.
 
 
-Usage: mlcost show [OPTIONS]
+Usage: mlcost plot [OPTIONS]
 
 Options:
-  -f, --file TEXT  filepath to csv file that contains the data  [required]
+  -f, --file FILE  filepath to csv file that contains the data  [required]
   -h, --help       Show this message and exit.
+\end{minted}
+
+\section{Resultados de la limpieza y preprocesado de los conjuntos de datos}
+\label{app:preprocessing}
+
+\subsection{Iris}
+\begin{minted}[tabsize=2,breaklines]{text}
+$ mlcost measure --log -cv 5
+
+---------------------------
+DATA PREPROCESSING SUMMARY
+Original data: 4.932e+03 bytes
+
+Discarded features: 0
+Discarded rows for missing labels: 0
+Trained numerical features: ['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']
+Trained categorical features: []
+
+Removed rows from missing categorical values - Train: 0 , Test: 0
+Final train set rows: 120, test set rows: 30
+
+Target distribution:
+        train      test
+target                 
+0       0.350  0.266667
+1       0.325  0.366667
+2       0.325  0.366667
+---------------------------
+\end{minted}
+
+\subsection{Ionosfera}
+\begin{minted}[tabsize=2,breaklines]{text}
+$ mlcost measure --log -cv 5 -d data/ionosphere/ionosphere.data --no-header
+
+---------------------------
+DATA PREPROCESSING SUMMARY
+Original data: 9.560e+04 bytes
+
+Discarded features: 0
+Discarded rows for missing labels: 0
+Trained numerical features: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]
+Trained categorical features: []
+
+Removed rows from missing categorical values - Train: 0 , Test: 0
+Final train set rows: 280, test set rows: 71
+
+Target distribution:
+       train      test
+34                    
+g   0.628571  0.690141
+b   0.371429  0.309859
+---------------------------
+\end{minted}
+
+\subsection{Autenticación de billetes}
+\begin{minted}[tabsize=2,breaklines]{text}
+$ mlcost measure --log -cv 5 -d data/banknote/banknote.txt --no-header
+
+---------------------------
+DATA PREPROCESSING SUMMARY
+Original data: 4.404e+04 bytes
+
+Discarded features: 0
+Discarded rows for missing labels: 0
+Trained numerical features: [0, 1, 2, 3]
+Trained categorical features: []
+
+Removed rows from missing categorical values - Train: 0 , Test: 0
+Final train set rows: 1097, test set rows: 275
+
+Target distribution:
+      train      test
+4                    
+0  0.559708  0.538182
+1  0.440292  0.461818
+---------------------------
+\end{minted}
+
+\subsection{Fonemas}
+\begin{minted}[tabsize=2,breaklines]{text}
+$ mlcost measure --log -cv 5 -openml -d phoneme
+
+---------------------------
+DATA PREPROCESSING SUMMARY
+Original data: 2.163e+05 bytes
+
+Discarded features: 0
+Discarded rows for missing labels: 0
+Trained numerical features: ['V1', 'V2', 'V3', 'V4', 'V5']
+Trained categorical features: []
+
+Removed rows from missing categorical values - Train: 0 , Test: 0
+Final train set rows: 4323, test set rows: 1081
+
+Target distribution:
+          train      test
+Class                    
+1      0.702984  0.720629
+2      0.297016  0.279371
+---------------------------
+\end{minted}
+
+\subsection{Electroencefalograma}
+\begin{minted}[tabsize=2,breaklines]{text}
+$ mlcost measure --log -cv 5 -openml -d eeg-eye-state
+
+---------------------------
+DATA PREPROCESSING SUMMARY
+Original data: 1.678e+06 bytes
+
+Discarded features: 0
+Discarded rows for missing labels: 0
+Trained numerical features: ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10', 'V11', 'V12', 'V13', 'V14']
+Trained categorical features: []
+
+Removed rows from missing categorical values - Train: 0 , Test: 0
+Final train set rows: 11984, test set rows: 2996
+
+Target distribution:
+          train      test
+Class                    
+1      0.550067  0.555741
+2      0.449933  0.444259
+---------------------------
+\end{minted}
+
+\subsection{Electricidad}
+\begin{minted}[tabsize=2,breaklines]{text}
+$ mlcost measure --log -cv 5 -openml -d electricity
+
+---------------------------
+DATA PREPROCESSING SUMMARY
+Original data: 2.584e+06 bytes
+
+Discarded features: 0
+Discarded rows for missing labels: 0
+Trained numerical features: ['date', 'period', 'nswprice', 'nswdemand', 'vicprice', 'vicdemand', 'transfer']
+Trained categorical features: ['day']
+
+Removed rows from missing categorical values - Train: 0 , Test: 0
+Final train set rows: 36249, test set rows: 9063
+
+Target distribution:
+         train      test
+class                   
+DOWN   0.57403  0.581154
+UP     0.42597  0.418846
+---------------------------
 \end{minted}
